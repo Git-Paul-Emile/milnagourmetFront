@@ -28,7 +28,7 @@ export interface LoginCredentials {
 export interface RegisterData {
   telephone: string;
   nomComplet: string;
-  zoneLivraisonId: string | number;
+  zoneLivraisonId: string;
   password: string;
   confirmPassword: string;
 }
