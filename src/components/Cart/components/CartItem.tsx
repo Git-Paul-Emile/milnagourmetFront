@@ -1,5 +1,6 @@
 import React from 'react';
 import { Plus, Minus, Trash2 } from 'lucide-react';
+import { getFullImageUrl } from '@/utils/imageUtils';
 
 interface CartItemProps {
   item: {
@@ -20,7 +21,7 @@ export function CartItem({ item, onUpdateQuantity, onRemoveItem }: CartItemProps
       <div className="flex items-start space-x-3">
         {item.image && (
           <img
-            src={item.image}
+            src={getFullImageUrl(item.image)}
             alt={item.name}
             className="w-16 h-16 object-cover rounded-lg"
           />

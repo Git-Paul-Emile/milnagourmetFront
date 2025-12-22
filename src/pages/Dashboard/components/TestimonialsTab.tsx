@@ -3,6 +3,7 @@ import { Star, Check, X, MapPin, Calendar, User, Ban, MessageSquare, CheckCircle
 import { Testimonial } from '@/types';
 import { siteService } from '@/services/siteService';
 import { StatCard } from './StatCard';
+import { getFullImageUrl } from '@/utils/imageUtils';
 
 interface TestimonialsTabProps {
   displaySuccessToast: (message: string) => void;
@@ -120,7 +121,7 @@ export function TestimonialsTab({ displaySuccessToast }: TestimonialsTabProps) {
                 <div className="relative">
                   {testimonial.avatar ? (
                     <img
-                      src={testimonial.avatar}
+                      src={getFullImageUrl(testimonial.avatar)}
                       alt={testimonial.name}
                       className="w-14 h-14 rounded-full object-cover border-2 border-primary/20"
                     />
