@@ -1,6 +1,7 @@
 import { Star, Quote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Testimonial } from '@/types';
+import { getFullImageUrl } from '@/utils/imageUtils';
 
 interface TestimonialCardProps {
   testimonial: Testimonial;

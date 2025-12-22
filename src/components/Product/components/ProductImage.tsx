@@ -2,6 +2,7 @@ import React from 'react';
 import { Share2, Eye } from 'lucide-react';
 import { Product } from '@/types';
 import { cn } from '@/lib/utils';
+import { getFullImageUrl } from '@/utils/imageUtils';
 
 interface ProductImageProps {
   product: Product;
@@ -13,7 +14,7 @@ export function ProductImage({ product, onViewDetails, onShare }: ProductImagePr
   return (
     <div className="relative aspect-square overflow-hidden">
       <img
-        src={product.image}
+        src={getFullImageUrl(product.image)}
         alt={product.name}
         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
       />

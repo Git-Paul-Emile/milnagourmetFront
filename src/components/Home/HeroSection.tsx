@@ -11,6 +11,7 @@ import { HeroCTA } from './components/HeroCTA';
 import { HeroDecorations } from './components/HeroDecorations';
 import ChristmasSnow from '../ChristmasSnow';
 import NewYearEffects from '../NewYearEffects';
+import { getFullImageUrl } from '@/utils/imageUtils';
 
 export function HeroSection() {
   console.log('HeroSection rendering');
@@ -37,7 +38,7 @@ export function HeroSection() {
           ref={parallaxRef}
           className="parallax-layer bg-cover bg-center bg-no-repeat transform-gpu transition-transform duration-1000 ease-out"
           style={{
-            backgroundImage: heroData.banner ? `url(${heroData.banner})` : 'none',
+            backgroundImage: heroData.banner ? `url(${getFullImageUrl(heroData.banner)})` : 'none',
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             height: '120%',
