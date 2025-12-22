@@ -1,0 +1,7 @@
+export const TESTIMONIAL_CONSTANTS = {
+  MAX_COMMENT_LENGTH: 200,
+  MAX_FILE_SIZE: 2 * 1024 * 1024, // 2MB
+  MAX_IMAGE_SIZE: 300, // pixels
+  IMAGE_QUALITY: 0.8,
+  DEFAULT_RATING: 5,
+} as const;
