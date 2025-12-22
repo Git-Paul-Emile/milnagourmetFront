@@ -25,8 +25,9 @@ export const persistCartActionToBackend = async (
       return;
     }
 
-    // Ne pas persister les créations personnalisées (elles sont gérées directement via l'API backend dans CustomCreation.tsx)
-    if (item && item.id.includes('creation')) {
+    // Ne pas persister les créations personnalisées pour add/update (elles sont gérées directement via l'API backend dans CustomCreation.tsx)
+    // Mais permettre la suppression (remove) pour éviter les bugs
+    if (item && item.id.includes('creation') && action !== 'remove') {
       // Les créations personnalisées sont persistées via l'API backend
       // (ex: CustomCreation.tsx appelle cartService.addCustomCreation).
       // On évite de provoquer une double persistance côté frontend.
@@ -81,9 +82,17 @@ export const persistCartActionToBackend = async (
         break;
       case 'remove':
         if (item) {
-          const productId = extractProductId(item.id);
-          console.log(`Persistance: suppression de ${productId}`);
-          await cartService.removeFromCart(productId);
+          if (item.id.startsWith('creation-')) {
+            // Pour les créations personnalisées, utiliser l'endpoint dédié
+            const creationId = item.id.substring(9); // "creation-123" -> "123"
+            console.log(`Persistance: suppression de la création ${creationId}`);
+            await cartService.removeCustomCreation(creationId);
+          } else {
+            // Pour les produits réguliers
+            const productId = extractProductId(item.id);
+            console.log(`Persistance: suppression de ${productId}`);
+            await cartService.removeFromCart(productId);
+          }
         }
         break;
       case 'clear':

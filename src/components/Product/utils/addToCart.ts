@@ -37,12 +37,12 @@ export async function addCustomCreationToCart(
     ].join(' • ');
 
     const cartItem = {
-      id: `creation-temp-${Date.now()}`, // ID temporaire, sera remplacé lors du refresh du panier
+      id: `creation-${Date.now()}`, // ID temporaire pour les invités, sera remplacé par l'ID backend pour les connectés
       name,
       description,
       price: config.price,
       quantity: creation.quantity,
-      image: '/src/assets/creation/yogurt-creation.jpg',
+      image: `${import.meta.env.VITE_API_URL}/uploads/creation/yogurt-creation.jpg`,
       customCreation: {
         size: selectedSize,
         selectedFruits: creation.fruits,
@@ -67,14 +67,32 @@ export async function addCustomCreationToCart(
         sauces: creation.sauces.length > 0 ? creation.sauces : undefined,
         cereales: creation.cereales.length > 0 ? creation.cereales : undefined
       });
-    }
-    // Pour les invités, l'ajout au localStorage est géré par le cartReducer
 
-    // Ajouter au state local
-    dispatch({
-      type: 'ADD_TO_CART',
-      payload: cartItem
-    });
+      // Recharger le panier depuis le backend pour obtenir les IDs corrects
+      const backendCart = await cartService.getCart();
+      if (backendCart?.items?.length > 0) {
+        // Convertir les items pour le frontend
+        const frontendCartItems = backendCart.items.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image,
+          description: item.description,
+          product: item.product,
+          customCreation: item.customCreation,
+        }));
+
+        // Mettre à jour le state local avec les items du backend
+        dispatch({ type: 'SET_CART_ITEMS', payload: frontendCartItems });
+      }
+    } else {
+      // Pour les invités, ajouter au state local
+      dispatch({
+        type: 'ADD_TO_CART',
+        payload: cartItem
+      });
+    }
 
     const avatarUrl = await getAvatarToast();
     dispatch({
