@@ -37,13 +37,26 @@ export function BrandingProvider({ children }: { children: ReactNode }) {
     }
   }, [API_URL]);
 
+  const refreshBranding = useCallback(() => {
+    setRefreshKey(prev => prev + 1);
+  }, []);
+
   useEffect(() => {
     loadBranding();
   }, [loadBranding, refreshKey]);
 
-  const refreshBranding = () => {
-    setRefreshKey(prev => prev + 1);
-  };
+  // Écouter les changements de thème pour recharger le branding
+  useEffect(() => {
+    const handleThemeChange = () => {
+      refreshBranding();
+    };
+
+    window.addEventListener('themeChanged', handleThemeChange);
+
+    return () => {
+      window.removeEventListener('themeChanged', handleThemeChange);
+    };
+  }, [refreshBranding]);
 
   return (
     <BrandingContext.Provider value={{ branding, loading, error, refreshBranding }}>

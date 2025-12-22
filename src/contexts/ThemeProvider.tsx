@@ -27,11 +27,14 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     // TODO: Gérer le mode sombre si nécessaire
     // if (selectedTheme.darkColors && isDarkMode) {
     //   Object.entries(selectedTheme.darkColors).forEach(([key, value]) => {
-    //     root.style.setProperty(`--${key}`, value);
+      //     root.style.setProperty(`--${key}`, value);
     //   });
     // }
 
     setTheme(selectedTheme);
+
+    // Notifier les autres contextes du changement de thème
+    window.dispatchEvent(new CustomEvent('themeChanged'));
   }, []);
 
   // Charger le thème actif
