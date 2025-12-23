@@ -1,6 +1,7 @@
 import React from 'react';
 import { User as UserIcon, Upload, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { ImageOption } from './useSettingsState';
+import { getFullImageUrl } from '@/utils/imageUtils';
 
 interface AvatarsSectionProps {
   avatarToast: string;
@@ -27,7 +28,7 @@ export function AvatarsSection({ avatarToast, availableImages, onAvatarToastUplo
           <label className="block text-sm font-medium mb-2 sm:mb-3">Avatar pour les toasts</label>
           <div className="flex flex-col sm:flex-row sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
             <img
-              src={avatarToast}
+              src={getFullImageUrl(avatarToast)}
               alt="Avatar toast actuel"
               className="w-16 h-16 object-cover border border-border rounded-full flex-shrink-0"
             />
@@ -63,7 +64,7 @@ export function AvatarsSection({ avatarToast, availableImages, onAvatarToastUplo
                         }`}
                       >
                         <img
-                          src={image.value}
+                          src={getFullImageUrl(image.value)}
                           alt={image.label}
                           className="w-full h-10 sm:h-12 object-cover rounded-full"
                         />

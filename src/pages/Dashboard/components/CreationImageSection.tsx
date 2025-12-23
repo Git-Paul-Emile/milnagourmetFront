@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image as ImageIcon, Upload, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { ImageOption } from './useSettingsState';
+import { getFullImageUrl } from '@/utils/imageUtils';
 
 interface CreationImageSectionProps {
   creationImage: string;
@@ -28,7 +29,7 @@ export function CreationImageSection({ creationImage, availableImages, onCreatio
           <div className="flex flex-col sm:flex-row sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
             <div className="w-full max-w-md h-32 border border-border rounded overflow-hidden flex-shrink-0">
               <img
-                src={creationImage}
+                src={getFullImageUrl(creationImage)}
                 alt="Image de création actuelle"
                 className="w-full h-full object-cover"
               />
@@ -65,7 +66,7 @@ export function CreationImageSection({ creationImage, availableImages, onCreatio
                           }`}
                         >
                           <img
-                            src={image.value}
+                            src={getFullImageUrl(image.value)}
                             alt={image.label}
                             className="w-full h-16 object-cover rounded"
                           />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image as ImageIcon, Upload, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { ImageOption } from './useSettingsState';
+import { getFullImageUrl } from '@/utils/imageUtils';
 
 interface LogoSectionProps {
   logo: string;
@@ -27,7 +28,7 @@ export function LogoSection({ logo, availableImages, onLogoUpload, onLogoSelect 
           <label className="block text-sm font-medium mb-2 sm:mb-3">Logo actuel</label>
           <div className="flex flex-col sm:flex-row sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
             <img
-              src={logo}
+              src={getFullImageUrl(logo)}
               alt="Logo actuel"
               className="w-16 h-16 object-contain border border-border rounded flex-shrink-0"
             />
@@ -63,7 +64,7 @@ export function LogoSection({ logo, availableImages, onLogoUpload, onLogoSelect 
                         }`}
                       >
                         <img
-                          src={image.value}
+                          src={getFullImageUrl(image.value)}
                           alt={image.label}
                           className="w-full h-10 sm:h-12 object-contain rounded"
                         />
