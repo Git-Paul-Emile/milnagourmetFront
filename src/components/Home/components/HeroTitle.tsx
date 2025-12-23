@@ -13,7 +13,7 @@ export function HeroTitle({ title, isChristmasTheme = false, isNewYearTheme = fa
         "drop-shadow-2xl text-stroke",
         isChristmasTheme ? "text-white" : isNewYearTheme ? "text-[#E8E8E8]" : "text-white"
       )}>
-        {isChristmasTheme || isNewYearTheme ? "Bienvenue à Milina" : title}
+        {isChristmasTheme || isNewYearTheme ? "Bienvenue à Milna" : title}
       </span>
       <br className="hidden sm:block" />
       <span className={cn(
