@@ -93,7 +93,7 @@ export const useProfileEditing = (user: AuthUser | null) => {
     }
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = '/';
 
       // Préparer les données pour l'API
       const updateData: {
@@ -113,7 +113,7 @@ export const useProfileEditing = (user: AuthUser | null) => {
         updateData.ancienMotDePasse = editData.currentPassword;
       }
 
-      const response = await fetch(`${apiUrl}/api/auth/profile`, {
+      const response = await fetch(`${apiUrl}api/auth/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

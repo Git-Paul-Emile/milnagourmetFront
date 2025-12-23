@@ -1,7 +1,7 @@
 import { CartResponse } from '../types/cart';
 import { UnauthenticatedError } from '../errors/UnauthenticatedError';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = '/api';
 
 export class CartApi {
   async getCart(): Promise<CartResponse> {

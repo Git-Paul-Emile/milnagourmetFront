@@ -14,7 +14,7 @@ export class HttpClient {
   private refreshPromise: Promise<void> | null = null;
 
   constructor() {
-    this.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    this.baseURL = '/';
     // Charger le token depuis localStorage au démarrage
     const storedToken = localStorage.getItem('accessToken');
     if (storedToken) {
