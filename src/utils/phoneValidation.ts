@@ -37,7 +37,7 @@ export function validateGabonesePhone(phone: string): PhoneValidationResult {
 
   return {
     isValid: false,
-    error: 'Format invalide. Utilisez : 0XXXXXXXX (8-9 chiffres) ou +241XXXXXXXX (12 chiffres) ou 241XXXXXXXX (11 chiffres)'
+    error: 'Format invalide.'
   };
 }
 

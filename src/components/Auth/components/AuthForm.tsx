@@ -1,10 +1,11 @@
 import React from 'react';
-import { User as UserIcon, Phone } from 'lucide-react';
+import { User as UserIcon, Phone, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AuthMode, FormData, FieldErrors } from '../types/authTypes';
 import { InputField } from './InputField';
 import { PasswordField } from './PasswordField';
 import { SelectField } from './SelectField';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { DeliveryZone } from '@/types';
 
 interface AuthFormProps {
@@ -49,15 +50,30 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         />
       )}
 
-      <InputField
-        label="Téléphone"
-        icon={Phone}
-        value={formData.telephone}
-        onChange={(value) => onInputChange('telephone', value)}
-        placeholder="+241 XX XXX XXX ou 0XX XXX XXX"
-        type="tel"
-        error={fieldErrors.telephone}
-      />
+      <div className="space-y-2">
+        <div className="flex items-center space-x-2">
+          <label className="text-sm font-medium">Téléphone</label>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Utilisez : 0XXXXXXXX (8-9 chiffres) ou +241XXXXXXXX (12 chiffres) ou 241XXXXXXXX (11 chiffres)</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        <div className="relative">
+          <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input
+            type="tel"
+            value={formData.telephone}
+            onChange={(e) => onInputChange('telephone', e.target.value)}
+            className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            placeholder="+241 XX XXX XXX ou 0XX XXX XXX"
+          />
+        </div>
+        {fieldErrors.telephone && <p className="text-red-500 text-sm">{fieldErrors.telephone}</p>}
+      </div>
 
       {mode === 'register' && (
         <SelectField
