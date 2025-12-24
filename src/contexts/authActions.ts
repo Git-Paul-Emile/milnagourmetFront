@@ -67,7 +67,7 @@ export function useAuthActions(
             id: Date.now().toString(),
             type: 'success',
             message: response.message,
-            avatar: '/src/assets/milna-owner.jpg'
+            avatar: avatarToast
           }
         });
       }

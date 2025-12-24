@@ -7,11 +7,13 @@ import { deliveryZoneService } from '@/services/deliveryZone';
 import { httpClient, authService } from '@/services';
 import { validatePassword, validateConfirmPassword } from '@/pages/Profile/utils';
 import { ProfileEditForm, ProfileState, UseProfileReturn } from '@/pages/Profile/types';
+import { useAvatarToast } from '@/hooks/useAvatarToast';
 
 export const useProfile = (): UseProfileReturn => {
   const { state, dispatch } = useApp();
   const { updateUser } = useAuth();
   const navigate = useNavigate();
+  const avatarToast = useAvatarToast();
 
   const [isEditing, setIsEditing] = useState(false);
   const [deliveryZones, setDeliveryZones] = useState<DeliveryZone[]>([]);
@@ -63,7 +65,7 @@ export const useProfile = (): UseProfileReturn => {
             id: Date.now().toString(),
             type: 'error',
             message: 'L\'ancien mot de passe est requis pour changer de mot de passe',
-            avatar: '/src/assets/milna-owner.jpg'
+            avatar: avatarToast
           }
         });
         return;
@@ -77,7 +79,7 @@ export const useProfile = (): UseProfileReturn => {
             id: Date.now().toString(),
             type: 'error',
             message: passwordError,
-            avatar: '/src/assets/milna-owner.jpg'
+            avatar: avatarToast
           }
         });
         return;
@@ -91,7 +93,7 @@ export const useProfile = (): UseProfileReturn => {
             id: Date.now().toString(),
             type: 'error',
             message: confirmError,
-            avatar: '/src/assets/milna-owner.jpg'
+            avatar: avatarToast
           }
         });
         return;
@@ -106,7 +108,7 @@ export const useProfile = (): UseProfileReturn => {
           id: Date.now().toString(),
           type: 'error',
           message: 'La zone de livraison est obligatoire',
-          avatar: '/src/assets/milna-owner.jpg'
+          avatar: avatarToast
         }
       });
       return;
@@ -150,7 +152,7 @@ export const useProfile = (): UseProfileReturn => {
           id: Date.now().toString(),
           type: 'success',
           message: 'Informations mises à jour avec succès !',
-          avatar: '/src/assets/milna-owner.jpg'
+          avatar: avatarToast
         }
       });
     } catch (error: unknown) {
@@ -160,7 +162,7 @@ export const useProfile = (): UseProfileReturn => {
           id: Date.now().toString(),
           type: 'error',
           message: error instanceof Error ? error.message : 'Erreur lors de la mise à jour du profil',
-          avatar: '/src/assets/milna-owner.jpg'
+          avatar: avatarToast
         }
       });
     }
@@ -184,7 +186,7 @@ export const useProfile = (): UseProfileReturn => {
           id: Date.now().toString(),
           type: 'success',
           message: 'Votre compte a été supprimé. À bientôt !',
-          avatar: '/src/assets/milna-owner.jpg'
+          avatar: avatarToast
         }
       });
 
@@ -196,7 +198,7 @@ export const useProfile = (): UseProfileReturn => {
           id: Date.now().toString(),
           type: 'error',
           message: error instanceof Error ? error.message : 'Erreur lors de la suppression du compte',
-          avatar: '/src/assets/milna-owner.jpg'
+          avatar: avatarToast
         }
       });
     }
