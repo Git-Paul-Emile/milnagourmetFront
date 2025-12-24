@@ -5,7 +5,7 @@ import { AuthMode, FormData, FieldErrors } from '../types/authTypes';
 import { InputField } from './InputField';
 import { PasswordField } from './PasswordField';
 import { SelectField } from './SelectField';
-import { useFloating, useInteractions, useHover, useFocus, useDismiss, useRole, FloatingPortal } from '@floating-ui/react';
+import { useFloating, useInteractions, useHover, useFocus, useDismiss, useRole, FloatingPortal, arrow } from '@floating-ui/react';
 import { DeliveryZone } from '@/types';
 
 interface AuthFormProps {
@@ -38,12 +38,13 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   setShowConfirmPassword
 }) => {
   const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
+  const arrowRef = React.useRef(null);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isTooltipOpen,
     onOpenChange: setIsTooltipOpen,
     placement: 'top',
-    middleware: [],
+    middleware: [arrow({ element: arrowRef })],
   });
 
   const hover = useHover(context, { move: false });
@@ -84,10 +85,14 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             <div
               ref={refs.setFloating}
               style={floatingStyles}
-              className="z-50 px-3 py-1.5 text-sm text-popover-foreground bg-popover border rounded-md shadow-md"
+              className="z-50 px-4 py-2 text-sm text-popover-foreground bg-popover border border-border rounded-lg shadow-lg max-w-xs sm:max-w-sm transition-all duration-200 ease-in-out"
               {...getFloatingProps()}
             >
               Utilisez : 0XXXXXXXX (8-9 chiffres) ou +241XXXXXXXX (12 chiffres) ou 241XXXXXXXX (11 chiffres)
+              <div
+                ref={arrowRef}
+                className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-popover"
+              />
             </div>
           </FloatingPortal>
         )}
