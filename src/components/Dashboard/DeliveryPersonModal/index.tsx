@@ -78,7 +78,7 @@ export function DeliveryPersonModal({
               type="text"
               value={formData.phone}
               onChange={(e) => setFormData({...formData, phone: e.target.value})}
-              placeholder="+221 77 123 45 67"
+              placeholder="+241 77 110 135"
               className="w-full p-2 border border-border rounded-lg"
             />
           </div>

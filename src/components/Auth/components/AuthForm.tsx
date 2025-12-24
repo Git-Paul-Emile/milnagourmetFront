@@ -54,7 +54,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         icon={Phone}
         value={formData.telephone}
         onChange={(value) => onInputChange('telephone', value)}
-        placeholder="+221 XX XXX XX XX"
+        placeholder="+241 XX XXX XXX ou 0XX XXX XXX"
         type="tel"
         error={fieldErrors.telephone}
       />
