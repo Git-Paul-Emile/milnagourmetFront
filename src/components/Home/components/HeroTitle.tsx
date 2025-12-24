@@ -15,20 +15,24 @@ export function HeroTitle({ title, isChristmasTheme = false, isNewYearTheme = fa
       )}>
         {isChristmasTheme || isNewYearTheme ? "Bienvenue à Milna" : title}
       </span>
-      <br className="hidden sm:block" />
-      <span className={cn(
-        "sm:ml-0 lg:ml-0 animate-pulse-soft relative drop-shadow-2xl",
-        isChristmasTheme
-          ? "text-[#FFD700]"
-          : isNewYearTheme
-          ? "text-[#FFD700] [text-shadow:0_0_30px_rgba(255,215,0,0.5)]"
-          : "bg-gradient-to-r from-white via-yellow-100 to-white bg-clip-text text-transparent"
-      )}>
-        {(isChristmasTheme || isNewYearTheme) ? "Gourmet" : "Milna Gourmet"}
-        {!isChristmasTheme && !isNewYearTheme && (
-          <div className="absolute inset-0 bg-gradient-to-r from-white/30 via-yellow-100/30 to-white/30 blur-xl opacity-70 animate-pulse-soft" />
-        )}
-      </span>
+      {(isChristmasTheme || isNewYearTheme) && (
+        <>
+          <br className="hidden sm:block" />
+          <span className={cn(
+            "sm:ml-0 lg:ml-0 animate-pulse-soft relative drop-shadow-2xl",
+            isChristmasTheme
+              ? "text-[#FFD700]"
+              : isNewYearTheme
+              ? "text-[#FFD700] [text-shadow:0_0_30px_rgba(255,215,0,0.5)]"
+              : "bg-gradient-to-r from-white via-yellow-100 to-white bg-clip-text text-transparent"
+          )}>
+            Gourmet
+            {!isChristmasTheme && !isNewYearTheme && (
+              <div className="absolute inset-0 bg-gradient-to-r from-white/30 via-yellow-100/30 to-white/30 blur-xl opacity-70 animate-pulse-soft" />
+            )}
+          </span>
+        </>
+      )}
     </h1>
   );
 }
