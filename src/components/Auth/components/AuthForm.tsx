@@ -5,7 +5,7 @@ import { AuthMode, FormData, FieldErrors } from '../types/authTypes';
 import { InputField } from './InputField';
 import { PasswordField } from './PasswordField';
 import { SelectField } from './SelectField';
-import { useFloating, useInteractions, useHover, useFocus, useDismiss, useRole, FloatingPortal, arrow } from '@floating-ui/react';
+import { useFloating, useInteractions, useHover, useFocus, useDismiss, useRole, FloatingPortal, arrow, shift, flip } from '@floating-ui/react';
 import { DeliveryZone } from '@/types';
 
 interface AuthFormProps {
@@ -44,7 +44,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     open: isTooltipOpen,
     onOpenChange: setIsTooltipOpen,
     placement: 'top',
-    middleware: [arrow({ element: arrowRef })],
+    middleware: [arrow({ element: arrowRef }), shift(), flip()],
   });
 
   const hover = useHover(context, { move: false });
