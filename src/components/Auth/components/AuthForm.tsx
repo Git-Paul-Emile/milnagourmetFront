@@ -5,7 +5,7 @@ import { AuthMode, FormData, FieldErrors } from '../types/authTypes';
 import { InputField } from './InputField';
 import { PasswordField } from './PasswordField';
 import { SelectField } from './SelectField';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useFloating, useInteractions, useHover, useFocus, useDismiss, useRole, FloatingPortal } from '@floating-ui/react';
 import { DeliveryZone } from '@/types';
 
 interface AuthFormProps {
@@ -37,6 +37,26 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   setShowPassword,
   setShowConfirmPassword
 }) => {
+  const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isTooltipOpen,
+    onOpenChange: setIsTooltipOpen,
+    placement: 'top',
+    middleware: [],
+  });
+
+  const hover = useHover(context, { move: false });
+  const focus = useFocus(context);
+  const dismiss = useDismiss(context);
+  const role = useRole(context, { role: 'tooltip' });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    dismiss,
+    role,
+  ]);
   return (
     <form onSubmit={onSubmit} className="p-6 space-y-4">
       {mode === 'register' && (
@@ -53,15 +73,24 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       <div className="space-y-2">
         <div className="flex items-center space-x-2">
           <label className="text-sm font-medium">Téléphone</label>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Info className="h-4 w-4 text-muted-foreground cursor-help" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Utilisez : 0XXXXXXXX (8-9 chiffres) ou +241XXXXXXXX (12 chiffres) ou 241XXXXXXXX (11 chiffres)</p>
-            </TooltipContent>
-          </Tooltip>
+          <Info
+            className="h-4 w-4 text-muted-foreground cursor-help"
+            ref={refs.setReference}
+            {...getReferenceProps()}
+          />
         </div>
+        {isTooltipOpen && (
+          <FloatingPortal>
+            <div
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className="z-50 px-3 py-1.5 text-sm text-popover-foreground bg-popover border rounded-md shadow-md"
+              {...getFloatingProps()}
+            >
+              Utilisez : 0XXXXXXXX (8-9 chiffres) ou +241XXXXXXXX (12 chiffres) ou 241XXXXXXXX (11 chiffres)
+            </div>
+          </FloatingPortal>
+        )}
         <div className="relative">
           <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
