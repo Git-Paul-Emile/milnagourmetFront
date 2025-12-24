@@ -1,21 +1,9 @@
 import { AuthMode, FormData, FieldErrors } from '../types/authTypes';
+import { validatePhoneSimple } from '@/utils/phoneValidation';
+import { validatePassword, validateConfirmPassword } from '@/utils/passwordValidation';
 
 export const validatePhone = (phone: string): string => {
-  if (!phone.trim()) return 'Le N° de téléphone est obligatoire';
-  if (!/^[+]?[\d\s-()]+$/.test(phone)) return 'Ce format est invalide';
-  return '';
-};
-
-export const validatePassword = (password: string): string => {
-  if (!password.trim()) return 'Le mot de passe est obligatoire';
-  if (password.length < 6) return 'Le mot de passe doit contenir au moins 6 caractères';
-  return '';
-};
-
-export const validateConfirmPassword = (password: string, confirmPassword: string): string => {
-  if (!confirmPassword.trim()) return 'La confirmation du mot de passe est obligatoire';
-  if (password !== confirmPassword) return 'Les mots de passe ne correspondent pas';
-  return '';
+  return validatePhoneSimple(phone);
 };
 
 export const validateForm = (mode: AuthMode, formData: FormData): FieldErrors => {
