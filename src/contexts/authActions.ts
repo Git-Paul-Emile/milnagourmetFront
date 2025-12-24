@@ -3,6 +3,7 @@ import { AuthUser, LoginCredentials, RegisterData, ApiResponse, AuthResponse } f
 import { AppAction } from '@/types/appState';
 import { httpClient, authService } from '@/services';
 import { AuthState, AuthAction } from './authReducer';
+import { useAvatarToast } from '@/hooks/useAvatarToast';
 
 export interface AuthActions {
   login: (credentials: LoginCredentials) => Promise<ApiResponse<AuthResponse>>;
@@ -18,6 +19,7 @@ export function useAuthActions(
   dispatch: React.Dispatch<AuthAction>,
   appDispatch: React.Dispatch<AppAction>
 ): AuthActions {
+  const avatarToast = useAvatarToast();
   // Login
   const login = useCallback(async (credentials: LoginCredentials) => {
     dispatch({ type: 'SET_LOADING', payload: true });
@@ -76,7 +78,7 @@ export function useAuthActions(
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
-  }, [appDispatch, dispatch]);
+  }, [appDispatch, dispatch, avatarToast]);
 
   // Logout
   const logout = useCallback(async () => {
