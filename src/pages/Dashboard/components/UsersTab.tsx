@@ -44,8 +44,8 @@ export function UsersTab({ users, orders, deliveryZones, loadDashboardData, disp
     setSelectedUser(null);
   };
 
-  const handleToggleBlockWrapper = (userId: string, currentStatus: boolean) => {
-    handleToggleBlock(userId, currentStatus, displaySuccessToast);
+  const handleToggleBlockWrapper = async (userId: string, currentStatus: boolean) => {
+    await handleToggleBlock(userId, currentStatus, displaySuccessToast);
   };
 
   const handleDeleteUserWrapper = (user: UserType) => {

@@ -1,14 +1,15 @@
-import React from 'react';
-import { Edit, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Edit, Trash2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Product, ProductCategoryItem, CreationOptions } from '@/types';
+import { Button } from '@/components/ui/button';
 
 interface ProductListProps {
   products: Product[];
   productCategories: ProductCategoryItem[];
   creationOptions: CreationOptions;
   onEditProduct: (product: Product) => void;
-  onToggleAvailability: (productId: string, currentStatus: boolean) => void;
+  onToggleAvailability: (productId: string, currentStatus: boolean) => Promise<void>;
   onDeleteProduct: (product: Product) => void;
 }
 
@@ -20,6 +21,21 @@ export function ProductList({
   onToggleAvailability,
   onDeleteProduct
 }: ProductListProps) {
+  const [loadingProducts, setLoadingProducts] = useState<Set<string>>(new Set());
+
+  const handleToggleAvailability = async (productId: string, currentStatus: boolean) => {
+    setLoadingProducts(prev => new Set(prev).add(productId));
+    try {
+      await onToggleAvailability(productId, currentStatus);
+    } finally {
+      setLoadingProducts(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(productId);
+        return newSet;
+      });
+    }
+  };
+
   if (products.length === 0) {
     return (
       <div className="text-center py-12">
@@ -76,17 +92,19 @@ export function ProductList({
               Modifier
             </button>
 
-            <button
-              onClick={() => onToggleAvailability(product.id, product.available)}
+            <Button
+              onClick={() => handleToggleAvailability(product.id, product.available)}
+              loading={loadingProducts.has(product.id)}
               className={cn(
                 'flex-1 px-3 py-1 rounded text-xs transition-colors',
                 product.available
                   ? 'bg-red-100 text-red-800 hover:bg-red-200'
                   : 'bg-green-100 text-green-800 hover:bg-green-200'
               )}
+              size="sm"
             >
               {product.available ? 'Désactiver' : 'Activer'}
-            </button>
+            </Button>
 
             <button
               onClick={() => onDeleteProduct(product)}

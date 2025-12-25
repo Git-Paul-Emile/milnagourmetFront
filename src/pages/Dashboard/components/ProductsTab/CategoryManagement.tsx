@@ -1,14 +1,15 @@
-import React from 'react';
-import { Edit, Trash2, Plus, Tag } from 'lucide-react';
+import React, { useState } from 'react';
+import { Edit, Trash2, Plus, Tag, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ProductCategoryItem } from '@/types';
+import { Button } from '@/components/ui/button';
 
 interface CategoryManagementProps {
   productCategories: ProductCategoryItem[];
   onAddCategory: () => void;
   onEditCategory: (category: ProductCategoryItem) => void;
   onDeleteCategory: (category: ProductCategoryItem) => void;
-  onToggleCategoryStatus: (categoryId: number, currentStatus: boolean) => void;
+  onToggleCategoryStatus: (categoryId: number, currentStatus: boolean) => Promise<void>;
 }
 
 export function CategoryManagement({
@@ -18,6 +19,21 @@ export function CategoryManagement({
   onDeleteCategory,
   onToggleCategoryStatus
 }: CategoryManagementProps) {
+  const [loadingCategories, setLoadingCategories] = useState<Set<number>>(new Set());
+
+  const handleToggleCategoryStatus = async (categoryId: number, currentStatus: boolean) => {
+    setLoadingCategories(prev => new Set(prev).add(categoryId));
+    try {
+      await onToggleCategoryStatus(categoryId, currentStatus);
+    } finally {
+      setLoadingCategories(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(categoryId);
+        return newSet;
+      });
+    }
+  };
+
   return (
     <div className="bg-card rounded-lg border border-border p-6">
       <h3 className="text-xl sm:text-2xl font-bold">Gestion des catégories</h3>
@@ -53,16 +69,18 @@ export function CategoryManagement({
                 </div>
               </div>
               <div className="flex items-center space-x-2 self-end sm:self-auto">
-                <button
-                  onClick={() => onToggleCategoryStatus(category.id, category.active)}
+                <Button
+                  onClick={() => handleToggleCategoryStatus(category.id, category.active)}
+                  loading={loadingCategories.has(category.id)}
                   className={cn(
                     'px-2 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors',
                     category.active ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200'
                   )}
+                  size="sm"
                   title={category.active ? 'Désactiver la catégorie' : 'Activer la catégorie'}
                 >
                   {category.active ? 'Active' : 'Inactive'}
-                </button>
+                </Button>
                 <div className="flex space-x-1">
                   <button
                     onClick={() => onEditCategory(category)}

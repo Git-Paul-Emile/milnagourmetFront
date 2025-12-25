@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { User as UserType } from '@/types';
-import { Eye, Ban, Trash2 } from 'lucide-react';
+import { Eye, Ban, Trash2, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface UserListProps {
   filteredUsers: UserType[];
-  onToggleBlock: (userId: string, currentStatus: boolean) => void;
+  onToggleBlock: (userId: string, currentStatus: boolean) => Promise<void>;
   onDeleteUser: (user: UserType) => void;
   onViewOrders: (user: UserType) => void;
 }
 
 export function UserList({ filteredUsers, onToggleBlock, onDeleteUser, onViewOrders }: UserListProps) {
+  const [loadingUsers, setLoadingUsers] = useState<Set<string>>(new Set());
+
+  const handleToggleBlock = async (userId: string, currentStatus: boolean) => {
+    setLoadingUsers(prev => new Set(prev).add(userId));
+    try {
+      await onToggleBlock(userId, currentStatus);
+    } finally {
+      setLoadingUsers(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(userId);
+        return newSet;
+      });
+    }
+  };
+
   return (
     <div className="bg-card rounded-lg border border-border">
       <div className="p-6 border-b border-border">
@@ -50,8 +66,9 @@ export function UserList({ filteredUsers, onToggleBlock, onDeleteUser, onViewOrd
                     <Eye className="mr-1 w-4 h-4" />
                     Voir commandes
                   </button>
-                  <button
-                    onClick={() => onToggleBlock(user.id, user.blocked || false)}
+                  <Button
+                    onClick={() => handleToggleBlock(user.id, user.blocked || false)}
+                    loading={loadingUsers.has(user.id)}
                     className={`px-3 py-2 rounded text-xs transition-colors w-full flex items-center justify-center ${
                       user.blocked
                         ? 'bg-green-100 text-green-800 hover:bg-green-200'
@@ -60,7 +77,7 @@ export function UserList({ filteredUsers, onToggleBlock, onDeleteUser, onViewOrd
                   >
                     <Ban className="mr-1 w-4 h-4" />
                     {user.blocked ? 'Débloquer' : 'Bloquer'}
-                  </button>
+                  </Button>
                   <button
                     onClick={() => onDeleteUser(user)}
                     className="bg-gray-100 text-gray-800 px-3 py-2 rounded text-xs hover:bg-gray-200 transition-colors w-full flex items-center justify-center"

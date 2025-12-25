@@ -86,6 +86,14 @@ export function ProductsTab({
     handleDeleteProduct
   } = useProductOperations(loadDashboardData, displaySuccessToast);
 
+  const handleToggleAvailabilityWrapper = async (productId: string, currentStatus: boolean) => {
+    await handleToggleAvailability(productId, currentStatus);
+  };
+
+  const handleToggleCategoryStatusWrapper = async (categoryId: number, currentStatus: boolean) => {
+    await handleToggleCategoryStatus(categoryId, currentStatus);
+  };
+
   const handleDeleteProductClick = (product: Product) => {
     setDeleteModal({ isOpen: true, item: product, type: 'product' });
   };
@@ -124,7 +132,7 @@ export function ProductsTab({
         onAddCategory={() => setAddCategoryModal(true)}
         onEditCategory={handleEditCategory}
         onDeleteCategory={handleDeleteCategory}
-        onToggleCategoryStatus={handleToggleCategoryStatus}
+        onToggleCategoryStatus={handleToggleCategoryStatusWrapper}
       />
 
       {/* Modal de suppression de catégorie */}
@@ -181,7 +189,7 @@ export function ProductsTab({
         productCategories={productCategories}
         creationOptions={creationOptions}
         onEditProduct={handleEditProduct}
-        onToggleAvailability={handleToggleAvailability}
+        onToggleAvailability={handleToggleAvailabilityWrapper}
         onDeleteProduct={handleDeleteProductClick}
       />
 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Palette, Check, Plus, Edit, Trash2 } from 'lucide-react';
+import { Palette, Check, Plus, Edit, Trash2, Loader2 } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { themeService, Theme, ThemeColors } from '@/services/themeService';
 import { Modal } from '@/components/Modal';
+import { Button } from '@/components/ui/button';
 
 interface ThemeSectionProps {
   displaySuccessToast: (message: string) => void;
@@ -18,6 +19,7 @@ export function ThemeSection({ displaySuccessToast }: ThemeSectionProps) {
   const [editThemeDescription, setEditThemeDescription] = useState('');
   const [editLightColors, setEditLightColors] = useState<ThemeColors>({});
   const [editDarkColors, setEditDarkColors] = useState<ThemeColors>({});
+  const [activatingThemeId, setActivatingThemeId] = useState<number | null>(null);
 
   // Fonctions utilitaires pour convertir HSL <-> Hex
   const hslToHex = (hsl: string): string => {
@@ -79,12 +81,15 @@ export function ThemeSection({ displaySuccessToast }: ThemeSectionProps) {
   };
 
   const handleSetActiveTheme = async (themeId: number) => {
+    setActivatingThemeId(themeId);
     try {
       await setActiveTheme(themeId);
       displaySuccessToast('Thème activé avec succès');
     } catch (error) {
       console.error('Erreur lors de l\'activation du thème:', error);
       // TODO: Afficher un message d'erreur
+    } finally {
+      setActivatingThemeId(null);
     }
   };
 
@@ -387,12 +392,13 @@ export function ThemeSection({ displaySuccessToast }: ThemeSectionProps) {
               {/* Actions */}
               <div className="flex justify-between items-center">
                 {!theme.isActive && (
-                  <button
+                  <Button
                     onClick={() => handleSetActiveTheme(theme.id)}
-                    className="text-sm bg-primary text-primary-foreground px-3 py-1 rounded hover:bg-primary/90 transition-colors"
+                    loading={activatingThemeId === theme.id}
+                    size="sm"
                   >
                     Activer
-                  </button>
+                  </Button>
                 )}
                 {theme.isActive && (
                   <span className="text-sm text-primary font-medium">Actif</span>
