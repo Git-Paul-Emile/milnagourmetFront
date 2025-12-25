@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Check, X, MapPin, Calendar, User, Ban, MessageSquare, CheckCircle, Clock } from 'lucide-react';
+import { Star, Check, X, MapPin, Calendar, User, Ban, MessageSquare, CheckCircle, Clock, Plus, Upload } from 'lucide-react';
 import { Testimonial } from '@/types';
 import { siteService } from '@/services/siteService';
 import { StatCard } from './StatCard';
@@ -12,6 +12,16 @@ interface TestimonialsTabProps {
 export function TestimonialsTab({ displaySuccessToast }: TestimonialsTabProps) {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    location: '',
+    rating: 5,
+    comment: '',
+    avatar: '',
+    active: false
+  });
+  const [submitting, setSubmitting] = useState(false);
 
   const loadTestimonials = async () => {
     try {
@@ -52,6 +62,41 @@ export function TestimonialsTab({ displaySuccessToast }: TestimonialsTabProps) {
       loadTestimonials();
     } catch (error) {
       console.error('Erreur lors de la suppression du témoignage:', error);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      await siteService.createTestimonial(formData);
+      displaySuccessToast('Témoignage ajouté avec succès');
+      setFormData({
+        name: '',
+        location: '',
+        rating: 5,
+        comment: '',
+        avatar: '',
+        active: false
+      });
+      setShowAddForm(false);
+      loadTestimonials();
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du témoignage:', error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleAvatarUpload = async (file: File) => {
+    try {
+      const response = await siteService.uploadTestimonialImage(file);
+      const data = response.data as { path: string; filename: string };
+      setFormData(prev => ({ ...prev, avatar: data.path }));
+      displaySuccessToast('Image téléchargée avec succès');
+    } catch (error) {
+      console.error('Erreur lors du téléchargement de l\'image:', error);
     }
   };
 
@@ -111,6 +156,134 @@ export function TestimonialsTab({ displaySuccessToast }: TestimonialsTabProps) {
           color="hover:shadow-orange-500/10"
         />
       </div>
+
+      {/* Bouton pour ajouter un témoignage */}
+      <div className="flex justify-end">
+        <button
+          onClick={() => setShowAddForm(!showAddForm)}
+          className="flex items-center space-x-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+        >
+          <Plus className="h-4 w-4" />
+          <span>Ajouter un témoignage</span>
+        </button>
+      </div>
+
+      {/* Formulaire d'ajout */}
+      {showAddForm && (
+        <div className="bg-card rounded-xl border border-border p-6 shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Ajouter un nouveau témoignage</h3>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium mb-1">Nom *</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Lieu *</label>
+                <input
+                  type="text"
+                  value={formData.location}
+                  onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Note *</label>
+              <select
+                value={formData.rating}
+                onChange={(e) => setFormData(prev => ({ ...prev, rating: parseInt(e.target.value) }))}
+                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              >
+                {[1, 2, 3, 4, 5].map(rating => (
+                  <option key={rating} value={rating}>{rating} étoile{rating > 1 ? 's' : ''}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Commentaire *</label>
+              <textarea
+                value={formData.comment}
+                onChange={(e) => setFormData(prev => ({ ...prev, comment: e.target.value }))}
+                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                rows={4}
+                maxLength={200}
+                required
+              />
+              <p className="text-xs text-muted-foreground mt-1">{formData.comment.length}/200 caractères</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Avatar (optionnel)</label>
+              <div className="flex items-center space-x-4">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleAvatarUpload(file);
+                  }}
+                  className="hidden"
+                  id="avatar-upload"
+                />
+                <label
+                  htmlFor="avatar-upload"
+                  className="flex items-center space-x-2 px-4 py-2 border border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
+                >
+                  <Upload className="h-4 w-4" />
+                  <span>Choisir une image</span>
+                </label>
+                {formData.avatar && (
+                  <img
+                    src={getFullImageUrl(formData.avatar)}
+                    alt="Avatar preview"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="active-checkbox"
+                checked={formData.active}
+                onChange={(e) => setFormData(prev => ({ ...prev, active: e.target.checked }))}
+                className="rounded border-border"
+              />
+              <label htmlFor="active-checkbox" className="text-sm font-medium">
+                Activer immédiatement ce témoignage
+              </label>
+            </div>
+
+            <div className="flex justify-end space-x-2">
+              <button
+                type="button"
+                onClick={() => setShowAddForm(false)}
+                className="px-4 py-2 border border-border rounded-lg hover:bg-muted/50 transition-colors"
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+              >
+                {submitting ? 'Ajout en cours...' : 'Ajouter le témoignage'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         {testimonials.map((testimonial) => (
