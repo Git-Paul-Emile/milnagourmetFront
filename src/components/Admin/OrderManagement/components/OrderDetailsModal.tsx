@@ -3,6 +3,7 @@ import { XCircle, CheckCircle, Clock, Send } from 'lucide-react';
 import { Order, DeliveryZone } from '@/types';
 import { deliveryZoneService } from '@/services/deliveryZone';
 import { userService } from '@/services/userService';
+import { Button } from '@/components/ui/button';
 
 interface OrderDetailsModalProps {
   selectedOrder: Order | null;
@@ -215,36 +216,36 @@ export function OrderDetailsModal({ selectedOrder, onClose, onUpdateStatus, isPr
               <h4 className="font-semibold">Actions</h4>
 
               {selectedOrder.status === 'recu' && (
-                <button
+                <Button
                   onClick={() => handleStatusUpdate('en_preparation')}
-                  disabled={isProcessing}
-                  className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors disabled:opacity-50"
+                  loading={isProcessing}
+                  className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
                 >
                   <CheckCircle className="h-5 w-5" />
                   <span>Mettre en préparation</span>
-                </button>
+                </Button>
               )}
 
               {selectedOrder.status === 'en_preparation' && (
-                <button
+                <Button
                   onClick={() => handleStatusUpdate('livraison')}
-                  disabled={isProcessing}
-                  className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors disabled:opacity-50"
+                  loading={isProcessing}
+                  className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
                 >
                   <Clock className="h-5 w-5" />
                   <span>Mettre livraison en cours</span>
-                </button>
+                </Button>
               )}
 
               {selectedOrder.status === 'livraison' && (
-                <button
+                <Button
                   onClick={() => handleStatusUpdate('livree')}
-                  disabled={isProcessing}
-                  className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors disabled:opacity-50"
+                  loading={isProcessing}
+                  className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
                 >
                   <Send className="h-5 w-5" />
                   <span>Livrée</span>
-                </button>
+                </Button>
               )}
             </div>
           )}

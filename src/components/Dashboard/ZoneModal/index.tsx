@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DeliveryZone } from '@/types';
+import { Button } from '@/components/ui/button';
 
 interface ZoneModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export function ZoneModal({ isOpen, onClose, onSave, mode, editingZone }: ZoneMo
     estimatedTime: '',
     active: true
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (mode === 'edit' && editingZone) {
@@ -36,12 +38,15 @@ export function ZoneModal({ isOpen, onClose, onSave, mode, editingZone }: ZoneMo
       return;
     }
 
+    setIsSubmitting(true);
     try {
       await onSave(formData);
       onClose();
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error);
       alert('Erreur lors de la sauvegarde. Veuillez réessayer.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -110,13 +115,13 @@ export function ZoneModal({ isOpen, onClose, onSave, mode, editingZone }: ZoneMo
           >
             Annuler
           </button>
-          <button
+          <Button
             onClick={handleSubmit}
+            loading={isSubmitting}
             disabled={!formData.name || !formData.deliveryFee || !formData.estimatedTime}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {mode === 'add' ? 'Ajouter' : 'Sauvegarder'}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CreationSize } from '@/types';
+import { Button } from '@/components/ui/button';
 
 interface SizeModalProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
     cerealesAutorise: true,
     active: true
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (mode === 'edit' && editingSize) {
@@ -35,7 +37,7 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
     }
   }, [mode, editingSize, isOpen]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!formData.nom || formData.prix === undefined || formData.prix < 0) {
       alert('Veuillez saisir un nom et un prix valide pour la taille');
       return;
@@ -47,8 +49,13 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
       return;
     }
 
-    onSave(formData);
-    onClose();
+    setIsSubmitting(true);
+    try {
+      await onSave(formData);
+      onClose();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -136,13 +143,13 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
           >
             Annuler
           </button>
-          <button
+          <Button
             onClick={handleSubmit}
+            loading={isSubmitting}
             disabled={!formData.nom || formData.prix === undefined || formData.prix < 0}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {mode === 'add' ? 'Ajouter' : 'Sauvegarder'}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

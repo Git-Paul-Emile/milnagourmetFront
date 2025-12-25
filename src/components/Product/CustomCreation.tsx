@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ShoppingCart, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCustomCreation } from './hooks/useCustomCreation';
 import { addCustomCreationToCart } from './utils/addToCart';
+import { Button } from '@/components/ui/button';
 import {
   SizeSelector,
   FruitSelector,
@@ -18,6 +19,7 @@ interface CustomCreationProps {
 }
 
 export function CustomCreation({ isOpen, onClose }: CustomCreationProps) {
+  const [isAdding, setIsAdding] = useState(false);
   const {
     creation,
     creationSizes,
@@ -36,10 +38,15 @@ export function CustomCreation({ isOpen, onClose }: CustomCreationProps) {
 
   const handleAddToCart = async () => {
     if (!config) return;
-    const success = await addCustomCreationToCart(creation, config, creationSizes, dispatch);
-    if (success) {
-      resetCreation();
-      onClose();
+    setIsAdding(true);
+    try {
+      const success = await addCustomCreationToCart(creation, config, creationSizes, dispatch);
+      if (success) {
+        resetCreation();
+        onClose();
+      }
+    } finally {
+      setIsAdding(false);
     }
   };
 
@@ -116,19 +123,15 @@ export function CustomCreation({ isOpen, onClose }: CustomCreationProps) {
                     {config.price * creation.quantity} FCFA
                   </p>
                 </div>
-                <button
+                <Button
                   onClick={handleAddToCart}
+                  loading={isAdding}
                   disabled={!isValid}
-                  className={cn(
-                    'flex items-center justify-center space-x-2 w-full sm:w-auto px-8 py-4 sm:px-6 sm:py-3 rounded-lg font-semibold transition-all transform-gpu',
-                    isValid
-                      ? 'bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:shadow-xl hover:shadow-primary/25 hover:scale-105 active:scale-95'
-                      : 'bg-muted text-muted-foreground cursor-not-allowed'
-                  )}
+                  className="flex items-center justify-center space-x-2 w-full sm:w-auto px-8 py-4 sm:px-6 sm:py-3 rounded-lg font-semibold transition-all transform-gpu bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:shadow-xl hover:shadow-primary/25 hover:scale-105 active:scale-95"
                 >
                   <ShoppingCart className="h-5 w-5" />
                   <span className="text-lg sm:text-base">Ajouter au panier</span>
-                </button>
+                </Button>
               </div>
             </div>
           </div>

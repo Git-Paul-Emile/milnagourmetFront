@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProductCategoryItem } from '@/types';
+import { Button } from '@/components/ui/button';
 
 interface CategoryModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ export function CategoryModal({ isOpen, onClose, onSave, mode, editingCategory }
     name: '',
     active: true
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (mode === 'edit' && editingCategory) {
@@ -26,14 +28,19 @@ export function CategoryModal({ isOpen, onClose, onSave, mode, editingCategory }
     }
   }, [mode, editingCategory, isOpen]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!formData.name) {
       alert('Veuillez saisir un nom pour la catégorie');
       return;
     }
 
-    onSave(formData);
-    onClose();
+    setIsSubmitting(true);
+    try {
+      await onSave(formData);
+      onClose();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -76,13 +83,13 @@ export function CategoryModal({ isOpen, onClose, onSave, mode, editingCategory }
           >
             Annuler
           </button>
-          <button
+          <Button
             onClick={handleSubmit}
+            loading={isSubmitting}
             disabled={!formData.name}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {mode === 'add' ? 'Ajouter' : 'Sauvegarder'}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

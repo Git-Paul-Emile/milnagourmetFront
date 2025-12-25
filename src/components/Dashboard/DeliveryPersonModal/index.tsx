@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DeliveryPerson } from '@/types';
+import { Button } from '@/components/ui/button';
 
 interface DeliveryZoneOption {
   id: string;
@@ -27,6 +28,7 @@ export function DeliveryPersonModal({
     vehicle: '',
     active: true
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (mode === 'edit' && editingPerson) {
@@ -41,14 +43,19 @@ export function DeliveryPersonModal({
     }
   }, [mode, editingPerson, isOpen]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!formData.nomComplet || !formData.phone || !formData.vehicle) {
       alert('Veuillez remplir tous les champs obligatoires');
       return;
     }
 
-    onSave(formData);
-    onClose();
+    setIsSubmitting(true);
+    try {
+      await onSave(formData);
+      onClose();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -113,13 +120,13 @@ export function DeliveryPersonModal({
           >
             Annuler
           </button>
-          <button
+          <Button
             onClick={handleSubmit}
+            loading={isSubmitting}
             disabled={!formData.nomComplet || !formData.phone || !formData.vehicle}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {mode === 'add' ? 'Ajouter' : 'Sauvegarder'}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

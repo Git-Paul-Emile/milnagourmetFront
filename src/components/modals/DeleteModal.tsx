@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Product, User as UserType, DeliveryPerson, DeliveryZone } from '@/types';
+import { Button } from '@/components/ui/button';
 
 interface ImageItem {
   value: string;
@@ -11,11 +12,22 @@ interface DeleteModalProps {
   isOpen: boolean;
   item?: Product | UserType | DeliveryPerson | DeliveryZone | ImageItem;
   type: 'product' | 'user' | 'deliveryPerson' | 'deliveryZone' | 'image';
-  onConfirm: () => void;
+  onConfirm: () => Promise<void>;
   onCancel: () => void;
 }
 
 export function DeleteModal({ isOpen, item, type, onConfirm, onCancel }: DeleteModalProps) {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleConfirm = async () => {
+    setIsDeleting(true);
+    try {
+      await onConfirm();
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   if (!isOpen || !item) return null;
 
   return (
@@ -44,12 +56,13 @@ export function DeleteModal({ isOpen, item, type, onConfirm, onCancel }: DeleteM
           >
             Annuler
           </button>
-          <button
-            onClick={onConfirm}
-            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+          <Button
+            onClick={handleConfirm}
+            loading={isDeleting}
+            className="bg-red-600 text-white hover:bg-red-700"
           >
             Supprimer définitivement
-          </button>
+          </Button>
         </div>
       </div>
     </div>

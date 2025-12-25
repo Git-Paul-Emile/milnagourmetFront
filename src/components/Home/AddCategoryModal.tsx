@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Tag } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface AddCategoryModalProps {
   isOpen: boolean;
@@ -10,17 +11,23 @@ interface AddCategoryModalProps {
 export function AddCategoryModal({ isOpen, onClose, onAddCategory }: AddCategoryModalProps) {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCategoryName.trim()) return;
 
-    onAddCategory(newCategoryName.trim(), newCategoryDescription.trim());
+    setIsSubmitting(true);
+    try {
+      await onAddCategory(newCategoryName.trim(), newCategoryDescription.trim());
 
-    // Reset form
-    setNewCategoryName('');
-    setNewCategoryDescription('');
-    onClose();
+      // Reset form
+      setNewCategoryName('');
+      setNewCategoryDescription('');
+      onClose();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClose = () => {
@@ -74,13 +81,13 @@ export function AddCategoryModal({ isOpen, onClose, onAddCategory }: AddCategory
             >
               Annuler
             </button>
-            <button
+            <Button
               type="submit"
+              loading={isSubmitting}
               disabled={!newCategoryName.trim()}
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Ajouter
-            </button>
+            </Button>
           </div>
         </form>
       </div>

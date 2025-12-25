@@ -135,19 +135,10 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
               <Button
                 type="submit"
                 className="flex-1 bg-gradient-to-r from-primary to-secondary hover:shadow-lg"
-                disabled={isSending}
+                loading={isSending}
               >
-                {isSending ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Envoi...
-                  </>
-                ) : (
-                  <>
-                    <Send className="h-4 w-4 mr-2" />
-                    Commander
-                  </>
-                )}
+                <Send className="h-4 w-4 mr-2" />
+                Commander
               </Button>
             </div>
           </form>

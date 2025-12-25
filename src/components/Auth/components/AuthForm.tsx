@@ -5,6 +5,7 @@ import { AuthMode, FormData, FieldErrors } from '../types/authTypes';
 import { InputField } from './InputField';
 import { PasswordField } from './PasswordField';
 import { SelectField } from './SelectField';
+import { Button } from '@/components/ui/button';
 import { useFloating, useInteractions, useHover, useFocus, useDismiss, useRole, FloatingPortal, arrow, shift, flip } from '@floating-ui/react';
 import { DeliveryZone } from '@/types';
 
@@ -141,27 +142,13 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         />
       )}
 
-      <button
+      <Button
         type="submit"
-        disabled={isLoading}
-        className={cn(
-          'group relative w-full py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform-gpu overflow-hidden',
-          'bg-gradient-to-r from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100',
-          'text-primary-foreground hover:shadow-xl hover:shadow-primary/25 hover:scale-105 hover:-translate-y-0.5 active:scale-95',
-          isLoading && 'opacity-50 cursor-not-allowed',
-          'before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700'
-        )}
+        loading={isLoading}
+        className="group relative w-full py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform-gpu overflow-hidden bg-gradient-to-r from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100 text-primary-foreground hover:shadow-xl hover:shadow-primary/25 hover:scale-105 hover:-translate-y-0.5 active:scale-95 before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700"
       >
-        <span className="relative z-10 flex items-center justify-center space-x-2">
-          {isLoading && (
-            <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-          )}
-          <span>{isLoading ? 'Chargement...' : (mode === 'login' ? 'Se connecter' : 'Créer mon compte')}</span>
-        </span>
-        {!isLoading && (
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        )}
-      </button>
+        {mode === 'login' ? 'Se connecter' : 'Créer mon compte'}
+      </Button>
 
       <div className="text-center pt-4">
         <p className="text-muted-foreground">

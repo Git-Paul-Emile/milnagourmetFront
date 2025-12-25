@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
@@ -73,6 +73,7 @@ export function CartFooter({ deliveryZone, isOrdering, onOrder, onClearCart }: C
             'h-5 w-5 text-primary-foreground transition-transform duration-300',
             !isOrdering && 'group-hover:scale-110 group-hover:rotate-12'
           )} />
+          {isOrdering && <Loader2 className="animate-spin h-5 w-5" />}
           <span className="relative z-10">{isOrdering ? 'Envoi en cours...' : 'Commander'}</span>
           {!isOrdering && (
             <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-secondary/30 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

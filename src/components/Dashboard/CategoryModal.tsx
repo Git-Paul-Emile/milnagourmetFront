@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { ProductCategoryItem } from '@/types';
+import { Button } from '@/components/ui/button';
 
 interface CategoryModalProps {
   isOpen: boolean;
@@ -124,13 +125,12 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory, mode }
             >
               Annuler
             </button>
-            <button
+            <Button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-              disabled={isSubmitting}
+              loading={isSubmitting}
             >
-              {isSubmitting ? 'Enregistrement...' : (mode === 'add' ? 'Ajouter' : 'Modifier')}
-            </button>
+              {mode === 'add' ? 'Ajouter' : 'Modifier'}
+            </Button>
           </div>
         </form>
       </div>
