@@ -46,20 +46,28 @@ export function ProductImageSection({
         </label>
       </div>
 
-      {/* Dropdown pour images existantes */}
+      {/* Galerie d'images existantes */}
       {imageUploadMode === 'dropdown' && (
-        <select
-          value={image}
-          onChange={(e) => updateProduct({ image: e.target.value })}
-          className="w-full p-2 border border-border rounded-lg"
-        >
-          <option value="">Choisir une image...</option>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-64 overflow-y-auto">
           {availableImages.map((img) => (
-            <option key={img.value} value={img.value}>
-              {img.label}
-            </option>
+            <div
+              key={img.value}
+              onClick={() => updateProduct({ image: img.value })}
+              className={
+                image === img.value
+                  ? 'cursor-pointer border-2 rounded-lg p-2 transition-colors border-primary'
+                  : 'cursor-pointer border-2 rounded-lg p-2 transition-colors border-border hover:border-primary/50'
+              }
+            >
+              <img
+                src={img.value}
+                alt={img.label}
+                className="w-full h-20 object-cover rounded"
+              />
+              <p className="text-xs text-center mt-1 truncate">{img.label}</p>
+            </div>
           ))}
-        </select>
+        </div>
       )}
 
       {/* Upload d'image */}
