@@ -11,7 +11,8 @@ export interface User {
   createdAt?: string | Date;
   blocked?: boolean; // Nouveau champ pour bloquer les utilisateurs
   role?: 'user' | 'admin' | 'delivery'; // Nouveau champ pour les rôles
-  deliveryZoneId?: string; // ID de la zone de livraison
+  deliveryZoneId?: string | number; // ID de la zone de livraison
+  zoneLivraisonId?: string | number; // Alias pour compatibilité
 }
 
 export interface Customer {

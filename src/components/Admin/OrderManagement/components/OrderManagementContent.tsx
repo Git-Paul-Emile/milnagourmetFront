@@ -11,8 +11,8 @@ interface OrderManagementContentProps {
   setShowFilters: (show: boolean) => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
-  statusFilter: 'all' | 'recu' | 'en_preparation' | 'livraison' | 'livree';
-  setStatusFilter: (filter: 'all' | 'recu' | 'en_preparation' | 'livraison' | 'livree') => void;
+  statusFilter: 'all' | 'recu' | 'livree' | 'annulee';
+  setStatusFilter: (filter: 'all' | 'recu' | 'livree' | 'annulee') => void;
   dateFilter: 'all' | 'today' | 'week' | 'month';
   setDateFilter: (filter: 'all' | 'today' | 'week' | 'month') => void;
   loading: boolean;

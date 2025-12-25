@@ -16,7 +16,7 @@ export function UserOrdersModal({ selectedUser, orders, deliveryZones, isOpen, o
   const userOrders = orders.filter(order => order.customer?.id === selectedUser.id);
 
   // Try several sources to display the delivery zone (user zone, then last order fallback)
-  const userDeliveryZoneId = selectedUser.deliveryZoneId || (selectedUser as any)?.zoneLivraisonId;
+  const userDeliveryZoneId = selectedUser.deliveryZoneId || selectedUser.zoneLivraisonId;
   const deliveryZoneNameFromUser = userDeliveryZoneId
     ? deliveryZones.find(zone => zone.id === String(userDeliveryZoneId))?.name
     : null;
@@ -88,16 +88,14 @@ export function UserOrdersModal({ selectedUser, orders, deliveryZones, isOpen, o
                         <div className="text-right">
                           <p className="font-bold text-primary">{order.total} FCFA</p>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium mt-2 inline-block ${
-                            order.status === 'RECU' ? 'bg-blue-100 text-blue-800' :
-                            order.status === 'EN_PREPARATION' ? 'bg-orange-100 text-orange-800' :
-                            order.status === 'LIVRAISON' ? 'bg-green-100 text-green-800' :
-                            order.status === 'LIVREE' ? 'bg-purple-100 text-purple-800' :
+                            order.status === 'recu' ? 'bg-blue-100 text-blue-800' :
+                            order.status === 'livree' ? 'bg-purple-100 text-purple-800' :
+                            order.status === 'annulee' ? 'bg-red-100 text-red-800' :
                             'bg-gray-100 text-gray-800'
                           }`}>
-                            {order.status === 'RECU' ? 'Reçue' :
-                             order.status === 'EN_PREPARATION' ? 'En préparation' :
-                             order.status === 'LIVRAISON' ? 'En livraison' :
-                             order.status === 'LIVREE' ? 'Livrée' :
+                            {order.status === 'recu' ? 'Reçue' :
+                             order.status === 'livree' ? 'Livrée' :
+                             order.status === 'annulee' ? 'Annulée' :
                              order.status}
                           </span>
                         </div>

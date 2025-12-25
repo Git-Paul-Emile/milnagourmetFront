@@ -33,9 +33,8 @@ export function OrderFilters({ state, actions, filteredOrdersCount }: OrderFilte
           >
             <option value="all">Tous</option>
             <option value="recu">Reçues</option>
-            <option value="en_preparation">En préparation</option>
-            <option value="livraison">En livraison</option>
             <option value="livree">Livrées</option>
+            <option value="annulee">Annulées</option>
           </select>
         </div>
 
