@@ -17,13 +17,13 @@ export const useOrderActions = () => {
       // Ici, on pourrait appeler une API pour mettre à jour le statut
       // Pour l'instant, on simule avec les hooks existants
 
-      // Envoyer une notification WhatsApp au client si la commande est confirmée
-      if (status === 'confirmed' && selectedOrder) {
+      // Envoyer une notification WhatsApp au client si la commande est livrée
+      if (status === 'livree' && selectedOrder) {
         sendOrderConfirmationMessage(selectedOrder);
       }
 
-      // Si refusée, envoyer le message personnalisé
-      if (status === 'cancelled' && selectedOrder && message) {
+      // Si annulée, envoyer le message personnalisé
+      if (status === 'annulee' && selectedOrder && message) {
         sendOrderCancellationMessage(selectedOrder, message);
       }
 

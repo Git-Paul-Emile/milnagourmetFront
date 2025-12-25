@@ -26,7 +26,7 @@ export interface Order {
   } | null;
   items: CartItem[];
   total: number;
-  status: 'recu' | 'livree' | 'annulee' | 'confirmed';
+  status: 'recu' | 'livree' | 'annulee';
   date: string;
   notes: string;
   // Propriétés pour la compatibilité descendante
