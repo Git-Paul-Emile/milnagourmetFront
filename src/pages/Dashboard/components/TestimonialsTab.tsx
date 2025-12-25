@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Check, X, MapPin, Calendar, User, Ban, MessageSquare, CheckCircle, Clock, Plus, Upload } from 'lucide-react';
-import { Testimonial } from '@/types';
+import { Testimonial, Product, User as UserType, DeliveryPerson } from '@/types';
 import { siteService } from '@/services/siteService';
 import { StatCard } from './StatCard';
 import { getFullImageUrl } from '@/utils/imageUtils';
 
 interface TestimonialsTabProps {
   displaySuccessToast: (message: string) => void;
+  setDeleteModal: React.Dispatch<React.SetStateAction<{ isOpen: boolean; item?: Product | UserType | DeliveryPerson | Testimonial | { value: string; label: string }; type: 'product' | 'user' | 'deliveryPerson' | 'image' | 'testimonial' }>>;
 }
 
-export function TestimonialsTab({ displaySuccessToast }: TestimonialsTabProps) {
+export function TestimonialsTab({ displaySuccessToast, setDeleteModal }: TestimonialsTabProps) {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -51,18 +52,12 @@ export function TestimonialsTab({ displaySuccessToast }: TestimonialsTabProps) {
     }
   };
 
-  const handleDelete = async (testimonial: Testimonial) => {
-    if (!confirm(`Êtes-vous sûr de vouloir refuser et supprimer le témoignage de ${testimonial.name} ?`)) {
-      return;
-    }
-
-    try {
-      await siteService.deleteTestimonial(testimonial.id);
-      displaySuccessToast('Témoignage refusé et supprimé');
-      loadTestimonials();
-    } catch (error) {
-      console.error('Erreur lors de la suppression du témoignage:', error);
-    }
+  const handleDelete = (testimonial: Testimonial) => {
+    setDeleteModal({
+      isOpen: true,
+      item: testimonial,
+      type: 'testimonial'
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

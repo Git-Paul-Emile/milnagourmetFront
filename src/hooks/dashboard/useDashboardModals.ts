@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Product, User as UserType, DeliveryZone, DeliveryPerson, ProductCategoryItem, CreationSize } from '@/types';
+import { Product, User as UserType, DeliveryZone, DeliveryPerson, ProductCategoryItem, CreationSize, Testimonial } from '@/types';
 import { productService, userService } from '@/services';
 import { deliveryPersonService } from '@/services/deliveryPerson';
 import { siteService } from '@/services/siteService';
@@ -11,7 +11,7 @@ interface ImageItem {
 
 export interface DashboardModalsState {
   // États pour les modals et messages
-  deleteModal: { isOpen: boolean; item?: Product | UserType | DeliveryPerson | ImageItem; type: 'product' | 'user' | 'deliveryPerson' | 'image' };
+  deleteModal: { isOpen: boolean; item?: Product | UserType | DeliveryPerson | ImageItem | Testimonial; type: 'product' | 'user' | 'deliveryPerson' | 'image' | 'testimonial' };
   addProductModal: boolean;
   addSizeModal: boolean;
   fruitsModal: boolean;
@@ -40,7 +40,7 @@ export interface DashboardModalsState {
 
 export interface DashboardModalsActions {
   // Actions pour les modals
-  setDeleteModal: React.Dispatch<React.SetStateAction<{ isOpen: boolean; item?: Product | UserType | DeliveryPerson | ImageItem; type: 'product' | 'user' | 'deliveryPerson' | 'image' }>>;
+  setDeleteModal: React.Dispatch<React.SetStateAction<{ isOpen: boolean; item?: Product | UserType | DeliveryPerson | ImageItem | Testimonial; type: 'product' | 'user' | 'deliveryPerson' | 'image' | 'testimonial' }>>;
   setAddProductModal: React.Dispatch<React.SetStateAction<boolean>>;
   setAddSizeModal: React.Dispatch<React.SetStateAction<boolean>>;
   setFruitsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -74,7 +74,7 @@ export interface DashboardModalsActions {
 
 export const useDashboardModals = (loadDashboardData?: () => Promise<void>, reloadGallery?: () => Promise<void>): DashboardModalsState & DashboardModalsActions => {
   // États pour les modals et messages
-  const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; item?: Product | UserType | DeliveryPerson | ImageItem; type: 'product' | 'user' | 'deliveryPerson' | 'image' }>({ isOpen: false, type: 'product' });
+  const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; item?: Product | UserType | DeliveryPerson | ImageItem | Testimonial; type: 'product' | 'user' | 'deliveryPerson' | 'image' | 'testimonial' }>({ isOpen: false, type: 'product' });
   const [addProductModal, setAddProductModal] = useState(false);
   const [addSizeModal, setAddSizeModal] = useState(false);
   const [fruitsModal, setFruitsModal] = useState(false);
@@ -135,6 +135,9 @@ export const useDashboardModals = (loadDashboardData?: () => Promise<void>, relo
             await reloadGallery();
           }
         }
+      } else if (deleteModal.type === 'testimonial') {
+        await siteService.deleteTestimonial((deleteModal.item as Testimonial).id);
+        displaySuccessToast('Témoignage supprimé avec succès');
       }
 
       setDeleteModal({ isOpen: false, type: 'product' });

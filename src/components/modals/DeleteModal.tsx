@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import { Product, User as UserType, DeliveryPerson, DeliveryZone } from '@/types';
+import { Product, User as UserType, DeliveryPerson, DeliveryZone, Testimonial } from '@/types';
 import { Button } from '@/components/ui/button';
 
 interface ImageItem {
@@ -10,8 +10,8 @@ interface ImageItem {
 
 interface DeleteModalProps {
   isOpen: boolean;
-  item?: Product | UserType | DeliveryPerson | DeliveryZone | ImageItem;
-  type: 'product' | 'user' | 'deliveryPerson' | 'deliveryZone' | 'image';
+  item?: Product | UserType | DeliveryPerson | DeliveryZone | ImageItem | Testimonial;
+  type: 'product' | 'user' | 'deliveryPerson' | 'deliveryZone' | 'image' | 'testimonial';
   onConfirm: () => Promise<void>;
   onCancel: () => void;
 }
