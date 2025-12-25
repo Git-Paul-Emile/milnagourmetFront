@@ -21,6 +21,17 @@ export function OrderList({ filteredOrders, onSelectOrder }: OrderListProps) {
                 <p className="text-sm text-muted-foreground">
                   {order.customer?.name || 'Client anonyme'} • {new Date(order.date || order.createdAt || Date.now()).toLocaleDateString('fr-FR')}
                 </p>
+                {order.items.some(item => item.customCreation) && (
+                  <p className="text-xs text-muted-foreground">
+                    <strong>Créations:</strong> {order.items.filter(item => item.customCreation).map(item => {
+                      const details = [];
+                      if (item.customCreation!.selectedFruits.length > 0) details.push(`Fruits: ${item.customCreation!.selectedFruits.join(', ')}`);
+                      if (item.customCreation!.selectedSauces.length > 0) details.push(`Sauces: ${item.customCreation!.selectedSauces.join(', ')}`);
+                      if (item.customCreation!.selectedCereales.length > 0) details.push(`Céréales: ${item.customCreation!.selectedCereales.join(', ')}`);
+                      return `${item.customCreation!.size.nom} (${details.join('; ')})`;
+                    }).join(' | ')}
+                  </p>
+                )}
                 {order.deliveryLocation && (
                   <p className="text-xs text-muted-foreground">
                     📍 {order.deliveryLocation}
