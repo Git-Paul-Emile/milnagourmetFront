@@ -166,11 +166,6 @@ export const filterAndSortOrders = (
 
   return orders
     .filter(order => {
-      // Par défaut, seulement les commandes confirmées et livrées
-      if (order.status !== 'confirmee' && order.status !== 'livree') {
-        return false;
-      }
-
       // Filtre recherche par nom de produit
       if (searchTerm) {
         const hasMatchingProduct = order.items.some(item =>

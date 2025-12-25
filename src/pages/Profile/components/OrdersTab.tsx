@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { Order } from '@/types';
 import { formatDate, getStatusColor, getStatusIcon } from '@/pages/Profile/utils';
 import { OrdersFilters } from '@/pages/Profile/types';
+import { getFullImageUrl } from '@/utils/imageUtils';
 
 interface OrdersTabProps {
   orders: Order[];
@@ -202,7 +203,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
               <div className="flex items-center space-x-2">
                 {item?.image && (
                   <img
-                    src={item.image}
+                    src={getFullImageUrl(item.image)}
                     alt={item?.name}
                     className="w-8 h-8 object-cover rounded"
                   />
