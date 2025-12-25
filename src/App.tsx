@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { BrandingProvider } from "@/contexts/BrandingContext";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { ToastContainer } from "@/components/Layout/ToastContainer";
+import { GlobalEffects } from "@/components/GlobalEffects";
 import { ProtectedRoute } from "@/components/Auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Profile from "./pages/Profile";
@@ -29,6 +30,7 @@ const App = () => {
           <AuthProvider>
             <ThemeProvider>
               <BrandingProvider>
+                <GlobalEffects />
                 <Toaster />
                 <Sonner />
                 <ToastContainer />

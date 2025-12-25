@@ -9,7 +9,6 @@ import { HeroSubtitle } from './components/HeroSubtitle';
 import { HeroFeatures } from './components/HeroFeatures';
 import { HeroCTA } from './components/HeroCTA';
 import { HeroDecorations } from './components/HeroDecorations';
-import ChristmasSnow from '../ChristmasSnow';
 import NewYearEffects from '../NewYearEffects';
 import { getFullImageUrl } from '@/utils/imageUtils';
 
@@ -71,7 +70,6 @@ export function HeroSection() {
       </div>
 
       <HeroDecorations />
-      {isChristmasTheme && <ChristmasSnow />}
       {theme?.name === 'Nouvel An' && <NewYearEffects />}
     </section>
   );
