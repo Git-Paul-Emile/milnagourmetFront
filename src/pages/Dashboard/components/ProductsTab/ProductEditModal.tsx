@@ -49,6 +49,7 @@ export function ProductEditModal({
       // Réinitialiser l'image seulement quand le produit change
       resetImage();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editingProduct, productCategories]); // Retirer resetImage des dépendances
 
   if (!editingProduct || !formData) return null;
