@@ -48,16 +48,12 @@ export function HeroSection() {
           }}
         />
         <div className={`absolute inset-0 animate-pulse-soft ${
-          isChristmasTheme
-            ? "bg-gradient-to-br from-[rgba(139,0,0,0.7)] via-[rgba(126,23,77,0.7)] to-[rgba(114,47,55,0.7)]"
-            : isNewYearTheme
+          isNewYearTheme
             ? "bg-gradient-to-br from-[rgba(10,10,10,0.8)] via-[rgba(30,39,73,0.7)] to-[rgba(15,27,61,0.7)]"
             : "bg-gradient-to-br from-background/85 via-background/65 to-background/45"
         }`} />
         <div className={`absolute inset-0 ${
-          isChristmasTheme
-            ? "bg-gradient-to-t from-[rgba(114,47,55,0.3)] via-transparent to-[rgba(139,0,0,0.2)]"
-            : isNewYearTheme
+          isNewYearTheme
             ? "bg-gradient-to-t from-[rgba(30,39,73,0.3)] via-transparent to-[rgba(10,10,10,0.2)]"
             : "bg-gradient-to-t from-background/25 via-transparent to-background/15"
         }`} />

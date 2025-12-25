@@ -15,7 +15,7 @@ export function HeroFeatures({ features, isChristmasTheme = false, isNewYearThem
           <div>
             <h3 className={cn(
               "font-semibold",
-              isChristmasTheme || isNewYearTheme ? "text-[#FFD700]" : "text-foreground"
+              isNewYearTheme ? "text-[#FFD700]" : "text-foreground"
             )}>{feature.title}</h3>
             <p className={`text-sm ${isNewYearTheme ? "text-[#E8E8E8]" : "text-muted-foreground"}`}>{feature.description}</p>
           </div>

@@ -59,9 +59,7 @@ export function Header() {
       <StoreStatusBar isChristmasTheme={isChristmasTheme} />
       <header className={cn(
         "fixed top-8 left-0 right-0 z-40 backdrop-blur-sm border-b",
-        isChristmasTheme
-          ? "bg-gradient-to-r from-[#8B0000] to-[#C41E3A] border-[#722F37]"
-          : "bg-background/95 border-border"
+        "bg-background/95 border-border"
       )}>
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between py-4">

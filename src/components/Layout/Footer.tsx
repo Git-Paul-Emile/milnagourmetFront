@@ -19,7 +19,7 @@ export function Footer() {
   }
 
   return (
-    <footer className={cn("border-t", isChristmasTheme ? "bg-gradient-to-r from-[#722F37] to-[#8B0000] border-white/20" : "bg-muted/50 border-border")}>
+    <footer className={cn("border-t", "bg-muted/50 border-border")}>
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <ContactSection contactInfo={contactInfo} isChristmasTheme={isChristmasTheme} />

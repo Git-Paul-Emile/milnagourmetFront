@@ -207,15 +207,15 @@ export function CatalogSection() {
   };
 
   return (
-    <section id="catalog" className={cn("py-20", isChristmasTheme ? "bg-[#FFF9F0]" : "bg-muted/30")}>
+    <section id="catalog" className={cn("py-20", "bg-muted/30")}>
       <div className="container mx-auto px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className={isChristmasTheme ? "text-[#722F37]" : "text-foreground"}>Notre </span>
-            <span className={isChristmasTheme ? "text-[#D4AF37]" : "bg-gradient-primary bg-clip-text text-transparent"}>Catalogue</span>
+            <span className="text-foreground">Notre </span>
+            <span className="bg-gradient-primary bg-clip-text text-transparent">Catalogue</span>
           </h2>
-          <p className={cn("text-lg max-w-2xl mx-auto", isChristmasTheme ? "text-[#666]" : "text-muted-foreground")}>
+          <p className={cn("text-lg max-w-2xl mx-auto", "text-muted-foreground")}>
             {catalogData?.description || 'Découvrez notre sélection de yaourts gourmets, préparés avec amour et des ingrédients de qualité'}
           </p>
         </div>

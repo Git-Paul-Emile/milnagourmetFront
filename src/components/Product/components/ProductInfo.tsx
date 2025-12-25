@@ -16,15 +16,13 @@ export function ProductInfo({ product }: ProductInfoProps) {
       <div>
         <h3 className={cn(
           "font-semibold text-lg transition-colors",
-          isChristmasTheme
-            ? "text-[#8B0000] group-hover:text-[#8B0000]"
-            : "text-foreground group-hover:text-primary"
+          "text-foreground group-hover:text-primary"
         )}>
           {product.name}
         </h3>
         <p className={cn(
           "text-sm line-clamp-2 mt-1",
-          isChristmasTheme ? "text-[#666]" : "text-muted-foreground"
+          "text-muted-foreground"
         )}>
           {product.description}
         </p>
@@ -36,13 +34,13 @@ export function ProductInfo({ product }: ProductInfoProps) {
           <div className="flex items-center space-x-2">
             <span className={cn(
               "text-2xl font-bold",
-              isChristmasTheme ? "text-[#165B33]" : "text-primary"
+              "text-primary"
             )}>
               {product.price}
             </span>
             <span className={cn(
               "text-sm",
-              isChristmasTheme ? "text-[#666]" : "text-muted-foreground"
+              "text-muted-foreground"
             )}>FCFA</span>
           </div>
         </div>
