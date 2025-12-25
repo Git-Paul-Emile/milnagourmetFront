@@ -26,6 +26,19 @@ export function UserList({ filteredUsers, onToggleBlock, onDeleteUser, onViewOrd
     }
   };
 
+  // Fonction pour déterminer si un client est actif
+  const isActiveCustomer = (user: UserType) => {
+    if (user.role === 'admin' || user.blocked || !user.orders || user.orders.length === 0) {
+      return false;
+    }
+    const sixtyDaysAgo = new Date();
+    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+    return user.orders.some(order => {
+      const orderDate = new Date(order.date || order.createdAt || '');
+      return orderDate >= sixtyDaysAgo;
+    });
+  };
+
   return (
     <div className="bg-card rounded-lg border border-border">
       <div className="p-6 border-b border-border">
@@ -44,11 +57,11 @@ export function UserList({ filteredUsers, onToggleBlock, onDeleteUser, onViewOrd
                     <span className="inline-block px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full mt-2">
                       Bloqué
                     </span>
-                  ) : (
+                  ) : isActiveCustomer(user) ? (
                     <span className="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full mt-2">
                       Actif
                     </span>
-                  )}
+                  ) : null}
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">
