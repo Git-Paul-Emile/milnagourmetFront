@@ -15,9 +15,7 @@ export function NavigationLinks({ navigation, isChristmasTheme = false }: Naviga
           href={`/${item.href}`}
           className={cn(
             "transition-colors font-medium",
-            isChristmasTheme
-              ? "text-white hover:text-[#FFD700]"
-              : "text-foreground hover:text-primary"
+            "text-foreground hover:text-primary"
           )}
         >
           {item.name}

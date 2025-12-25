@@ -22,11 +22,11 @@ export function Logo({ isChristmasTheme = false }: LogoProps) {
       <div className='md:hidden lg:block'>
         <h1 className={cn(
           "text-xl font-bold",
-          isChristmasTheme ? "text-white" : "text-primary"
+          "text-primary"
         )}>Milna Gourmet</h1>
         <p className={cn(
           "text-xs",
-          isChristmasTheme ? "text-white/80" : "text-muted-foreground"
+          "text-muted-foreground"
         )}>Le Salon du Yaourt</p>
       </div>
     </Link>

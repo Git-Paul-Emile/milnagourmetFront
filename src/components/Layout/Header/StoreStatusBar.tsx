@@ -12,9 +12,7 @@ export function StoreStatusBar({ isChristmasTheme = false }: StoreStatusBarProps
   return (
     <div className={cn(
       'fixed top-0 left-0 right-0 z-50 text-center py-2 text-sm font-medium transition-colors',
-      isChristmasTheme
-        ? 'bg-[#722F37] text-white'
-        : storeStatus.isOpen
+      storeStatus.isOpen
         ? 'bg-gradient-to-r from-primary via-primary/90 to-primary text-primary-foreground'
         : 'bg-gradient-to-r from-muted via-muted/90 to-muted text-muted-foreground'
     )}>

@@ -14,9 +14,7 @@ export function MobileMenuToggle({ isOpen, onToggle, isChristmasTheme = false }:
       onClick={onToggle}
       className={cn(
         "md:hidden p-2 transition-colors",
-        isChristmasTheme
-          ? "text-white hover:text-[#FFD700]"
-          : ""
+        ""
       )}
     >
       {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

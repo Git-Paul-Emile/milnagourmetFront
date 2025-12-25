@@ -14,9 +14,7 @@ export function CartButton({ itemCount, onClick, isChristmasTheme = false }: Car
       onClick={onClick}
       className={cn(
         "relative p-2 transition-colors",
-        isChristmasTheme
-          ? "text-white hover:text-[#FFD700]"
-          : "text-foreground hover:text-primary"
+        "text-foreground hover:text-primary"
       )}
     >
       <ShoppingCart className="h-6 w-6" />

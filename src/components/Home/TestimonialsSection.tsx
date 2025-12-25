@@ -23,7 +23,7 @@ export function TestimonialsSection() {
 
   if (loading) {
     return (
-      <section id="testimonials" className={cn("py-20", isChristmasTheme ? "bg-gradient-to-b from-[#165B33] to-[#0F5132]" : "bg-muted/30")}>
+      <section id="testimonials" className={cn("py-20", "bg-muted/30")}>
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
@@ -36,7 +36,7 @@ export function TestimonialsSection() {
 
   return (
     <>
-      <section id="testimonials" className={cn("py-20", isChristmasTheme ? "bg-gradient-to-b from-[#165B33] to-[#0F5132]" : "bg-muted/30")}>
+      <section id="testimonials" className={cn("py-20", "bg-muted/30")}>
         <div className="container mx-auto px-4">
           <TestimonialsHeader isChristmasTheme={isChristmasTheme} />
 

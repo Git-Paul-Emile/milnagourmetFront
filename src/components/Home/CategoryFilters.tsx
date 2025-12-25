@@ -33,11 +33,7 @@ export function CategoryFilters({
           onClick={() => setActiveCategory(category.id)}
           className={cn(
             'flex items-center space-x-2 px-6 py-3 rounded-full font-medium transition-all duration-300',
-            isChristmasTheme
-              ? activeCategory === category.id
-                ? 'bg-[#165B33] text-white'
-                : 'bg-white text-[#165B33] border border-[#165B33] hover:bg-[#165B33] hover:text-white'
-              : activeCategory === category.id
+            activeCategory === category.id
               ? 'bg-gradient-primary text-primary-foreground shadow-glow'
               : 'bg-card text-foreground hover:bg-primary/10 hover:text-primary border border-border'
           )}

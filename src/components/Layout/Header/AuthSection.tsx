@@ -41,9 +41,7 @@ export function AuthSection({
           onClick={onProfileClick}
           className={cn(
             "flex items-center space-x-2 px-3 py-2 rounded-lg transition-all hover:scale-105 hover:shadow-md",
-            isChristmasTheme
-              ? "text-white hover:bg-white/10"
-              : "text-primary hover:bg-primary/10"
+            "text-primary hover:bg-primary/10"
           )}
           title="Mon profil"
         >
@@ -56,9 +54,7 @@ export function AuthSection({
           onClick={handleLogout}
           className={cn(
             "p-2 rounded-full transition-all hover:scale-110",
-            isChristmasTheme
-              ? "text-white hover:bg-white/10"
-              : "text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+            "text-muted-foreground hover:text-destructive hover:bg-destructive/10"
           )}
           title="Se déconnecter"
         >
@@ -74,9 +70,7 @@ export function AuthSection({
         onClick={onLoginClick}
         className={cn(
           "px-4 py-2 rounded-lg transition-all hover:scale-105 hover:shadow-md text-sm font-medium",
-          isChristmasTheme
-            ? "text-white hover:bg-white/10"
-            : "text-primary hover:bg-primary/10"
+          "text-primary hover:bg-primary/10"
         )}
       >
         Connexion
@@ -85,9 +79,7 @@ export function AuthSection({
         onClick={onRegisterClick}
         className={cn(
           "px-4 py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all text-sm font-medium",
-          isChristmasTheme
-            ? "bg-[#165B33] text-white hover:bg-[#0F5132]"
-            : "bg-gradient-to-r from-primary to-secondary text-primary-foreground"
+          "bg-gradient-to-r from-primary to-secondary text-primary-foreground"
         )}
       >
         S'inscrire

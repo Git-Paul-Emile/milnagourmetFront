@@ -13,17 +13,17 @@ export function HoursSection({ contactInfo, isChristmasTheme = false }: HoursSec
     <div className="space-y-4">
       <h3 className={cn(
         "text-lg font-semibold",
-        isChristmasTheme ? "text-[#FFD700]" : "text-foreground"
+        "text-foreground"
       )}>Horaires</h3>
       <div className="space-y-2">
         <div className="flex items-center space-x-3">
           <Clock className={cn(
             "h-4 w-4",
-            isChristmasTheme ? "text-white" : "text-primary"
+            "text-primary"
           )} />
           <div className={cn(
             "text-sm",
-            isChristmasTheme ? "text-white" : "text-muted-foreground"
+            "text-muted-foreground"
           )}>
             {contactInfo?.hours ? (
               <>

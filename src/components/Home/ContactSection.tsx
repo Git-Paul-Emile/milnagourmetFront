@@ -22,7 +22,7 @@ export function ContactSection() {
   const socialLinks = transformSocialLinks(contactData.socialLinks);
 
   return (
-    <section id="contact" className={cn("py-20", isChristmasTheme ? "bg-[#FFF9F0]" : "")}>
+    <section id="contact" className={cn("py-20", "")}>
       <div className="container mx-auto px-4">
         <ContactHeader title={contactData.title} description={contactData.description} isChristmasTheme={isChristmasTheme} />
 

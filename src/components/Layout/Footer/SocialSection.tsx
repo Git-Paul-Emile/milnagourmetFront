@@ -15,7 +15,7 @@ export function SocialSection({ socialMedia, isChristmasTheme = false }: SocialS
     <div className="space-y-4">
       <h3 className={cn(
         "text-lg font-semibold",
-        isChristmasTheme ? "text-[#FFD700]" : "text-foreground"
+        "text-foreground"
       )}>Suivez-nous</h3>
       <div className="flex space-x-4">
         {socialMedia?.instagram && (
@@ -25,9 +25,7 @@ export function SocialSection({ socialMedia, isChristmasTheme = false }: SocialS
             rel="noopener noreferrer"
             className={cn(
               "transition-colors",
-              isChristmasTheme
-                ? "text-white hover:text-[#FFD700]"
-                : "text-muted-foreground hover:text-primary"
+              "text-muted-foreground hover:text-primary"
             )}
           >
             <Instagram className="h-5 w-5" />
@@ -40,9 +38,7 @@ export function SocialSection({ socialMedia, isChristmasTheme = false }: SocialS
             rel="noopener noreferrer"
             className={cn(
               "transition-colors",
-              isChristmasTheme
-                ? "text-white hover:text-[#FFD700]"
-                : "text-muted-foreground hover:text-primary"
+              "text-muted-foreground hover:text-primary"
             )}
           >
             <Facebook className="h-5 w-5" />
@@ -55,9 +51,7 @@ export function SocialSection({ socialMedia, isChristmasTheme = false }: SocialS
             rel="noopener noreferrer"
             className={cn(
               "transition-colors",
-              isChristmasTheme
-                ? "text-white hover:text-[#FFD700]"
-                : "text-muted-foreground hover:text-primary"
+              "text-muted-foreground hover:text-primary"
             )}
           >
             <FontAwesomeIcon icon={faTiktok} className="h-5 w-5" />

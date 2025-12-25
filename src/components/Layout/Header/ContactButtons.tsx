@@ -16,9 +16,7 @@ export function ContactButtons({ isChristmasTheme = false }: ContactButtonsProps
         onClick={async () => await contactMilnaWhatsApp()}
         className={cn(
           "p-2 rounded-full transition-colors",
-          isChristmasTheme
-            ? "text-white hover:bg-white/10"
-            : "text-primary hover:bg-primary/10"
+          "text-primary hover:bg-primary/10"
         )}
         title="WhatsApp"
       >
@@ -28,9 +26,7 @@ export function ContactButtons({ isChristmasTheme = false }: ContactButtonsProps
         onClick={async () => await callMilna()}
         className={cn(
           "p-2 rounded-full transition-colors",
-          isChristmasTheme
-            ? "text-white hover:bg-white/10"
-            : "text-primary hover:bg-primary/10"
+          "text-primary hover:bg-primary/10"
         )}
         title="Appeler"
       >
