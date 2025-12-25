@@ -13,13 +13,9 @@ const loadStatusConfig = async () => {
     
     // Mapper les statuts de l'enum vers les valeurs utilisées dans le frontend
     const statusMap: Record<string, string> = {
-      'pending': 'EN_ATTENTE',
-      'confirmed': 'CONFIRMEE',
-      'confirmee': 'CONFIRMEE',
-      'preparing': 'EN_PREPARATION',
-      'en_preparation': 'EN_PREPARATION',
-      'ready': 'PRETE',
-      'prete': 'PRETE',
+      'pending': 'RECU',
+      'confirmed': 'RECU',
+      'confirmee': 'RECU',
       'delivered': 'LIVREE',
       'livree': 'LIVREE',
       'cancelled': 'ANNULEE',
@@ -43,14 +39,12 @@ const loadStatusConfig = async () => {
     console.error('Erreur lors du chargement des configurations de statuts:', error);
     // Fallback vers les valeurs hardcodées en cas d'erreur
     const fallbackCache = new Map([
-      ['delivered', { color: 'bg-green-100 text-green-800', icon: 'CheckCircle' }],
-      ['livree', { color: 'bg-green-100 text-green-800', icon: 'CheckCircle' }],
-      ['preparing', { color: 'bg-blue-100 text-blue-800', icon: 'ShoppingBag' }],
-      ['en_preparation', { color: 'bg-blue-100 text-blue-800', icon: 'ShoppingBag' }],
-      ['ready', { color: 'bg-yellow-100 text-yellow-800', icon: 'AlertTriangle' }],
-      ['prete', { color: 'bg-yellow-100 text-yellow-800', icon: 'AlertTriangle' }],
-      ['confirmed', { color: 'bg-purple-100 text-purple-800', icon: 'CheckCircle' }],
-      ['confirmee', { color: 'bg-purple-100 text-purple-800', icon: 'CheckCircle' }]
+      ['delivered', { color: 'bg-purple-100 text-purple-800', icon: 'CheckCircle' }],
+      ['livree', { color: 'bg-purple-100 text-purple-800', icon: 'CheckCircle' }],
+      ['cancelled', { color: 'bg-red-100 text-red-800', icon: 'XCircle' }],
+      ['annulee', { color: 'bg-red-100 text-red-800', icon: 'XCircle' }],
+      ['confirmed', { color: 'bg-blue-100 text-blue-800', icon: 'CheckCircle' }],
+      ['confirmee', { color: 'bg-blue-100 text-blue-800', icon: 'CheckCircle' }]
     ]);
     statusConfigCache = fallbackCache;
     return fallbackCache;
@@ -116,14 +110,12 @@ export const getStatusColor = (status: string): string => {
     // Si le cache n'est pas encore chargé, retourner une valeur par défaut
     // Le cache sera chargé au premier appel asynchrone
     const defaultColors: Record<string, string> = {
-      'delivered': 'bg-green-100 text-green-800',
-      'livree': 'bg-green-100 text-green-800',
-      'preparing': 'bg-blue-100 text-blue-800',
-      'en_preparation': 'bg-blue-100 text-blue-800',
-      'ready': 'bg-yellow-100 text-yellow-800',
-      'prete': 'bg-yellow-100 text-yellow-800',
-      'confirmed': 'bg-purple-100 text-purple-800',
-      'confirmee': 'bg-purple-100 text-purple-800'
+      'delivered': 'bg-purple-100 text-purple-800',
+      'livree': 'bg-purple-100 text-purple-800',
+      'cancelled': 'bg-red-100 text-red-800',
+      'annulee': 'bg-red-100 text-red-800',
+      'confirmed': 'bg-blue-100 text-blue-800',
+      'confirmee': 'bg-blue-100 text-blue-800'
     };
     return defaultColors[status] || 'bg-gray-100 text-gray-800';
   }
@@ -138,10 +130,8 @@ export const getStatusIcon = (status: string): string => {
     const defaultIcons: Record<string, string> = {
       'delivered': 'CheckCircle',
       'livree': 'CheckCircle',
-      'preparing': 'ShoppingBag',
-      'en_preparation': 'ShoppingBag',
-      'ready': 'AlertTriangle',
-      'prete': 'AlertTriangle',
+      'cancelled': 'XCircle',
+      'annulee': 'XCircle',
       'confirmed': 'CheckCircle',
       'confirmee': 'CheckCircle'
     };

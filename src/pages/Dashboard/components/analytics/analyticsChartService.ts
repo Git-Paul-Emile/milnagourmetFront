@@ -187,9 +187,8 @@ export function getOrderStatusDistributionData(stats: DashboardStats) {
         data: stats.orderStatusData.map(s => s.count),
         backgroundColor: [
           'rgba(59, 130, 246, 0.8)', // Reçue
-          'rgba(245, 158, 11, 0.8)', // En préparation
-          'rgba(16, 185, 129, 0.8)', // En livraison
           'rgba(147, 51, 234, 0.8)', // Livrée
+          'rgba(239, 68, 68, 0.8)', // Annulée
         ],
         borderWidth: 1,
       },

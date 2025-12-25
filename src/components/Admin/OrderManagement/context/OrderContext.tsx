@@ -37,18 +37,17 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
       await updateStatus(orderId, status, message);
 
       // Notifications
-      if (status === 'confirmed' && selectedOrder) {
+      if (status === 'livree' && selectedOrder) {
         sendOrderConfirmationMessage(selectedOrder);
       }
-      if (status === 'cancelled' && selectedOrder && message) {
+      if (status === 'annulee' && selectedOrder && message) {
         sendOrderCancellationMessage(selectedOrder, message);
       }
 
       // Afficher le toast de succès
       const statusMessages = {
-        'en_preparation': 'Commande mise en préparation',
-        'livraison': 'Commande en cours de livraison',
-        'livree': 'Commande livrée avec succès'
+        'livree': 'Commande livrée avec succès',
+        'annulee': 'Commande annulée'
       };
       const messageToast = statusMessages[status] || 'Statut mis à jour avec succès';
       showToast(messageToast);

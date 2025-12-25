@@ -5,8 +5,8 @@ interface OrderFiltersProps {
   setShowFilters: (show: boolean) => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
-  statusFilter: 'all' | 'recu' | 'en_preparation' | 'livraison' | 'livree';
-  setStatusFilter: (filter: 'all' | 'recu' | 'en_preparation' | 'livraison' | 'livree') => void;
+  statusFilter: 'all' | 'recu' | 'livree' | 'annulee';
+  setStatusFilter: (filter: 'all' | 'recu' | 'livree' | 'annulee') => void;
   dateFilter: 'all' | 'today' | 'week' | 'month';
   setDateFilter: (filter: 'all' | 'today' | 'week' | 'month') => void;
 }
@@ -40,14 +40,13 @@ export function OrderFilters({
           <label className="block text-sm font-medium mb-1">Statut</label>
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as 'all' | 'recu' | 'en_preparation' | 'livraison' | 'livree')}
+            onChange={(e) => setStatusFilter(e.target.value as 'all' | 'recu' | 'livree' | 'annulee')}
             className="w-full p-2 border border-border rounded-lg"
           >
             <option value="all">Tous</option>
             <option value="recu">Reçues</option>
-            <option value="en_preparation">En préparation</option>
-            <option value="livraison">En livraison</option>
             <option value="livree">Livrées</option>
+            <option value="annulee">Annulées</option>
           </select>
         </div>
         <div>

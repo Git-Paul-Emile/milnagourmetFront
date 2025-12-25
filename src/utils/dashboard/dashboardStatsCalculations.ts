@@ -16,7 +16,7 @@ import { calculateSalesData, calculateCategoryData, calculateSizeData } from '@/
 const calculateBasicStats = (orders: Order[], products: Product[], users: UserType[]) => {
   const totalOrders = orders.length;
   const totalRevenue = calculateTotalRevenue(orders);
-  // Le backend renvoie les statuts en minuscules : 'recu', 'en_preparation', 'livraison', 'livree'
+  // Le backend renvoie les statuts en minuscules : 'recu', 'livree', 'annulee'
   const pendingOrders = orders.filter(order => order.status && String(order.status).toLowerCase() === 'recu').length;
   const totalProducts = products.filter(p => !p.archived).length;
   const totalUsers = users.filter(u => u.role !== 'admin').length;
@@ -102,7 +102,7 @@ const calculateBestSellingProducts = (orders: Order[]) => {
   const productSales = new Map<string, { product: Product; totalSold: number; revenue: number }>();
 
   orders.forEach(order => {
-    // Le backend renvoie les statuts en minuscules : 'recu', 'en_preparation', 'livraison', 'livree'
+    // Le backend renvoie les statuts en minuscules : 'recu', 'livree', 'annulee'
     if (order.status && String(order.status).toLowerCase() === 'livree') {
       order.items.forEach(item => {
         if (item.product) {
@@ -199,9 +199,8 @@ const calculateOrderStatusData = (orders: Order[]) => {
   // Donc on doit comparer en minuscules aussi
   return [
     { status: 'Reçue', count: orders.filter(o => o.status && String(o.status).toLowerCase() === 'recu').length },
-    { status: 'En préparation', count: orders.filter(o => o.status && String(o.status).toLowerCase() === 'en_preparation').length },
-    { status: 'En livraison', count: orders.filter(o => o.status && String(o.status).toLowerCase() === 'livraison').length },
-    { status: 'Livrée', count: orders.filter(o => o.status && String(o.status).toLowerCase() === 'livree').length }
+    { status: 'Livrée', count: orders.filter(o => o.status && String(o.status).toLowerCase() === 'livree').length },
+    { status: 'Annulée', count: orders.filter(o => o.status && String(o.status).toLowerCase() === 'annulee').length }
   ];
 };
 

@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Order } from '@/types';
 
-export type StatusFilter = 'all' | 'recu' | 'en_preparation' | 'livraison' | 'livree';
+export type StatusFilter = 'all' | 'recu' | 'livree' | 'annulee';
 export type DateFilter = 'all' | 'today' | 'week' | 'month';
 export type SortBy = 'date' | 'total';
 export type SortOrder = 'asc' | 'desc';

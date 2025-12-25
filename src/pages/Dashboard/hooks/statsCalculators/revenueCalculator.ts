@@ -3,10 +3,10 @@ import { Order, Product, User } from '@/types';
 export function calculateBasicStats(orders: Order[], products: Product[], users: User[]) {
   const totalOrders = orders.length;
   const totalRevenue = orders
-    .filter(order => order.status !== 'cancelled')
+    .filter(order => order.status !== 'annulee')
     .reduce((sum, order) => sum + order.total, 0);
 
-  const pendingOrders = orders.filter(order => order.status === 'pending').length;
+  const pendingOrders = orders.filter(order => order.status === 'recu').length;
   const totalProducts = products.filter(p => !p.archived).length;
   const totalUsers = users.filter(u => u.role !== 'admin').length;
 

@@ -3,7 +3,7 @@ import { Order } from '@/types';
 
 export const useOrderFilters = (orders: Order[]) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'recu' | 'en_preparation' | 'livraison' | 'livree'>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'recu' | 'livree' | 'annulee'>('all');
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | 'week' | 'month'>('all');
   const [sortBy, setSortBy] = useState<'date' | 'total'>('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');

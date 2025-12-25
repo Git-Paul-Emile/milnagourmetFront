@@ -15,7 +15,7 @@ export const filterOrdersByDate = (orders: Order[], startDate: Date, endDate?: D
  */
 export const calculateTotalRevenue = (orders: Order[]): number => {
   return orders
-    .filter(order => order.status !== 'cancelled')
+    .filter(order => order.status !== 'annulee')
     .reduce((sum, order) => sum + order.total, 0);
 };
 

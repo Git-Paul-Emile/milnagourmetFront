@@ -64,9 +64,8 @@ class ConfigService {
         this.configCache = {
           orderStatuses: [
             { id: 1, statut: 'RECU', libelleFr: 'Reçue', couleurBg: 'bg-blue-100', couleurText: 'text-blue-800', icone: 'CheckCircle', ordre: 1 },
-            { id: 2, statut: 'EN_PREPARATION', libelleFr: 'En préparation', couleurBg: 'bg-orange-100', couleurText: 'text-orange-800', icone: 'ShoppingBag', ordre: 2 },
-            { id: 3, statut: 'LIVRAISON', libelleFr: 'En livraison', couleurBg: 'bg-green-100', couleurText: 'text-green-800', icone: 'Truck', ordre: 3 },
-            { id: 4, statut: 'LIVREE', libelleFr: 'Livrée', couleurBg: 'bg-purple-100', couleurText: 'text-purple-800', icone: 'CheckCircle', ordre: 4 }
+            { id: 2, statut: 'LIVREE', libelleFr: 'Livrée', couleurBg: 'bg-purple-100', couleurText: 'text-purple-800', icone: 'CheckCircle', ordre: 2 },
+            { id: 3, statut: 'ANNULEE', libelleFr: 'Annulée', couleurBg: 'bg-red-100', couleurText: 'text-red-800', icone: 'XCircle', ordre: 3 }
           ],
           categoryTranslations: [],
           sizeTranslations: []
@@ -84,9 +83,8 @@ class ConfigService {
       const defaultConfig: AppConfig = {
         orderStatuses: [
           { id: 1, statut: 'RECU', libelleFr: 'Reçue', couleurBg: 'bg-blue-100', couleurText: 'text-blue-800', icone: 'CheckCircle', ordre: 1 },
-          { id: 2, statut: 'EN_PREPARATION', libelleFr: 'En préparation', couleurBg: 'bg-orange-100', couleurText: 'text-orange-800', icone: 'ShoppingBag', ordre: 2 },
-          { id: 3, statut: 'LIVRAISON', libelleFr: 'En livraison', couleurBg: 'bg-green-100', couleurText: 'text-green-800', icone: 'Truck', ordre: 3 },
-          { id: 4, statut: 'LIVREE', libelleFr: 'Livrée', couleurBg: 'bg-purple-100', couleurText: 'text-purple-800', icone: 'CheckCircle', ordre: 4 }
+          { id: 2, statut: 'LIVREE', libelleFr: 'Livrée', couleurBg: 'bg-purple-100', couleurText: 'text-purple-800', icone: 'CheckCircle', ordre: 2 },
+          { id: 3, statut: 'ANNULEE', libelleFr: 'Annulée', couleurBg: 'bg-red-100', couleurText: 'text-red-800', icone: 'XCircle', ordre: 3 }
         ],
         categoryTranslations: [],
         sizeTranslations: []

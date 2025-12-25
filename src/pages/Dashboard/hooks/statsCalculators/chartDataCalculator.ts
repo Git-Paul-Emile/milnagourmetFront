@@ -11,9 +11,9 @@ export function calculateSalesData(orders: Order[]) {
 
   // Filtrer les commandes valides (pas annulées et dans la période)
   const validOrders = orders.filter(order => {
-    // Les statuts valides sont: 'recu', 'en_preparation', 'livraison', 'livree'
-    // Il n'y a plus de statut 'cancelled' dans le système actuel
-    const validStatuses = ['recu', 'en_preparation', 'livraison', 'livree'];
+    // Les statuts valides sont: 'recu', 'livree'
+    // Les commandes annulées sont exclues des statistiques
+    const validStatuses = ['recu', 'livree'];
     return validStatuses.includes(order.status.toLowerCase());
   });
 
@@ -53,7 +53,7 @@ export function calculateSalesData(orders: Order[]) {
 
 export async function calculateCategoryData(orders: Order[]) {
   const categoryCount = new Map<string, { count: number; revenue: number }>();
-  const validStatuses = ['recu', 'en_preparation', 'livraison', 'livree'];
+  const validStatuses = ['recu', 'livree'];
   
   orders.forEach(order => {
     if (validStatuses.includes(order.status.toLowerCase())) {
@@ -84,7 +84,7 @@ export async function calculateCategoryData(orders: Order[]) {
 
 export async function calculateSizeData(orders: Order[]) {
   const sizeCount = new Map<string, { count: number; revenue: number }>();
-  const validStatuses = ['recu', 'en_preparation', 'livraison', 'livree'];
+  const validStatuses = ['recu', 'livree'];
   
   orders.forEach(order => {
     if (validStatuses.includes(order.status.toLowerCase())) {
@@ -126,9 +126,8 @@ export async function calculateOrderStatusData(orders: Order[]) {
       // Retourner quand même les statuts avec count 0 pour que le graphique s'affiche
       return [
         { status: 'Reçue', count: 0 },
-        { status: 'En préparation', count: 0 },
-        { status: 'En livraison', count: 0 },
-        { status: 'Livrée', count: 0 }
+        { status: 'Livrée', count: 0 },
+        { status: 'Annulée', count: 0 }
       ];
     }
 
@@ -148,14 +147,13 @@ export async function calculateOrderStatusData(orders: Order[]) {
     const statusConfigs = await configService.getOrderStatusConfig();
     
     // Mapper les statuts de la config DB vers les statuts backend (en minuscules)
-    // Le backend renvoie les statuts en minuscules : 'recu', 'en_preparation', 'livraison', 'livree'
-    // Les configs de la DB utilisent : 'RECU', 'EN_PREPARATION', 'LIVRAISON', 'LIVREE'
+    // Le backend renvoie les statuts en minuscules : 'recu', 'livree', 'annulee'
+    // Les configs de la DB utilisent : 'RECU', 'LIVREE', 'ANNULEE'
     // Mais les commandes peuvent avoir des statuts en majuscules ou minuscules
     const configToBackendMap: Record<string, string> = {
       'RECU': 'recu',
-      'EN_PREPARATION': 'en_preparation',
-      'LIVRAISON': 'livraison',
-      'LIVREE': 'livree'
+      'LIVREE': 'livree',
+      'ANNULEE': 'annulee'
     };
     
     // Si aucune config n'est disponible, utiliser des valeurs par défaut
@@ -163,9 +161,8 @@ export async function calculateOrderStatusData(orders: Order[]) {
       console.warn('[OrderStatusChart] Aucune configuration de statut trouvée, utilisation des valeurs par défaut');
       const defaultStatuses = [
         { statut: 'RECU', libelleFr: 'Reçue', ordre: 1 },
-        { statut: 'EN_PREPARATION', libelleFr: 'En préparation', ordre: 2 },
-        { statut: 'LIVRAISON', libelleFr: 'En livraison', ordre: 3 },
-        { statut: 'LIVREE', libelleFr: 'Livrée', ordre: 4 }
+        { statut: 'LIVREE', libelleFr: 'Livrée', ordre: 2 },
+        { statut: 'ANNULEE', libelleFr: 'Annulée', ordre: 3 }
       ];
       
       const result = defaultStatuses.map(config => {
@@ -227,8 +224,8 @@ export async function calculateOrderStatusData(orders: Order[]) {
             
             // Vérifier plusieurs variantes possibles
             // Le backend renvoie les statuts en minuscules, mais les commandes peuvent avoir:
-            // 1. Format attendu du backend: 'recu', 'en_preparation', etc. (minuscules)
-            // 2. Format DB en majuscules: 'RECU', 'EN_PREPARATION', etc.
+            // 1. Format attendu du backend: 'recu', 'livree', 'annulee' (minuscules)
+            // 2. Format DB en majuscules: 'RECU', 'LIVREE', 'ANNULEE'
             // 3. Format mixte ou autres variations
             const normalizedConfigStatus = config.statut.toLowerCase().trim();
             const orderStatusUpper = orderStatus.toUpperCase();
@@ -313,16 +310,14 @@ export async function calculateOrderStatusData(orders: Order[]) {
     // En cas d'erreur, retourner un tableau avec des valeurs par défaut
     const defaultStatuses = [
       { statut: 'RECU', libelleFr: 'Reçue' },
-      { statut: 'EN_PREPARATION', libelleFr: 'En préparation' },
-      { statut: 'LIVRAISON', libelleFr: 'En livraison' },
-      { statut: 'LIVREE', libelleFr: 'Livrée' }
+      { statut: 'LIVREE', libelleFr: 'Livrée' },
+      { statut: 'ANNULEE', libelleFr: 'Annulée' }
     ];
-    
+
     const configToBackendMap: Record<string, string> = {
       'RECU': 'recu',
-      'EN_PREPARATION': 'en_preparation',
-      'LIVRAISON': 'livraison',
-      'LIVREE': 'livree'
+      'LIVREE': 'livree',
+      'ANNULEE': 'annulee'
     };
     
     return defaultStatuses.map(config => {

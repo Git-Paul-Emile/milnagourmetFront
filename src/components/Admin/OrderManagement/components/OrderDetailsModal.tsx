@@ -211,42 +211,30 @@ export function OrderDetailsModal({ selectedOrder, onClose, onUpdateStatus, isPr
           </div>
 
           {/* Actions */}
-          {['recu', 'en_preparation', 'livraison'].includes(selectedOrder.status) && (
+          {selectedOrder.status === 'recu' && (
             <div className="space-y-4">
               <h4 className="font-semibold">Actions</h4>
 
-              {selectedOrder.status === 'recu' && (
-                <Button
-                  onClick={() => handleStatusUpdate('en_preparation')}
-                  loading={isProcessing}
-                  className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
-                >
-                  <CheckCircle className="h-5 w-5" />
-                  <span>Mettre en préparation</span>
-                </Button>
-              )}
-
-              {selectedOrder.status === 'en_preparation' && (
-                <Button
-                  onClick={() => handleStatusUpdate('livraison')}
-                  loading={isProcessing}
-                  className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
-                >
-                  <Clock className="h-5 w-5" />
-                  <span>Mettre livraison en cours</span>
-                </Button>
-              )}
-
-              {selectedOrder.status === 'livraison' && (
+              <div className="grid grid-cols-2 gap-3">
                 <Button
                   onClick={() => handleStatusUpdate('livree')}
                   loading={isProcessing}
-                  className="w-full flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
+                  className="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
                 >
-                  <Send className="h-5 w-5" />
+                  <CheckCircle className="h-5 w-5" />
                   <span>Livrée</span>
                 </Button>
-              )}
+
+                <Button
+                  onClick={() => handleStatusUpdate('annulee')}
+                  loading={isProcessing}
+                  variant="destructive"
+                  className="flex items-center justify-center space-x-2 py-3 px-4 rounded-lg font-semibold transition-colors"
+                >
+                  <XCircle className="h-5 w-5" />
+                  <span>Annuler</span>
+                </Button>
+              </div>
             </div>
           )}
         </div>

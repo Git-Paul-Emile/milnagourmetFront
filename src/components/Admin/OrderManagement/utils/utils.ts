@@ -15,9 +15,8 @@ const loadStatusConfig = async () => {
     // Mapper les statuts de l'enum vers les valeurs utilisées dans le frontend
     const statusMap: Record<string, string> = {
       'received': 'RECU',
-      'preparing': 'EN_PREPARATION',
-      'delivery': 'LIVRAISON',
-      'delivered': 'LIVREE'
+      'delivered': 'LIVREE',
+      'cancelled': 'ANNULEE'
     };
 
     configs.forEach(config => {
@@ -39,9 +38,8 @@ const loadStatusConfig = async () => {
     // Fallback vers les valeurs hardcodées en cas d'erreur
     const fallbackCache = new Map([
       ['received', { color: 'bg-blue-100 text-blue-800', text: 'Reçue' }],
-      ['preparing', { color: 'bg-orange-100 text-orange-800', text: 'En préparation' }],
-      ['delivery', { color: 'bg-green-100 text-green-800', text: 'En livraison' }],
-      ['delivered', { color: 'bg-purple-100 text-purple-800', text: 'Livrée' }]
+      ['delivered', { color: 'bg-purple-100 text-purple-800', text: 'Livrée' }],
+      ['cancelled', { color: 'bg-red-100 text-red-800', text: 'Annulée' }]
     ]);
     statusConfigCache = fallbackCache;
     return fallbackCache;
@@ -65,9 +63,8 @@ export const getStatusColorSync = (status: string) => {
     // Le cache sera chargé au premier appel asynchrone
     const defaultColors: Record<string, string> = {
       'received': 'bg-blue-100 text-blue-800',
-      'preparing': 'bg-orange-100 text-orange-800',
-      'delivery': 'bg-green-100 text-green-800',
-      'delivered': 'bg-purple-100 text-purple-800'
+      'delivered': 'bg-purple-100 text-purple-800',
+      'cancelled': 'bg-red-100 text-red-800'
     };
     return defaultColors[status] || 'bg-gray-100 text-gray-800';
   }
@@ -78,9 +75,8 @@ export const getStatusTextSync = (status: string) => {
   if (!statusConfigCache) {
     const defaultTexts: Record<string, string> = {
       'received': 'Reçue',
-      'preparing': 'En préparation',
-      'delivery': 'En livraison',
-      'delivered': 'Livrée'
+      'delivered': 'Livrée',
+      'cancelled': 'Annulée'
     };
     return defaultTexts[status] || status;
   }
