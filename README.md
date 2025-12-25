@@ -20,7 +20,7 @@ Ce projet contient le frontend de l'application Milna Gourmet, une plateforme de
 
 ## Configuration
 
-- Configurez l'URL de l'API backend dans les fichiers de configuration (ex. : `src/services/api.ts`).
+- Configurez l'URL de l'API backend en ajoutant `VITE_API_URL` dans le fichier `.env` (ex. : `VITE_API_URL=http://localhost:3000` pour le développement local).
 
 ## Lancement
 
@@ -40,18 +40,19 @@ Ce projet contient le frontend de l'application Milna Gourmet, une plateforme de
 ## Structure du projet
 
 - `src/` : Code source principal
-  - `components/` : Composants réutilisables
-  - `pages/` : Pages de l'application
+  - `components/` : Composants réutilisables organisés par fonctionnalités (Admin, Auth, Cart, etc.)
   - `services/` : Services pour les appels API
-  - `contexts/` : Contextes React pour la gestion d'état
   - `hooks/` : Hooks personnalisés
   - `utils/` : Utilitaires
+  - `contexts/` : Contextes React pour la gestion d'état
+  - `types/` : Types TypeScript
 - `public/` : Assets statiques
 
 ## Scripts disponibles
 
 - `pnpm run dev` : Lance le serveur de développement
 - `pnpm run build` : Construit l'application pour la production
+- `pnpm run build:dev` : Construit l'application pour le développement
 - `pnpm run preview` : Prévisualise la build de production
 - `pnpm run lint` : Vérifie le code avec ESLint
 

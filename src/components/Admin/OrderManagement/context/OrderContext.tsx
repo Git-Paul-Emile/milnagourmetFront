@@ -37,12 +37,9 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
       await updateStatus(orderId, status, message);
 
       // Notifications
-      if (status === 'livree' && selectedOrder) {
-        sendOrderConfirmationMessage(selectedOrder);
-      }
-      if (status === 'annulee' && selectedOrder && message) {
-        sendOrderCancellationMessage(selectedOrder, message);
-      }
+       if (status === 'annulee' && selectedOrder && message) {
+         sendOrderCancellationMessage(selectedOrder, message);
+       }
 
       // Afficher le toast de succès
       const statusMessages = {
