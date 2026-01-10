@@ -22,7 +22,6 @@ export function ProductBasicFields({
           onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
           placeholder="ex: Gourmet Fraise"
           className="w-full p-2 border border-border rounded-lg"
-          required
         />
       </div>
 
@@ -33,7 +32,6 @@ export function ProductBasicFields({
           onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
           placeholder="Décrivez le produit..."
           className="w-full p-2 border border-border rounded-lg h-20"
-          required
         />
       </div>
 
@@ -46,8 +44,6 @@ export function ProductBasicFields({
             onChange={(e) => setNewProduct({...newProduct, price: parseInt(e.target.value) || 0})}
             placeholder="ex: 2500"
             className="w-full p-2 border border-border rounded-lg"
-            min="0"
-            required
           />
         </div>
 

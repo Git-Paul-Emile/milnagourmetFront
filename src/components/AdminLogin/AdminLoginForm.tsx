@@ -9,7 +9,10 @@ interface AdminLoginFormProps {
     telephone: string;
     password: string;
   };
-  error: string;
+  fieldErrors: {
+    telephone?: string;
+    password?: string;
+  };
   showPassword: boolean;
   isLoading: boolean;
   onSubmit: (e: React.FormEvent) => void;
@@ -19,7 +22,7 @@ interface AdminLoginFormProps {
 
 export function AdminLoginForm({
   formData,
-  error,
+  fieldErrors,
   showPassword,
   isLoading,
   onSubmit,
@@ -32,6 +35,7 @@ export function AdminLoginForm({
         <InputField
           value={formData.telephone}
           onChange={(value) => onInputChange('telephone', value)}
+          error={fieldErrors.telephone}
         />
 
         <PasswordField
@@ -39,9 +43,8 @@ export function AdminLoginForm({
           onChange={(value) => onInputChange('password', value)}
           showPassword={showPassword}
           onToggleShowPassword={onToggleShowPassword}
+          error={fieldErrors.password}
         />
-
-        <ErrorMessage error={error} />
 
         <SubmitButton isLoading={isLoading} />
       </form>

@@ -4,6 +4,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { AdminLoginFormData } from '@/types/adminLogin';
 import { ADMIN_LOGIN_CONSTANTS } from '@/constants/adminLogin';
 
+interface FieldErrors {
+  telephone?: string;
+  password?: string;
+}
+
 export function useAdminLoginForm() {
   const navigate = useNavigate();
   const { login, isLoading } = useAuth();
@@ -12,11 +17,30 @@ export function useAdminLoginForm() {
     telephone: '',
     password: ''
   });
-  const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+
+  const validateForm = (): boolean => {
+    const errors: FieldErrors = {};
+
+    if (!formData.telephone.trim()) {
+      errors.telephone = 'Le téléphone est requis';
+    }
+
+    if (!formData.password.trim()) {
+      errors.password = 'Le mot de passe est requis';
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setFieldErrors({});
+
+    if (!validateForm()) {
+      return;
+    }
 
     try {
       await login({
@@ -25,12 +49,16 @@ export function useAdminLoginForm() {
       });
       navigate('/dashboard');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : ADMIN_LOGIN_CONSTANTS.ERROR_DEFAULT_MESSAGE);
+      // For backend errors, set global error or parse if possible
+      const message = err instanceof Error ? err.message : ADMIN_LOGIN_CONSTANTS.ERROR_DEFAULT_MESSAGE;
+      // Could parse message to set field errors, but for now set global
+      setFieldErrors({ telephone: message }); // or password, but since it's login, maybe global
     }
   };
 
   const handleInputChange = (field: keyof AdminLoginFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    setFieldErrors(prev => ({ ...prev, [field]: '' }));
   };
 
   const toggleShowPassword = () => {
@@ -39,7 +67,7 @@ export function useAdminLoginForm() {
 
   return {
     formData,
-    error,
+    fieldErrors,
     showPassword,
     isLoading,
     handleSubmit,

@@ -5,7 +5,7 @@ import { AdminLoginHeader, AdminLoginForm, AdminLoginFooter } from '@/components
 export function AdminLogin() {
   const {
     formData,
-    error,
+    fieldErrors,
     showPassword,
     isLoading,
     handleSubmit,
@@ -20,7 +20,7 @@ export function AdminLogin() {
 
         <AdminLoginForm
           formData={formData}
-          error={error}
+          fieldErrors={fieldErrors}
           showPassword={showPassword}
           isLoading={isLoading}
           onSubmit={handleSubmit}

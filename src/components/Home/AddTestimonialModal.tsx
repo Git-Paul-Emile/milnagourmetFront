@@ -82,7 +82,6 @@ export function AddTestimonialModal({ isOpen, onClose, onSuccess }: AddTestimoni
                   placeholder={state.user ? "Votre nom est automatiquement rempli" : "Votre nom et prénom"}
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
-                  required
                   readOnly={!!state.user}
                   className={`w-full ${state.user ? 'bg-muted cursor-not-allowed' : ''}`}
                 />
@@ -100,7 +99,6 @@ export function AddTestimonialModal({ isOpen, onClose, onSuccess }: AddTestimoni
                   placeholder="Votre ville ou quartier"
                   value={formData.location}
                   onChange={(e) => handleInputChange('location', e.target.value)}
-                  required
                   className="w-full"
                 />
               </div>

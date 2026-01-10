@@ -10,6 +10,12 @@ interface TestimonialsTabProps {
   setDeleteModal: React.Dispatch<React.SetStateAction<{ isOpen: boolean; item?: Product | UserType | DeliveryPerson | Testimonial | { value: string; label: string }; type: 'product' | 'user' | 'deliveryPerson' | 'image' | 'testimonial' }>>;
 }
 
+interface FieldErrors {
+  name?: string;
+  location?: string;
+  comment?: string;
+}
+
 export function TestimonialsTab({ displaySuccessToast, setDeleteModal }: TestimonialsTabProps) {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,6 +28,7 @@ export function TestimonialsTab({ displaySuccessToast, setDeleteModal }: Testimo
     avatar: '',
     active: false
   });
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
 
   const loadTestimonials = async () => {
@@ -60,8 +67,38 @@ export function TestimonialsTab({ displaySuccessToast, setDeleteModal }: Testimo
     });
   };
 
+  const validateForm = (): boolean => {
+    const errors: FieldErrors = {};
+
+    if (!formData.name.trim()) {
+      errors.name = 'Le nom est obligatoire';
+    }
+
+    if (!formData.location.trim()) {
+      errors.location = 'Le lieu est obligatoire';
+    }
+
+    if (!formData.comment.trim()) {
+      errors.comment = 'Le commentaire est obligatoire';
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleInputChange = (field: keyof typeof formData, value: string | number | boolean) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setFieldErrors(prev => ({ ...prev, [field]: '' }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFieldErrors({});
+
+    if (!validateForm()) {
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -79,6 +116,7 @@ export function TestimonialsTab({ displaySuccessToast, setDeleteModal }: Testimo
       loadTestimonials();
     } catch (error) {
       console.error('Erreur lors de l\'ajout du témoignage:', error);
+      // For backend errors, could parse and set field errors, but for now just log
     } finally {
       setSubmitting(false);
     }
@@ -174,20 +212,20 @@ export function TestimonialsTab({ displaySuccessToast, setDeleteModal }: Testimo
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  required
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${fieldErrors.name ? 'border-red-500' : 'border-border'}`}
                 />
+                {fieldErrors.name && <p className="text-red-500 text-sm mt-1">{fieldErrors.name}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Lieu *</label>
                 <input
                   type="text"
                   value={formData.location}
-                  onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  required
+                  onChange={(e) => handleInputChange('location', e.target.value)}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${fieldErrors.location ? 'border-red-500' : 'border-border'}`}
                 />
+                {fieldErrors.location && <p className="text-red-500 text-sm mt-1">{fieldErrors.location}</p>}
               </div>
             </div>
 
@@ -195,7 +233,7 @@ export function TestimonialsTab({ displaySuccessToast, setDeleteModal }: Testimo
               <label className="block text-sm font-medium mb-1">Note *</label>
               <select
                 value={formData.rating}
-                onChange={(e) => setFormData(prev => ({ ...prev, rating: parseInt(e.target.value) }))}
+                onChange={(e) => handleInputChange('rating', parseInt(e.target.value))}
                 className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               >
                 {[1, 2, 3, 4, 5].map(rating => (
@@ -208,12 +246,11 @@ export function TestimonialsTab({ displaySuccessToast, setDeleteModal }: Testimo
               <label className="block text-sm font-medium mb-1">Commentaire *</label>
               <textarea
                 value={formData.comment}
-                onChange={(e) => setFormData(prev => ({ ...prev, comment: e.target.value }))}
-                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                onChange={(e) => handleInputChange('comment', e.target.value)}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${fieldErrors.comment ? 'border-red-500' : 'border-border'}`}
                 rows={4}
-                maxLength={200}
-                required
               />
+              {fieldErrors.comment && <p className="text-red-500 text-sm mt-1">{fieldErrors.comment}</p>}
               <p className="text-xs text-muted-foreground mt-1">{formData.comment.length}/200 caractères</p>
             </div>
 
@@ -252,7 +289,7 @@ export function TestimonialsTab({ displaySuccessToast, setDeleteModal }: Testimo
                 type="checkbox"
                 id="active-checkbox"
                 checked={formData.active}
-                onChange={(e) => setFormData(prev => ({ ...prev, active: e.target.checked }))}
+                onChange={(e) => handleInputChange('active', e.target.checked)}
                 className="rounded border-border"
               />
               <label htmlFor="active-checkbox" className="text-sm font-medium">

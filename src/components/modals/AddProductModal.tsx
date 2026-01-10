@@ -12,10 +12,13 @@ interface AddProductModalProps {
 }
 
 export function AddProductModal({ isOpen, onClose, onAdd, productCategories }: AddProductModalProps) {
-  const { newProduct, updateProduct, resetProduct } = useProductForm();
+  const { newProduct, fieldErrors, updateProduct, validateProduct, resetProduct } = useProductForm();
   const { imageUploadMode, setImageUploadMode, uploadedImageFile, availableImages, handleImageFileChange, resetImage } = useImageUpload();
 
   const handleSubmit = () => {
+    if (!validateProduct()) {
+      return;
+    }
     onAdd(newProduct, uploadedImageFile || undefined, productCategories);
     resetProduct();
     resetImage();
@@ -36,14 +39,14 @@ export function AddProductModal({ isOpen, onClose, onAdd, productCategories }: A
         <h3 className="text-lg font-semibold mb-4">Ajouter un nouveau produit</h3>
 
         <div className="space-y-4">
-          <ProductNameField value={newProduct.name || ''} onChange={(value) => updateProduct({ name: value })} />
+          <ProductNameField value={newProduct.name || ''} onChange={(value) => updateProduct({ name: value })} error={fieldErrors.name} />
 
-          <ProductDescriptionField value={newProduct.description || ''} onChange={(value) => updateProduct({ description: value })} />
+          <ProductDescriptionField value={newProduct.description || ''} onChange={(value) => updateProduct({ description: value })} error={fieldErrors.description} />
 
           <div className="grid grid-cols-2 gap-4">
-            <ProductPriceField value={newProduct.price || 0} onChange={(value) => updateProduct({ price: value })} />
+            <ProductPriceField value={newProduct.price || 0} onChange={(value) => updateProduct({ price: value })} error={fieldErrors.price} />
 
-            <ProductCategoryField value={newProduct.category || ''} onChange={(value) => updateProduct({ category: value })} productCategories={productCategories} />
+            <ProductCategoryField value={newProduct.category || ''} onChange={(value) => updateProduct({ category: value })} productCategories={productCategories} error={fieldErrors.category} />
           </div>
 
           <ProductImageSection
@@ -68,8 +71,7 @@ export function AddProductModal({ isOpen, onClose, onAdd, productCategories }: A
           </button>
           <button
             onClick={handleSubmit}
-            disabled={!newProduct.name || !newProduct.description || !newProduct.price}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
           >
             Ajouter le produit
           </button>

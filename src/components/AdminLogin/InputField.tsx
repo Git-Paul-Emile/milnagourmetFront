@@ -5,9 +5,10 @@ import { ADMIN_LOGIN_CONSTANTS } from '@/constants/adminLogin';
 interface InputFieldProps {
   value: string;
   onChange: (value: string) => void;
+  error?: string;
 }
 
-export function InputField({ value, onChange }: InputFieldProps) {
+export function InputField({ value, onChange, error }: InputFieldProps) {
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium text-foreground">{ADMIN_LOGIN_CONSTANTS.TELEPHONE_LABEL}</label>
@@ -17,11 +18,11 @@ export function InputField({ value, onChange }: InputFieldProps) {
           type="tel"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
+          className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background ${error ? 'border-red-500' : 'border-border'}`}
           placeholder={ADMIN_LOGIN_CONSTANTS.TELEPHONE_PLACEHOLDER}
-          required
         />
       </div>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
 }

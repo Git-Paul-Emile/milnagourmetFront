@@ -7,9 +7,10 @@ interface PasswordFieldProps {
   onChange: (value: string) => void;
   showPassword: boolean;
   onToggleShowPassword: () => void;
+  error?: string;
 }
 
-export function PasswordField({ value, onChange, showPassword, onToggleShowPassword }: PasswordFieldProps) {
+export function PasswordField({ value, onChange, showPassword, onToggleShowPassword, error }: PasswordFieldProps) {
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium text-foreground">{ADMIN_LOGIN_CONSTANTS.PASSWORD_LABEL}</label>
@@ -19,9 +20,8 @@ export function PasswordField({ value, onChange, showPassword, onToggleShowPassw
           type={showPassword ? 'text' : 'password'}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full pl-10 pr-12 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
+          className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background ${error ? 'border-red-500' : 'border-border'}`}
           placeholder={ADMIN_LOGIN_CONSTANTS.PASSWORD_PLACEHOLDER}
-          required
         />
         <button
           type="button"
@@ -31,6 +31,7 @@ export function PasswordField({ value, onChange, showPassword, onToggleShowPassw
           {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
         </button>
       </div>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
 }

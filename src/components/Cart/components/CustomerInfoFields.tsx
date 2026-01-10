@@ -24,7 +24,6 @@ export function CustomerInfoFields({ customerInfo, onFieldChange }: CustomerInfo
           placeholder="Votre nom et prénom"
           value={customerInfo.name}
           onChange={(e) => onFieldChange('name', e.target.value)}
-          required
           className="w-full"
         />
       </div>
@@ -41,7 +40,6 @@ export function CustomerInfoFields({ customerInfo, onFieldChange }: CustomerInfo
           placeholder="Votre numéro de téléphone"
           value={customerInfo.phone}
           onChange={(e) => onFieldChange('phone', e.target.value)}
-          required
           className="w-full"
         />
       </div>

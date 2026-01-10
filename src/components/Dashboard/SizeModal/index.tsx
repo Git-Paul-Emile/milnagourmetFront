@@ -11,6 +11,11 @@ interface SizeModalProps {
   existingSizes: CreationSize[];
 }
 
+interface FieldErrors {
+  nom?: string;
+  prix?: string;
+}
+
 export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existingSizes }: SizeModalProps) {
   const [formData, setFormData] = useState<Partial<CreationSize>>({
     nom: '',
@@ -20,6 +25,7 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
     cerealesAutorise: true,
     active: true
   });
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -37,15 +43,33 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
     }
   }, [mode, editingSize, isOpen]);
 
-  const handleSubmit = async () => {
-    if (!formData.nom || formData.prix === undefined || formData.prix < 0) {
-      alert('Veuillez saisir un nom et un prix valide pour la taille');
-      return;
+  const validateForm = (): boolean => {
+    const errors: FieldErrors = {};
+
+    if (!formData.nom?.trim()) {
+      errors.nom = 'Le nom de la taille est obligatoire';
+    }
+
+    if (formData.prix === undefined || formData.prix < 0) {
+      errors.prix = 'Le prix doit être supérieur ou égal à 0';
     }
 
     // Check if size name already exists (for add mode)
     if (mode === 'add' && existingSizes.some(size => size.nom.toLowerCase() === formData.nom?.toLowerCase())) {
-      alert('Cette taille existe déjà');
+      errors.nom = 'Cette taille existe déjà';
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleInputChange = (field: keyof typeof formData, value: string | number | boolean) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setFieldErrors(prev => ({ ...prev, [field]: '' }));
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
       return;
     }
 
@@ -73,10 +97,11 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
             <input
               type="text"
               value={formData.nom}
-              onChange={(e) => setFormData({...formData, nom: e.target.value})}
+              onChange={(e) => handleInputChange('nom', e.target.value)}
               placeholder="Petit, Moyen, Grand..."
-              className="w-full p-2 border border-border rounded-lg"
+              className={`w-full p-2 border rounded-lg ${fieldErrors.nom ? 'border-red-500' : 'border-border'}`}
             />
+            {fieldErrors.nom && <p className="text-red-500 text-sm mt-1">{fieldErrors.nom}</p>}
           </div>
 
           <div>
@@ -84,11 +109,11 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
             <input
               type="number"
               value={formData.prix}
-              onChange={(e) => setFormData({...formData, prix: parseInt(e.target.value) || 0})}
+              onChange={(e) => handleInputChange('prix', parseInt(e.target.value) || 0)}
               placeholder="2500"
-              min="0"
-              className="w-full p-2 border border-border rounded-lg"
+              className={`w-full p-2 border rounded-lg ${fieldErrors.prix ? 'border-red-500' : 'border-border'}`}
             />
+            {fieldErrors.prix && <p className="text-red-500 text-sm mt-1">{fieldErrors.prix}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -97,9 +122,8 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
               <input
                 type="number"
                 value={formData.maxFruits}
-                onChange={(e) => setFormData({...formData, maxFruits: parseInt(e.target.value) || 1})}
+                onChange={(e) => handleInputChange('maxFruits', parseInt(e.target.value) || 1)}
                 placeholder="1"
-                min="1"
                 className="w-full p-2 border border-border rounded-lg"
               />
             </div>
@@ -108,9 +132,8 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
               <input
                 type="number"
                 value={formData.maxSauces}
-                onChange={(e) => setFormData({...formData, maxSauces: parseInt(e.target.value) || 1})}
+                onChange={(e) => handleInputChange('maxSauces', parseInt(e.target.value) || 1)}
                 placeholder="1"
-                min="1"
                 className="w-full p-2 border border-border rounded-lg"
               />
             </div>
@@ -121,7 +144,7 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
               <input
                 type="checkbox"
                 checked={formData.cerealesAutorise}
-                onChange={(e) => setFormData({...formData, cerealesAutorise: e.target.checked})}
+                onChange={(e) => handleInputChange('cerealesAutorise', e.target.checked)}
               />
               <span className="text-sm">Avec céréales</span>
             </label>
@@ -129,7 +152,7 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
               <input
                 type="checkbox"
                 checked={formData.active}
-                onChange={(e) => setFormData({...formData, active: e.target.checked})}
+                onChange={(e) => handleInputChange('active', e.target.checked)}
               />
               <span className="text-sm">Taille active</span>
             </label>
@@ -146,7 +169,6 @@ export function SizeModal({ isOpen, onClose, onSave, mode, editingSize, existing
           <Button
             onClick={handleSubmit}
             loading={isSubmitting}
-            disabled={!formData.nom || formData.prix === undefined || formData.prix < 0}
           >
             {mode === 'add' ? 'Ajouter' : 'Sauvegarder'}
           </Button>

@@ -11,12 +11,17 @@ interface CategoryModalProps {
   mode: 'add' | 'edit';
 }
 
+interface FieldErrors {
+  name?: string;
+}
+
 export function CategoryModal({ isOpen, onClose, onSave, editingCategory, mode }: CategoryModalProps) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     active: true
   });
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -35,11 +40,26 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory, mode }
     }
   }, [editingCategory, mode, isOpen]);
 
+  const validateForm = (): boolean => {
+    const errors: FieldErrors = {};
+
+    if (!formData.name.trim()) {
+      errors.name = 'Le nom de la catégorie est obligatoire';
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleInputChange = (field: keyof typeof formData, value: string | boolean) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setFieldErrors(prev => ({ ...prev, [field]: '' }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name.trim()) {
-      alert('Le nom de la catégorie est obligatoire');
+    if (!validateForm()) {
       return;
     }
 
@@ -83,11 +103,11 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory, mode }
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              className={`w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${fieldErrors.name ? 'border-red-500' : 'border-gray-300'}`}
               placeholder="Nom de la catégorie"
-              required
             />
+            {fieldErrors.name && <p className="text-red-500 text-sm mt-1">{fieldErrors.name}</p>}
           </div>
 
           <div>

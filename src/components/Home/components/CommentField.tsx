@@ -71,9 +71,7 @@ export function CommentField({
             onCommentChange(value);
           }
         }}
-        required
         className="w-full min-h-[100px] resize-none"
-        maxLength={TESTIMONIAL_CONSTANTS.MAX_COMMENT_LENGTH}
       />
       <div className="flex justify-between items-center text-xs text-muted-foreground">
         <span>Maximum 4 lignes recommandées</span>
