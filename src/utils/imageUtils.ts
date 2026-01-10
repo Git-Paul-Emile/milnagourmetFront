@@ -1,3 +1,5 @@
+import { config } from '../config';
+
 /**
  * Utility functions for handling image URLs
  */
@@ -17,8 +19,7 @@ export function getFullImageUrl(imageUrl: string | null | undefined): string {
 
   // If it's a relative URL starting with /uploads/, prefix with API URL
   if (imageUrl.startsWith('/uploads/')) {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-    return `${apiUrl}${imageUrl}`;
+    return `${config.API_URL}${imageUrl}`;
   }
 
   // For other relative URLs, return as is (they might be handled differently)

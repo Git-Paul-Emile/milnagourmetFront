@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, ReactNode } from 'react';
 import { siteService } from '@/services';
 import { BrandingContext, BrandingData } from './BrandingContextDefinition';
+import { config } from '../config';
 
 export function BrandingProvider({ children }: { children: ReactNode }) {
   const [branding, setBranding] = useState<BrandingData>({ logo: null });
@@ -8,7 +9,7 @@ export function BrandingProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  const API_URL = config.API_URL;
 
   const loadBranding = useCallback(async () => {
     try {

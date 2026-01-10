@@ -14,11 +14,9 @@ export class HttpClient {
   private refreshPromise: Promise<void> | null = null;
 
   constructor() {
-    // En production, utiliser l'URL du backend directement
-    // En développement, utiliser '/' pour le proxy Vite
-    this.baseURL = import.meta.env.PROD
-      ? 'https://milnagourmetback.onrender.com'
-      : '/';
+    // Utiliser la variable d'environnement VITE_API_URL
+    // Si elle est vide (en mode développement via .env.development), l'URL relative sera utilisée pour le proxy
+    this.baseURL = import.meta.env.VITE_API_URL || '';
     // Charger le token depuis localStorage au démarrage
     const storedToken = localStorage.getItem('accessToken');
     if (storedToken) {
