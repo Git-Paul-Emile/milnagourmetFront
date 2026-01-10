@@ -51,16 +51,7 @@ export async function sendCartOrderToWhatsApp(cart: Cart, user?: User | null): P
     addOrderToUserHistory(user, cart);
   }
 
-  // Ouvrir WhatsApp pour notifier le propriétaire
-  const message = await buildCartOrderMessage(cart, user);
-
-  const contactInfo = await getContactInfo();
-  const whatsappNumber = contactInfo?.whatsapp || '+24106610304';
-
-  const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-
-  window.open(whatsappUrl, '_blank');
+  // Plus d'ouverture WhatsApp - seulement confirmation dans l'app
 }
 
 export function shareProductOnWhatsApp(product: Product): void {

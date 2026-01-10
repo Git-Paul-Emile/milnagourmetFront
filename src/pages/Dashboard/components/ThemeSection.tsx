@@ -180,13 +180,6 @@ export function ThemeSection({ displaySuccessToast }: ThemeSectionProps) {
           <Palette className="h-5 w-5 text-primary" />
           <span>Gestion des Thèmes</span>
         </h3>
-        <button
-          onClick={() => setIsCreating(true)}
-          className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center space-x-2"
-        >
-          <Plus className="h-4 w-4" />
-          <span>Nouveau thème</span>
-        </button>
       </div>
 
       {/* Formulaire de création */}
