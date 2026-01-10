@@ -157,11 +157,13 @@ export const siteService = {
 
   async deleteImage(imagePath: string) {
     // imagePath is like '/uploads/folder/filename.jpg'
+    console.log('deleteImage called with:', imagePath);
     const pathParts = imagePath.replace(/^\/uploads\//, '').split('/');
     if (pathParts.length !== 2) {
       throw new Error('Invalid image path format');
     }
     const [folder, filename] = pathParts;
+    console.log('Parsed folder:', folder, 'filename:', filename);
     return httpClient.delete(`/api/upload/images/${folder}/${filename}`);
   },
 };

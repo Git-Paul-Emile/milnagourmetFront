@@ -14,6 +14,7 @@ interface GalleryImageItem {
   name: string;
   displayName: string;
   isActive: boolean;
+  value: string; // Ajouter value
 }
 
 interface ModalImageItem {
@@ -74,12 +75,15 @@ export function GalleryTab({ displaySuccessToast, setDeleteModal, reloadTrigger 
           else if (image.value.includes('/uploads/avatarToast/')) category = 'Avatars';
 
           const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-          categoryMap[category].push({
+          const galleryImage = {
             src: `${API_URL}${image.value}`,
             name: image.value.split('/').pop() || '',
             displayName: image.label,
-            isActive: usedImages.includes(image.value)
-          });
+            isActive: usedImages.includes(image.value),
+            value: image.value // Ajouter la valeur originale
+          };
+          console.log('Image:', image.value, 'isActive:', galleryImage.isActive);
+          categoryMap[category].push(galleryImage);
         });
 
         const allImages: CategoryImages[] = Object.entries(categoryMap)
@@ -167,14 +171,17 @@ export function GalleryTab({ displaySuccessToast, setDeleteModal, reloadTrigger 
                       </div>
                     )}
                     <button
-                      onClick={() => setDeleteModal({
-                        isOpen: true,
-                        item: {
-                          value: image.src.replace(`${import.meta.env.VITE_API_URL}`, ''), // full path like /uploads/folder/filename.jpg
-                          label: image.displayName // display name
-                        } as ModalImageItem,
-                        type: 'image'
-                      })}
+                      onClick={() => {
+                        console.log('Bouton supprimer cliqué pour:', image.value, 'isActive:', image.isActive);
+                        setDeleteModal({
+                          isOpen: true,
+                          item: {
+                            value: image.value, // already the correct path like /uploads/folder/filename.jpg
+                            label: image.displayName // display name
+                          } as ModalImageItem,
+                          type: 'image'
+                        });
+                      }}
                       disabled={image.isActive}
                       className={`absolute top-2 right-2 p-1.5 rounded-full transition-opacity duration-200 ${
                         image.isActive

@@ -127,6 +127,7 @@ export const useDashboardModals = (loadDashboardData?: () => Promise<void>, relo
         displaySuccessToast('Livreur supprimé avec succès');
       } else if (deleteModal.type === 'image') {
         const filename = (deleteModal.item as ImageItem).value;
+        console.log('Suppression d\'image demandée pour:', filename);
         if (filename) {
           await siteService.deleteImage(filename);
           displaySuccessToast('Image supprimée avec succès');
