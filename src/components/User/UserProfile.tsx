@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, User as UserIcon, Package, Edit3 } from 'lucide-react';
+import { X, User as UserIcon, Package, Edit3, Star } from 'lucide-react';
 import { useApp } from '@/contexts/useApp';
 import { cn } from '@/lib/utils';
 import { useDeliveryZones } from './hooks/useDeliveryZones';
@@ -7,13 +7,14 @@ import { useProfileEditing } from './hooks/useProfileEditing';
 import { ProfileTab } from './components/ProfileTab';
 import { OrdersTab } from './components/OrdersTab';
 import { SettingsTab } from './components/SettingsTab';
+import { LoyaltyTab } from './components/LoyaltyTab';
 
 interface UserProfileProps {
    isOpen: boolean;
    onClose: () => void;
 }
 
-type TabType = 'profile' | 'orders' | 'settings';
+type TabType = 'profile' | 'orders' | 'loyalty' | 'settings';
 
 export function UserProfile({ isOpen, onClose }: UserProfileProps) {
    const { state } = useApp();
@@ -35,6 +36,7 @@ export function UserProfile({ isOpen, onClose }: UserProfileProps) {
    const tabs = [
       { id: 'profile' as TabType, label: 'Profil', icon: UserIcon },
       { id: 'orders' as TabType, label: 'Commandes', icon: Package },
+      { id: 'loyalty' as TabType, label: 'Fidélité', icon: Star },
       { id: 'settings' as TabType, label: 'Paramètres', icon: Edit3 }
    ];
 
@@ -106,12 +108,16 @@ export function UserProfile({ isOpen, onClose }: UserProfileProps) {
             )}
 
             {activeTab === 'orders' && (
-              <OrdersTab orders={[]} />
-            )}
+               <OrdersTab orders={[]} />
+             )}
 
-            {activeTab === 'settings' && (
-              <SettingsTab user={user} onClose={onClose} />
-            )}
+             {activeTab === 'loyalty' && (
+               <LoyaltyTab />
+             )}
+
+             {activeTab === 'settings' && (
+               <SettingsTab user={user} onClose={onClose} />
+             )}
           </div>
         </div>
       </div>

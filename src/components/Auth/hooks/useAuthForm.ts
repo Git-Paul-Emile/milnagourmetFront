@@ -51,6 +51,10 @@ export const useAuthForm = ({ initialMode, onClose }: UseAuthFormProps) => {
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     setFieldErrors(prev => ({ ...prev, [field]: '' }));
+    // Effacer l'erreur globale si elle était affichée pour ce champ
+    if (field === 'telephone' && globalError) {
+      setGlobalError('');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -148,7 +152,15 @@ export const useAuthForm = ({ initialMode, onClose }: UseAuthFormProps) => {
       resetForm();
     } catch (error: unknown) {
       console.error('Erreur lors de la connexion:', error);
-      setGlobalError(error instanceof Error ? error.message : 'Une erreur inattendue s\'est produite');
+      const message = error instanceof Error ? error.message : 'Une erreur inattendue s\'est produite';
+
+      // Vérifier si l'erreur concerne un numéro de téléphone déjà existant
+      if (message.includes('téléphone')) {
+        setFieldErrors({ telephone: message });
+        setGlobalError('');
+      } else {
+        setGlobalError(message);
+      }
     } finally {
       setIsLoading(false);
     }
