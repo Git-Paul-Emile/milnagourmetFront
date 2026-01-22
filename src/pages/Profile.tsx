@@ -4,11 +4,12 @@ import { Footer } from '@/components/Layout/Footer';
 import { ScrollToTop } from '@/components/Layout/ScrollToTop';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { User, ShoppingBag, Edit } from 'lucide-react';
+import { User, ShoppingBag, Edit, Star } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useProfile } from '@/pages/Profile/hooks/useProfile';
 import { useOrders } from '@/pages/Profile/hooks/useOrders';
 import { ProfileTab, OrdersTab, SettingsTab } from '@/pages/Profile/components';
+import { LoyaltyTab } from '@/components/User/components/LoyaltyTab';
 
 const Profile = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -44,7 +45,7 @@ const Profile = () => {
           </div>
 
           <Tabs defaultValue="profile" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="profile" className="flex items-center space-x-2">
                 <User className="h-4 w-4" />
                 <span>Profil</span>
@@ -52,6 +53,10 @@ const Profile = () => {
               <TabsTrigger value="orders" className="flex items-center space-x-2">
                 <ShoppingBag className="h-4 w-4" />
                 <span>Commandes</span>
+              </TabsTrigger>
+              <TabsTrigger value="loyalty" className="flex items-center space-x-2">
+                <Star className="h-4 w-4" />
+                <span>Fidélité</span>
               </TabsTrigger>
               <TabsTrigger value="settings" className="flex items-center space-x-2">
                 <Edit className="h-4 w-4" />
@@ -79,6 +84,10 @@ const Profile = () => {
                 filters={filters}
                 onFiltersChange={setFilters}
               />
+            </TabsContent>
+
+            <TabsContent value="loyalty" className="space-y-6">
+              <LoyaltyTab />
             </TabsContent>
 
             <TabsContent value="settings" className="space-y-6">

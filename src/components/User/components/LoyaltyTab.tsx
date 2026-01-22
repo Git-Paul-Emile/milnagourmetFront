@@ -36,20 +36,31 @@ export function LoyaltyTab() {
   const loadLoyaltyData = async () => {
     try {
       setLoading(true);
+      console.log('Tentative de chargement des données de fidélité...');
+      console.log('Token disponible:', httpClient.hasToken());
+
       const [pointsResponse, historyResponse] = await Promise.all([
-        httpClient.get<LoyaltyData>('/loyalty/points'),
-        httpClient.get<LoyaltyHistory[]>('/loyalty/history')
+        httpClient.get<LoyaltyData>('/api/loyalty/points'),
+        httpClient.get<LoyaltyHistory[]>('/api/loyalty/history')
       ]);
+
+      console.log('Réponse points brute:', pointsResponse);
+      console.log('Réponse historique brute:', historyResponse);
 
       if (pointsResponse.status === 'success') {
         setLoyaltyData(pointsResponse.data);
+      } else {
+        console.error('Erreur API points:', pointsResponse);
       }
 
       if (historyResponse.status === 'success') {
         setHistory(historyResponse.data);
+      } else {
+        console.error('Erreur API historique:', historyResponse);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des données de fidélité:', error);
+      console.error('Détails de l\'erreur:', error.message);
     } finally {
       setLoading(false);
     }
@@ -67,6 +78,15 @@ export function LoyaltyTab() {
     return (
       <div className="text-center py-12">
         <p className="text-muted-foreground">Impossible de charger les données de fidélité</p>
+        <p className="text-sm text-muted-foreground mt-2">
+          Vérifiez que vous êtes connecté et que le serveur fonctionne.
+        </p>
+        <button
+          onClick={loadLoyaltyData}
+          className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+        >
+          Réessayer
+        </button>
       </div>
     );
   }
@@ -113,12 +133,12 @@ export function LoyaltyTab() {
           <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-6 border border-primary/20">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                {/* <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
                   <Star className="h-6 w-6 text-primary-foreground" />
-                </div>
+                </div> */}
                 <div>
                   <h4 className="text-xl font-bold">Mes Points</h4>
-                  <p className="text-muted-foreground">Équivalent: {loyaltyData.pointsValue.toLocaleString()} F</p>
+                  {/* <p className="text-muted-foreground">Équivalent: {loyaltyData.pointsValue.toLocaleString()} F</p> */}
                 </div>
               </div>
               <div className="text-right">
@@ -129,10 +149,7 @@ export function LoyaltyTab() {
 
             {/* Progress Bar */}
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Progression vers 1500 F de remise</span>
-                <span>{loyaltyData.progressPercentage}%</span>
-              </div>
+              
               <div className="w-full bg-muted rounded-full h-3">
                 <div
                   className="bg-primary h-3 rounded-full transition-all duration-500"
@@ -172,7 +189,7 @@ export function LoyaltyTab() {
                   <div>
                     <h4 className="font-semibold">Remise Verrouillée</h4>
                     <p className="text-muted-foreground">
-                      Accumulez encore {loyaltyData.pointsToNextThreshold.toFixed(2)} points pour débloquer 1500 F de remise
+                      Accumulez encore {loyaltyData.pointsToNextThreshold.toFixed(2)} points pour débloquer 1500 F de remise et plus !
                     </p>
                   </div>
                 </>
