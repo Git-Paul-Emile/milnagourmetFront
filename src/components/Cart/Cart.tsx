@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useApp } from '@/contexts/useApp';
 import { CustomerInfoModal } from './CustomerInfoModal';
-import { CartHeader, CartItem, CartFooter, EmptyCart } from './components';
+import { CartHeader, CartItem, CartFooter, EmptyCart, PointsSelector } from './components';
 import { useDeliveryZone, useCartOperations } from './hooks';
 
 interface CartProps {
@@ -11,7 +11,7 @@ interface CartProps {
 }
 
 export function Cart({ isOpen, onClose }: CartProps) {
-  const { state } = useApp();
+  const { state, dispatch } = useApp();
   const deliveryZone = useDeliveryZone();
   const {
     isOrdering,
@@ -22,6 +22,10 @@ export function Cart({ isOpen, onClose }: CartProps) {
     clearCart,
     handleOrder
   } = useCartOperations(deliveryZone, onClose);
+
+  const handlePointsChange = (pointsUsed: number) => {
+    dispatch({ type: 'SET_POINTS_USED', payload: pointsUsed });
+  };
 
   if (!isOpen) return null;
 
@@ -59,6 +63,16 @@ export function Cart({ isOpen, onClose }: CartProps) {
                     onRemoveItem={removeItem}
                   />
                 ))}
+
+                {/* Points Selector - only show for logged-in users */}
+                {state.user && (
+                  <PointsSelector
+                    availablePoints={state.user.pointsFidelite || 0}
+                    currentTotal={state.cart.totalWithDelivery}
+                    onPointsChange={handlePointsChange}
+                    conversionRate={15} // 1 point = 15 CFA
+                  />
+                )}
               </div>
 
               <CartFooter

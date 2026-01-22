@@ -8,6 +8,9 @@ export interface AppState {
     itemCount: number;
     deliveryFee: number;
     totalWithDelivery: number;
+    pointsUsed: number;
+    pointsDiscount: number;
+    totalWithDiscount: number;
   };
   user: AuthUser | null;
   toasts: Toast[];
@@ -24,6 +27,7 @@ export type AppAction =
   | { type: 'SET_USER'; payload: AuthUser | null }
   | { type: 'UPDATE_USER'; payload: Partial<AuthUser> }
   | { type: 'UPDATE_DELIVERY_FEE'; payload: number }
+  | { type: 'SET_POINTS_USED'; payload: number }
   | { type: 'ADD_TOAST'; payload: Toast }
   | { type: 'REMOVE_TOAST'; payload: string }
   | { type: 'SET_STORE_STATUS'; payload: boolean };
@@ -35,7 +39,10 @@ export const initialState: AppState = {
     total: 0,
     itemCount: 0,
     deliveryFee: 0,
-    totalWithDelivery: 0
+    totalWithDelivery: 0,
+    pointsUsed: 0,
+    pointsDiscount: 0,
+    totalWithDiscount: 0
   },
   user: null,
   toasts: [],

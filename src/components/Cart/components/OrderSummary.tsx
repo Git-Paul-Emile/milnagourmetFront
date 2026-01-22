@@ -5,11 +5,12 @@ interface OrderSummaryProps {
   itemCount: number;
   subtotal: number;
   selectedZone: DeliveryZone | undefined;
+  pointsDiscount?: number;
 }
 
-export function OrderSummary({ itemCount, subtotal, selectedZone }: OrderSummaryProps) {
+export function OrderSummary({ itemCount, subtotal, selectedZone, pointsDiscount = 0 }: OrderSummaryProps) {
   const deliveryFee = selectedZone?.deliveryFee || 0;
-  const total = subtotal + deliveryFee;
+  const total = subtotal + deliveryFee - pointsDiscount;
 
   return (
     <div className="bg-muted/30 rounded-lg p-4 space-y-2">
@@ -27,6 +28,12 @@ export function OrderSummary({ itemCount, subtotal, selectedZone }: OrderSummary
           <div className="flex justify-between">
             <span>Frais de livraison:</span>
             <span>{deliveryFee} FCFA</span>
+          </div>
+        )}
+        {pointsDiscount > 0 && (
+          <div className="flex justify-between text-green-600 dark:text-green-400">
+            <span>Réduction (points):</span>
+            <span>-{pointsDiscount} FCFA</span>
           </div>
         )}
         <div className="flex justify-between font-bold text-primary border-t pt-2">

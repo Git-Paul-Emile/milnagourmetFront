@@ -29,6 +29,8 @@ export interface Order {
   status: 'recu' | 'livree' | 'annulee';
   date: string;
   notes: string;
+  pointsUsed?: number; // Points de fidélité utilisés pour cette commande
+  pointsDiscount?: number; // Réduction en FCFA grâce aux points
   // Propriétés pour la compatibilité descendante
   userId?: string;
   createdAt?: string | Date;

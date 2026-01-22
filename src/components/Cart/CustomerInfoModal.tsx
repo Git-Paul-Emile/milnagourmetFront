@@ -3,7 +3,7 @@ import { X, Send } from 'lucide-react';
 import { useApp } from '@/contexts/useApp';
 import { Button } from '@/components/ui/button';
 import { useCustomerInfo, useDeliveryZones } from './hooks';
-import { CustomerInfoFields, DeliveryZoneSelector, OrderSummary } from './components';
+import { CustomerInfoFields, DeliveryZoneSelector, OrderSummary, PointsSelector } from './components';
 import { submitOrder } from './utils/orderSubmission';
 
 interface CustomerInfoModalProps {
@@ -17,6 +17,11 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
   const { customerInfo, updateField, isValid } = useCustomerInfo();
   const { deliveryZones, selectedZoneId, selectedZone, isLoading, setSelectedZoneId } = useDeliveryZones(isOpen);
   const [isSending, setIsSending] = useState(false);
+  const [pointsUsed, setPointsUsed] = useState(0);
+
+  const handlePointsChange = (points: number) => {
+    setPointsUsed(points);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +45,8 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
         cartItems: state.cart.items,
         subtotal: state.cart.total,
         customerInfo,
-        selectedZone
+        selectedZone,
+        pointsUsed
       });
 
       dispatch({
@@ -83,8 +89,8 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
       />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-background rounded-2xl max-w-md w-full border border-border shadow-2xl">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="bg-background rounded-2xl max-w-md w-full border border-border shadow-2xl my-auto">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border">
             <div>
@@ -102,7 +108,7 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto">
             <CustomerInfoFields
               customerInfo={customerInfo}
               onFieldChange={updateField}
@@ -115,10 +121,21 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
               onZoneChange={setSelectedZoneId}
             />
 
+            {/* Points Selector - only show for logged-in users */}
+            {state.user && state.user.pointsFidelite > 0 && (
+              <PointsSelector
+                availablePoints={state.user.pointsFidelite}
+                currentTotal={state.cart.total + (selectedZone?.deliveryFee || 0)}
+                onPointsChange={handlePointsChange}
+                conversionRate={1}
+              />
+            )}
+
             <OrderSummary
               itemCount={state.cart.itemCount}
               subtotal={state.cart.total}
               selectedZone={selectedZone}
+              pointsDiscount={pointsUsed}
             />
 
             {/* Actions */}

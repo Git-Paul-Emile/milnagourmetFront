@@ -16,10 +16,11 @@ export const calculateDeliveryFee = async (user: AuthUser | null): Promise<numbe
 };
 
 // Fonction helper pour calculer les totaux du panier
-export const calculateCartTotals = (items: CartItem[], deliveryFee: number = 0) => {
+export const calculateCartTotals = (items: CartItem[], deliveryFee: number = 0, pointsDiscount: number = 0) => {
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalWithDelivery = total + deliveryFee;
+  const totalWithDiscount = totalWithDelivery - pointsDiscount;
 
-  return { total, itemCount, deliveryFee, totalWithDelivery };
+  return { total, itemCount, deliveryFee, totalWithDelivery, pointsDiscount, totalWithDiscount };
 };

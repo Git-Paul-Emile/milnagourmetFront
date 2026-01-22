@@ -10,6 +10,9 @@ type CartState = {
   itemCount: number;
   deliveryFee: number;
   totalWithDelivery: number;
+  pointsUsed: number;
+  pointsDiscount: number;
+  totalWithDiscount: number;
 };
 
 export function cartReducer(state: CartState, action: AppAction, user?: AuthUser | null): CartState {
@@ -28,9 +31,9 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
         newItems = [...state.items, action.payload];
       }
 
-      const totals = calculateCartTotals(newItems, state.deliveryFee);
+      const totals = calculateCartTotals(newItems, state.deliveryFee, state.pointsDiscount);
 
-      const newState = { items: newItems, ...totals };
+      const newState = { items: newItems, pointsUsed: state.pointsUsed, pointsDiscount: state.pointsDiscount, totalWithDiscount: totals.totalWithDiscount, ...totals };
 
       // Persister en backend si utilisateur connecté
       if (user) {
@@ -71,9 +74,9 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
     case 'REMOVE_FROM_CART': {
       const itemToRemove = state.items.find(item => item.id === action.payload);
       const newItems = state.items.filter(item => item.id !== action.payload);
-      const totals = calculateCartTotals(newItems, state.deliveryFee);
+      const totals = calculateCartTotals(newItems, state.deliveryFee, state.pointsDiscount);
 
-      const newState = { items: newItems, ...totals };
+      const newState = { items: newItems, pointsUsed: state.pointsUsed, pointsDiscount: state.pointsDiscount, totalWithDiscount: totals.totalWithDiscount, ...totals };
 
       // Persister en backend si utilisateur connecté
       if (user && itemToRemove) {
@@ -111,12 +114,12 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
           : item
       ).filter(item => item.quantity > 0);
 
-      const totals = calculateCartTotals(newItems, state.deliveryFee);
+      const totals = calculateCartTotals(newItems, state.deliveryFee, state.pointsDiscount);
 
       const updatedItem = newItems.find(item => item.id === action.payload.id) ||
                           state.items.find(item => item.id === action.payload.id);
 
-      const newState = { items: newItems, ...totals };
+      const newState = { items: newItems, pointsUsed: state.pointsUsed, pointsDiscount: state.pointsDiscount, totalWithDiscount: totals.totalWithDiscount, ...totals };
 
       // Persister en backend si utilisateur connecté
       if (user && updatedItem) {
@@ -152,7 +155,7 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
     }
 
     case 'CLEAR_CART': {
-      const newState = { items: [], total: 0, itemCount: 0, deliveryFee: 0, totalWithDelivery: 0 };
+      const newState = { items: [], total: 0, itemCount: 0, deliveryFee: 0, totalWithDelivery: 0, pointsUsed: 0, pointsDiscount: 0, totalWithDiscount: 0 };
 
       // Persister en backend si utilisateur connecté
       if (user) {
@@ -174,17 +177,24 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
     }
 
     case 'SET_CART_ITEMS': {
-      const totals = calculateCartTotals(action.payload, state.deliveryFee);
-      return { items: action.payload, ...totals };
+      const totals = calculateCartTotals(action.payload, state.deliveryFee, state.pointsDiscount);
+      return { items: action.payload, pointsUsed: state.pointsUsed, pointsDiscount: state.pointsDiscount, totalWithDiscount: totals.totalWithDiscount, ...totals };
     }
 
     case 'CLEAR_CART_LOCAL': {
-      return { items: [], total: 0, itemCount: 0, deliveryFee: 0, totalWithDelivery: 0 };
+      return { items: [], total: 0, itemCount: 0, deliveryFee: 0, totalWithDelivery: 0, pointsUsed: 0, pointsDiscount: 0, totalWithDiscount: 0 };
     }
 
     case 'UPDATE_DELIVERY_FEE': {
-      const totals = calculateCartTotals(state.items, action.payload);
+      const totals = calculateCartTotals(state.items, action.payload, state.pointsDiscount);
       return { ...state, ...totals };
+    }
+
+    case 'SET_POINTS_USED': {
+      // Calculate discount based on points (1 point = 15 CFA)
+      const pointsDiscount = action.payload * 15;
+      const totals = calculateCartTotals(state.items, state.deliveryFee, pointsDiscount);
+      return { ...state, pointsUsed: action.payload, pointsDiscount, ...totals };
     }
 
     default:

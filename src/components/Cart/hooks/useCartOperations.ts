@@ -48,7 +48,7 @@ export function useCartOperations(deliveryZone: DeliveryZone | null, onOrderSucc
         createdAt: state.user.createdAt
       };
 
-      await sendCartOrderToWhatsApp(state.cart, adaptedUser);
+      await sendCartOrderToWhatsApp(state.cart, adaptedUser, state.cart.pointsUsed);
       dispatch({ type: 'ADD_TOAST', payload: {
         id: Date.now().toString(),
         type: 'success',

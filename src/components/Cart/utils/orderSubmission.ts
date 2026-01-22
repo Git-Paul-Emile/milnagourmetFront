@@ -6,19 +6,23 @@ interface OrderSubmissionParams {
   subtotal: number;
   customerInfo: CustomerInfo;
   selectedZone: DeliveryZone | undefined;
+  pointsUsed?: number;
 }
 
 export async function submitOrder({
   cartItems,
   subtotal,
   customerInfo,
-  selectedZone
+  selectedZone,
+  pointsUsed = 0
 }: OrderSubmissionParams): Promise<void> {
   if (!customerInfo.name || !customerInfo.phone || !selectedZone) {
     throw new Error('Informations client ou zone de livraison manquantes');
   }
 
-  const totalWithDelivery = subtotal + (selectedZone.deliveryFee || 0);
+  const deliveryFee = selectedZone.deliveryFee || 0;
+  const pointsDiscount = pointsUsed * 1; // 1 point = 1 FCFA
+  const totalWithDelivery = subtotal + deliveryFee - pointsDiscount;
 
   // Préparer les données pour l'API
   const orderData = {
@@ -32,7 +36,9 @@ export async function submitOrder({
       customCreation: item.customCreation
     })),
     total: totalWithDelivery,
-    deliveryFee: selectedZone.deliveryFee || 0,
+    deliveryFee: deliveryFee,
+    pointsUsed: pointsUsed,
+    pointsDiscount: pointsDiscount,
     notes: '',
   };
 

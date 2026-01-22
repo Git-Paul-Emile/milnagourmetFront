@@ -16,7 +16,7 @@ export async function sendOrderToWhatsApp(items: CartItem[], total: number, cust
   window.open(whatsappUrl, '_blank');
 }
 
-export async function sendCartOrderToWhatsApp(cart: Cart, user?: User | null): Promise<void> {
+export async function sendCartOrderToWhatsApp(cart: Cart, user?: User | null, pointsUsed: number = 0): Promise<void> {
   // Créer la commande dans l'API
   const orderData = {
     id: Date.now().toString(),
@@ -36,8 +36,9 @@ export async function sendCartOrderToWhatsApp(cart: Cart, user?: User | null): P
       product: item.product,
       customCreation: item.customCreation
     })),
-    total: user ? cart.totalWithDelivery || cart.total : cart.total,
+    total: user ? cart.totalWithDiscount || cart.total : cart.total,
     deliveryFee: user ? cart.deliveryFee || 0 : 0,
+    pointsUsed,
     status: 'pending',
     date: new Date().toISOString(),
     notes: ''

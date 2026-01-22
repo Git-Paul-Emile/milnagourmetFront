@@ -9,6 +9,7 @@ export interface AuthUser {
   zoneLivraisonId: string | null;
   zoneLivraison: string | null; // Nom de la zone pour affichage
   role: string;
+  pointsFidelite?: number; // Points de fidélité
   createdAt: string;
   updatedAt: string;
 }

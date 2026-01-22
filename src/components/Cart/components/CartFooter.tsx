@@ -52,7 +52,7 @@ export function CartFooter({ deliveryZone, isOrdering, onOrder, onClearCart }: C
       <div className="flex items-center justify-between text-lg font-bold">
         <span>Total:</span>
         <span className="text-primary">
-          {state.user ? state.cart.totalWithDelivery : state.cart.total} FCFA
+          {state.user ? state.cart.totalWithDiscount : state.cart.total} FCFA
         </span>
       </div>
 
