@@ -206,14 +206,6 @@ export function LoyaltyTab() {
             <div className="space-y-3 text-sm">
               <div className="flex items-start space-x-3">
                 <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold text-primary-foreground">1</div>
-                <p>Pour chaque commande, gagnez 0,03% du montant TTC en points</p>
-              </div>
-              <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold text-primary-foreground">2</div>
-                <p>1 point = 15 F de remise</p>
-              </div>
-              <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold text-primary-foreground">3</div>
                 <p>À partir de 100 points (1500 F), utilisez vos points sur vos commandes</p>
               </div>
             </div>
