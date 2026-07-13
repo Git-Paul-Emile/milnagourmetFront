@@ -28,16 +28,17 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks(id) {
           if (!id.includes("node_modules")) return undefined;
-          if (id.includes("react-dom") || id.includes("/react/") || id.includes("react-router")) return "vendor-react";
-          if (id.includes("@radix-ui")) return "vendor-radix";
-          if (id.includes("recharts") || id.includes("d3-")) return "vendor-charts";
+          /* IMPORTANT : ne JAMAIS séparer React des librairies qui en dépendent au
+             niveau module (@radix-ui, lucide-react, recharts, react-router,
+             @tanstack, react-hook-form…). L'ancien découpage faisait s'exécuter
+             vendor-radix avant l'initialisation de React en production :
+             "TypeError: Cannot read properties of undefined (reading 'useLayoutEffect')"
+             → page blanche. On ne sépare que des librairies 100 % indépendantes de React. */
           if (id.includes("xlsx")) return "vendor-xlsx";
-          if (id.includes("@fortawesome")) return "vendor-fontawesome";
-          if (id.includes("@tanstack")) return "vendor-query";
-          if (id.includes("lucide-react")) return "vendor-icons";
+          if (id.includes("@fortawesome") && !id.includes("react-fontawesome")) return "vendor-fontawesome";
           if (id.includes("date-fns")) return "vendor-date";
           if (id.includes("zod")) return "vendor-zod";
-          if (id.includes("react-hook-form") || id.includes("@hookform")) return "vendor-forms";
+          // React + tout l'écosystème React dans un seul chunk : ordre d'exécution garanti
           return "vendor";
         },
       },
