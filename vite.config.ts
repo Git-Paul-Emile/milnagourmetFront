@@ -9,10 +9,6 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8081,
     historyApiFallback: true,
-    fs: {
-      // Autorise le serveur dev à servir les images locales importées depuis ../back/uploads
-      allow: ['..'],
-    },
     proxy: {
       '/api': {
         target: 'http://localhost:3000',

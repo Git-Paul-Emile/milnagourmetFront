@@ -1,9 +1,7 @@
-// Médias par défaut LOCAUX : importés depuis back/uploads et bundlés par Vite dans le front.
+// Médias par défaut LOCAUX : bundlés par Vite dans le front.
 // Le hero et l'avatar ne dépendent plus d'aucun CDN externe (Cloudinary) — demande du 13/07/2026.
-// Au build, Vite copie ces fichiers dans dist/assets avec un hash ; en dev ils sont servis
-// via /@fs/ (voir server.fs.allow dans vite.config.ts).
-import heroBannerLocal from '../../../back/uploads/banners/hero-banner.jpg';
-import avatarOwnerLocal from '../../../back/uploads/avatarToast/milna-owner.jpg';
+import heroBannerLocal from '../assets/banners/hero-banner.jpg';
+import avatarOwnerLocal from '../assets/avatarToast/milna-owner.jpg';
 
 export const DEFAULT_AVATAR_TOAST_IMAGE = avatarOwnerLocal;
 export const DEFAULT_TESTIMONIAL_AVATAR = avatarOwnerLocal;
