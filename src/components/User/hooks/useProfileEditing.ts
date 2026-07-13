@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useApp } from '@/contexts/useApp';
 import { AuthUser } from '@/types';
+import { authService } from '@/services';
 import { validatePassword, validateConfirmPassword } from '../utils';
 
 interface EditableUserData {
@@ -93,8 +94,6 @@ export const useProfileEditing = (user: AuthUser | null) => {
     }
 
     try {
-      const apiUrl = '/';
-
       // Préparer les données pour l'API
       const updateData: {
         nom: string;
@@ -113,23 +112,10 @@ export const useProfileEditing = (user: AuthUser | null) => {
         updateData.ancienMotDePasse = editData.currentPassword;
       }
 
-      const response = await fetch(`${apiUrl}api/auth/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          // TODO: Add authorization header if needed
-        },
-        body: JSON.stringify(updateData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Erreur lors de la mise à jour du profil');
-      }
+      const response = await authService.updateProfile(updateData);
 
       // Update state with the response data
-      dispatch({ type: 'SET_USER', payload: data.data });
+      dispatch({ type: 'SET_USER', payload: response.data });
       setIsEditing(false);
 
       dispatch({

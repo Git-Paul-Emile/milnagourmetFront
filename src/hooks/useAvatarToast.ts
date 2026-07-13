@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import { siteService } from '@/services';
-
-const AVATAR_TOAST_FALLBACK = '/uploads/avatarToast/milna-owner.jpg';
+import { DEFAULT_AVATAR_TOAST_IMAGE } from '@/constants/media';
 
 export const useAvatarToast = () => {
-  const [avatarToast, setAvatarToast] = useState<string>(AVATAR_TOAST_FALLBACK);
+  const [avatarToast, setAvatarToast] = useState<string>(DEFAULT_AVATAR_TOAST_IMAGE);
 
   useEffect(() => {
     const fetchAvatarToast = async () => {
       try {
         const response = await siteService.getAvatarToast();
-        setAvatarToast((response.data as { image: string }).image);
+        const image = (response.data as { image: string }).image;
+        // L'avatar ne doit jamais être chargé depuis un CDN externe (Cloudinary) : fallback local
+        if (image && !image.includes('cloudinary')) {
+          setAvatarToast(image);
+        }
       } catch (error) {
         console.error('Erreur lors de la récupération de l\'avatar toast:', error);
         // Garder le fallback
@@ -19,5 +22,5 @@ export const useAvatarToast = () => {
     fetchAvatarToast();
   }, []);
 
-  return `${import.meta.env.VITE_API_URL}${avatarToast}`;
+  return avatarToast;
 };

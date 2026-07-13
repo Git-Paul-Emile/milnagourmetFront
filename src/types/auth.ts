@@ -32,6 +32,13 @@ export interface RegisterData {
   zoneLivraisonId: string;
   password: string;
   confirmPassword: string;
+  guestCart?: {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    image?: string;
+  }[];
 }
 
 export interface AuthResponse {

@@ -2,7 +2,6 @@ import React, { useState, ReactNode } from 'react';
 import { Order } from '@/types';
 import { useOrders } from '../hooks/useOrders';
 import { useOrderFilters } from '../hooks/useOrderFilters';
-import { sendOrderConfirmationMessage, sendOrderCancellationMessage } from '../services/notificationService';
 import { OrderContext, OrderContextType } from './OrderContextDefinition';
 
 interface OrderProviderProps {
@@ -10,7 +9,7 @@ interface OrderProviderProps {
 }
 
 export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
-  const { orders, loading, updateOrderStatus: updateStatus } = useOrders();
+  const { orders, loading, updateOrderStatus: updateStatus, assignDeliveryPerson: assignPerson } = useOrders();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -36,10 +35,7 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     try {
       await updateStatus(orderId, status, message);
 
-      // Notifications
-       if (status === 'annulee' && selectedOrder && message) {
-         sendOrderCancellationMessage(selectedOrder, message);
-       }
+      // La notification WhatsApp au client est envoyée automatiquement par le backend
 
       // Afficher le toast de succès
       const statusMessages = {
@@ -51,6 +47,20 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Erreur lors de la mise à jour du statut:', error);
       throw error; // Re-throw pour que l'appelant puisse gérer l'erreur
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const assignDeliveryPerson = async (orderId: string, livreurId: string | null) => {
+    setIsProcessing(true);
+    try {
+      const deliveryPerson = await assignPerson(orderId, livreurId);
+      setSelectedOrder(prev => (prev && prev.id === orderId ? { ...prev, deliveryPerson } : prev));
+      showToast(livreurId ? 'Livreur assigné avec succès' : 'Livreur retiré avec succès');
+    } catch (error) {
+      console.error('Erreur lors de l\'assignation du livreur:', error);
+      throw error;
     } finally {
       setIsProcessing(false);
     }
@@ -85,6 +95,7 @@ export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     setSortOrder,
     resetFilters,
     updateOrderStatus,
+    assignDeliveryPerson,
     isProcessing,
     selectedOrder,
     setSelectedOrder,

@@ -3,8 +3,9 @@ import { X, Send } from 'lucide-react';
 import { useApp } from '@/contexts/useApp';
 import { Button } from '@/components/ui/button';
 import { useCustomerInfo, useDeliveryZones } from './hooks';
-import { CustomerInfoFields, DeliveryZoneSelector, OrderSummary, PointsSelector } from './components';
+import { CustomerInfoFields, DeliveryZoneSelector, OrderSummary } from './components';
 import { submitOrder } from './utils/orderSubmission';
+import { DEFAULT_TESTIMONIAL_AVATAR } from '@/constants/media';
 
 interface CustomerInfoModalProps {
   isOpen: boolean;
@@ -17,11 +18,6 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
   const { customerInfo, updateField, isValid } = useCustomerInfo();
   const { deliveryZones, selectedZoneId, selectedZone, isLoading, setSelectedZoneId } = useDeliveryZones(isOpen);
   const [isSending, setIsSending] = useState(false);
-  const [pointsUsed, setPointsUsed] = useState(0);
-
-  const handlePointsChange = (points: number) => {
-    setPointsUsed(points);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +29,7 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
           id: Date.now().toString(),
           type: 'error',
           message: 'Veuillez remplir tous les champs, y compris la zone de livraison.',
-          avatar: '/uploads/temoignages/milna-owner.jpg'
+          avatar: DEFAULT_TESTIMONIAL_AVATAR
         }
       });
       return;
@@ -45,8 +41,7 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
         cartItems: state.cart.items,
         subtotal: state.cart.total,
         customerInfo,
-        selectedZone,
-        pointsUsed
+        selectedZone
       });
 
       dispatch({
@@ -55,7 +50,7 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
           id: Date.now().toString(),
           type: 'success',
           message: 'Commande envoyée avec succès ! Nous vous contacterons bientôt.',
-          avatar: '/uploads/temoignages/milna-owner.jpg'
+          avatar: DEFAULT_TESTIMONIAL_AVATAR
         }
       });
 
@@ -70,7 +65,7 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
           id: Date.now().toString(),
           type: 'error',
           message: 'Erreur lors de l\'envoi de la commande. Veuillez réessayer.',
-          avatar: '/uploads/temoignages/milna-owner.jpg'
+          avatar: DEFAULT_TESTIMONIAL_AVATAR
         }
       });
     } finally {
@@ -121,21 +116,10 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
               onZoneChange={setSelectedZoneId}
             />
 
-            {/* Points Selector - only show for logged-in users */}
-            {state.user && state.user.pointsFidelite > 0 && (
-              <PointsSelector
-                availablePoints={state.user.pointsFidelite}
-                currentTotal={state.cart.total + (selectedZone?.deliveryFee || 0)}
-                onPointsChange={handlePointsChange}
-                conversionRate={1}
-              />
-            )}
-
             <OrderSummary
               itemCount={state.cart.itemCount}
               subtotal={state.cart.total}
               selectedZone={selectedZone}
-              pointsDiscount={pointsUsed}
             />
 
             {/* Actions */}

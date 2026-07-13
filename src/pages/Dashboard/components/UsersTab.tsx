@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { User as UserType, Order, DeliveryZone } from '@/types';
 import { useUsers } from './useUsers';
 import { useUserFilters } from './useUserFilters';
+import { usePagination } from '@/hooks/usePagination';
+import { PaginationControls } from '@/components/shared/PaginationControls';
 import { UserFilters } from './UserFilters';
 import { UserStats } from './UserStats';
 import { UserList } from './UserList';
@@ -30,6 +32,8 @@ export function UsersTab({ users, orders, deliveryZones, loadDashboardData, disp
     filteredAndSortedUsers,
     resetFilters,
   } = useUserFilters(allUsers);
+
+  const { page, setPage, totalPages, paginatedItems, total, pageSize } = usePagination(filteredAndSortedUsers, 12);
 
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
   const [userOrdersModal, setUserOrdersModal] = useState(false);
@@ -78,10 +82,18 @@ export function UsersTab({ users, orders, deliveryZones, loadDashboardData, disp
 
 
       <UserList
-        filteredUsers={filteredAndSortedUsers}
+        filteredUsers={paginatedItems}
         onToggleBlock={handleToggleBlockWrapper}
         onDeleteUser={handleDeleteUserWrapper}
         onViewOrders={handleViewOrders}
+      />
+
+      <PaginationControls
+        page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        total={total}
+        pageSize={pageSize}
       />
 
       <UserOrdersModal

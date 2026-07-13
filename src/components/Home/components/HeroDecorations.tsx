@@ -4,7 +4,9 @@ export function HeroDecorations() {
   const { theme } = useTheme();
   const isChristmasTheme = theme?.name === 'Noël';
   return (
-    <>
+    /* Décor purement visuel : masqué aux lecteurs d'écran (aria-hidden) et
+       non-interactif (pointer-events-none) pour ne jamais bloquer les clics sur le contenu du hero */
+    <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
       {/* Éléments décoratifs flottants 3D améliorés */}
       <div className="absolute top-20 right-4 sm:right-20 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary/30 to-primary/10 rounded-full animate-float hidden md:block shadow-2xl transform rotate-12 hover:rotate-45 transition-all duration-1000 hover:scale-110 hover:shadow-primary/30" />
       <div className="absolute bottom-40 left-4 sm:left-10 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-full animate-float shadow-xl transform -rotate-12 hover:rotate-0 transition-all duration-1000 hover:scale-110 hover:shadow-secondary/30" style={{ animationDelay: '1s' }} />
@@ -38,6 +40,6 @@ export function HeroDecorations() {
           <div className="absolute top-1/2 left-10 w-1 h-1 bg-white/80 rounded-full animate-float opacity-85 hidden sm:block" style={{ animationDelay: '7s', animationDuration: '9.5s' }} />
         </>
       )}
-    </>
+    </div>
   );
 }

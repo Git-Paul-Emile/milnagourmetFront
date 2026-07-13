@@ -3,7 +3,6 @@ import { useParallax } from './hooks/useParallax';
 import { useHeroData } from './hooks/useHeroData';
 import { useTheme } from '@/hooks/useTheme';
 import { HeroLoading } from './components/HeroLoading';
-import { HeroBadge } from './components/HeroBadge';
 import { HeroTitle } from './components/HeroTitle';
 import { HeroSubtitle } from './components/HeroSubtitle';
 import { HeroFeatures } from './components/HeroFeatures';
@@ -11,12 +10,11 @@ import { HeroCTA } from './components/HeroCTA';
 import { HeroDecorations } from './components/HeroDecorations';
 import NewYearEffects from '../NewYearEffects';
 import { getFullImageUrl } from '@/utils/imageUtils';
+import { DEFAULT_BANNER_IMAGE } from '@/constants/media';
 
 export function HeroSection() {
-  console.log('HeroSection rendering');
   const parallaxRef = useParallax();
   const { heroData, loading } = useHeroData();
-  console.log('HeroSection: heroData', heroData, 'loading', loading);
   const { theme } = useTheme();
   const isChristmasTheme = theme?.name === 'Noël';
   const isNewYearTheme = theme?.name === 'Nouvel An';
@@ -37,7 +35,13 @@ export function HeroSection() {
           ref={parallaxRef}
           className="parallax-layer bg-cover bg-center bg-no-repeat transform-gpu transition-transform duration-1000 ease-out"
           style={{
-            backgroundImage: heroData.banner ? `url(${getFullImageUrl(heroData.banner)})` : 'none',
+            /* L'image de fond ne doit jamais être chargée depuis un CDN externe (Cloudinary) :
+               bannière locale par défaut, ou upload servi par notre propre backend */
+            backgroundImage: `url(${
+              heroData.banner && !heroData.banner.includes('cloudinary')
+                ? getFullImageUrl(heroData.banner)
+                : DEFAULT_BANNER_IMAGE
+            })`,
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             height: '120%',
@@ -61,7 +65,6 @@ export function HeroSection() {
       {/* Contenu */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center lg:text-left">
-          <HeroBadge badge={heroData.badge} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />
           <HeroTitle title={heroData.title} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />
           <HeroSubtitle subtitle={heroData.subtitle} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />
           <HeroFeatures features={heroData.features} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />

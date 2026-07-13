@@ -10,7 +10,7 @@ export function ProductCategoriesSection({ productCategories }: ProductCategorie
   return (
     <div className="bg-card rounded-lg border border-border p-6">
       <div className="flex items-center space-x-3 mb-4">
-        <Tag className="h-5 w-5 text-orange-500" />
+        <Tag className="h-5 w-5 text-secondary" />
         <h3 className="text-lg font-semibold">Catégories de produits</h3>
       </div>
 

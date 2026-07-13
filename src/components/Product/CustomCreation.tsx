@@ -8,7 +8,6 @@ import {
   SizeSelector,
   FruitSelector,
   SauceSelector,
-  CerealeSelector,
   QuantitySelector,
   LoadingState
 } from './components';
@@ -28,7 +27,6 @@ export function CustomCreation({ isOpen, onClose }: CustomCreationProps) {
     config,
     toggleFruit,
     toggleSauce,
-    toggleCereale,
     updateQuantity,
     setSize,
     resetCreation,
@@ -102,12 +100,6 @@ export function CustomCreation({ isOpen, onClose }: CustomCreationProps) {
               onToggleSauce={toggleSauce}
             />
 
-            <CerealeSelector
-              cereales={creationOptions.cereales}
-              selectedCereales={creation.cereales}
-              onToggleCereale={toggleCereale}
-            />
-
             {/* Quantité et ajout au panier - Amélioré pour mobile */}
             <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-border p-4 sm:p-6 space-y-4 shadow-lg">
               <QuantitySelector
@@ -127,7 +119,7 @@ export function CustomCreation({ isOpen, onClose }: CustomCreationProps) {
                   onClick={handleAddToCart}
                   loading={isAdding}
                   disabled={!isValid}
-                  className="flex items-center justify-center space-x-2 w-full sm:w-auto px-8 py-4 sm:px-6 sm:py-3 rounded-lg font-semibold transition-all transform-gpu bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:shadow-xl hover:shadow-primary/25 hover:scale-105 active:scale-95"
+                  className="flex items-center justify-center space-x-2 w-full sm:w-auto px-8 py-4 sm:px-6 sm:py-3 rounded-lg font-semibold transition-all transform-gpu bg-gradient-to-r from-primary to-primary-light text-primary-foreground hover:shadow-xl hover:shadow-primary/25 hover:scale-105 active:scale-95"
                 >
                   <ShoppingCart className="h-5 w-5" />
                   <span className="text-lg sm:text-base">Ajouter au panier</span>

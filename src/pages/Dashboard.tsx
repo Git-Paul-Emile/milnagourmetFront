@@ -18,8 +18,6 @@ import { SettingsTab } from './Dashboard/components/SettingsTab';
 import { DashboardStats } from './Dashboard/components/types';
 
 // Import des nouveaux composants factorisés
-import { ZoneModal } from '@/components/Dashboard/ZoneModal';
-import { DeliveryPersonModal } from '@/components/Dashboard/DeliveryPersonModal';
 import { SizeModal } from '@/components/Dashboard/SizeModal';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { DashboardSidebar } from '@/components/DashboardSidebar';
@@ -32,13 +30,14 @@ import { SuccessToast } from '@/components/SuccessToast';
 import { useDashboardData } from '@/hooks/dashboard/useDashboardData';
 import { useDashboardModals } from '@/hooks/dashboard/useDashboardModals';
 import { useStoreHours } from '@/hooks/dashboard/useStoreHours';
-import { useDeliveryZones } from '@/hooks/dashboard/useDeliveryZones';
-import { useDeliveryPersons } from '@/hooks/dashboard/useDeliveryPersons';
 import { useProductCategories } from '@/hooks/dashboard/useProductCategories';
 import { useCreationOptions } from '@/hooks/dashboard/useCreationOptions';
 import { useCreationSizes } from '@/hooks/dashboard/useCreationSizes';
+import { useSEO } from '@/hooks/useSEO';
 
 export function Dashboard() {
+  useSEO({ title: 'Tableau de bord - Milna Gourmet', noIndex: true });
+
   const navigate = useNavigate();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<string>('overview');
@@ -53,8 +52,6 @@ export function Dashboard() {
   const storeHoursHook = useStoreHours();
 
   // Utilisation des hooks existants pour les entités
-  const deliveryZonesHook = useDeliveryZones();
-  const deliveryPersonsHook = useDeliveryPersons([]);
   const productCategoriesHook = useProductCategories(modals.displaySuccessToast);
   const creationOptionsHook = useCreationOptions(modals.displaySuccessToast);
   const creationSizesHook = useCreationSizes(modals.displaySuccessToast);
@@ -147,39 +144,6 @@ export function Dashboard() {
         onConfirm={modals.confirmDelete}
         onCancel={() => modals.setDeleteModal({ isOpen: false, type: 'product' })}
       />
-
-      {/* Modal Zone */}
-      <ZoneModal
-        isOpen={modals.addZoneModal}
-        onClose={() => modals.setAddZoneModal(false)}
-        onSave={deliveryZonesHook.handleAddZone}
-        mode="add"
-      />
-
-      <ZoneModal
-        isOpen={!!modals.editingZone}
-        onClose={() => modals.setEditingZone(null)}
-        onSave={deliveryZonesHook.handleSaveZone}
-        editingZone={modals.editingZone}
-        mode="edit"
-      />
-
-      {/* Modal Livreur */}
-      <DeliveryPersonModal
-        isOpen={modals.addDeliveryPersonModal}
-        onClose={() => modals.setAddDeliveryPersonModal(false)}
-        onSave={deliveryPersonsHook.handleAddDeliveryPerson}
-        mode="add"
-      />
-
-      <DeliveryPersonModal
-        isOpen={!!modals.editingDeliveryPerson}
-        onClose={() => modals.setEditingDeliveryPerson(null)}
-        onSave={deliveryPersonsHook.handleSaveDeliveryPerson}
-        editingPerson={modals.editingDeliveryPerson}
-        mode="edit"
-      />
-
 
       {/* Modal Taille */}
       <SizeModal

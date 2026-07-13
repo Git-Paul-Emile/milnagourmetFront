@@ -2,8 +2,11 @@ import React from 'react';
 import { Header } from '@/components/Layout/Header';
 import { Footer } from '@/components/Layout/Footer';
 import { ScrollToTop } from '@/components/Layout/ScrollToTop';
+import { useSEO } from '@/hooks/useSEO';
 
 const TermsOfUse = () => {
+  useSEO({ title: "Conditions d'Utilisation - Milna Gourmet", description: "Conditions d'utilisation du site et des services Milna Gourmet." });
+
   return (
     <div className="min-h-screen bg-background">
       <Header />

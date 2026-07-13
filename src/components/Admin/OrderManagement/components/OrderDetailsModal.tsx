@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { XCircle, CheckCircle, Clock, Send } from 'lucide-react';
-import { Order, DeliveryZone } from '@/types';
+import { XCircle, CheckCircle, Clock, Send, Truck } from 'lucide-react';
+import { Order, DeliveryZone, DeliveryPerson } from '@/types';
 import { deliveryZoneService } from '@/services/deliveryZone';
+import { deliveryPersonService } from '@/services/deliveryPerson';
 import { userService } from '@/services/userService';
 import { Button } from '@/components/ui/button';
 
@@ -9,6 +10,7 @@ interface OrderDetailsModalProps {
   selectedOrder: Order | null;
   onClose: () => void;
   onUpdateStatus: (orderId: string, status: Order['status'], message?: string) => void;
+  onAssignDeliveryPerson: (orderId: string, livreurId: string | null) => Promise<void>;
   isProcessing: boolean;
 }
 
@@ -21,9 +23,40 @@ interface UsersResponse {
   data?: UserWithZone[];
 }
 
-export function OrderDetailsModal({ selectedOrder, onClose, onUpdateStatus, isProcessing }: OrderDetailsModalProps) {
+export function OrderDetailsModal({ selectedOrder, onClose, onUpdateStatus, onAssignDeliveryPerson, isProcessing }: OrderDetailsModalProps) {
   const [actionMessage, setActionMessage] = useState('');
   const [fallbackDeliveryZone, setFallbackDeliveryZone] = useState<DeliveryZone | null>(null);
+  const [deliveryPersons, setDeliveryPersons] = useState<DeliveryPerson[]>([]);
+  const [selectedLivreurId, setSelectedLivreurId] = useState('');
+  const [isAssigning, setIsAssigning] = useState(false);
+
+  useEffect(() => {
+    if (!selectedOrder) return;
+    setSelectedLivreurId(selectedOrder.deliveryPerson?.id || '');
+
+    const loadDeliveryPersons = async () => {
+      try {
+        const response = await deliveryPersonService.getAll();
+        setDeliveryPersons(((response as { data?: DeliveryPerson[] }).data) || []);
+      } catch (error) {
+        console.error('Erreur lors du chargement des livreurs:', error);
+      }
+    };
+
+    loadDeliveryPersons();
+  }, [selectedOrder]);
+
+  const handleAssignDeliveryPerson = async () => {
+    if (!selectedOrder) return;
+    setIsAssigning(true);
+    try {
+      await onAssignDeliveryPerson(selectedOrder.id, selectedLivreurId || null);
+    } catch (error) {
+      console.error('Erreur lors de l\'assignation du livreur:', error);
+    } finally {
+      setIsAssigning(false);
+    }
+  };
 
   // Si pas de deliveryZone dans la commande mais qu'on a un customer, récupérer depuis l'utilisateur
   useEffect(() => {
@@ -75,14 +108,6 @@ export function OrderDetailsModal({ selectedOrder, onClose, onUpdateStatus, isPr
 
     fetchUserDeliveryZone();
   }, [selectedOrder]);
-
-  // Debug: vérifier les données reçues
-  if (process.env.NODE_ENV === 'development' && selectedOrder) {
-    console.log('OrderDetailsModal - selectedOrder:', selectedOrder);
-    console.log('OrderDetailsModal - selectedOrder keys:', Object.keys(selectedOrder));
-    console.log('OrderDetailsModal - deliveryZone:', selectedOrder.deliveryZone);
-    console.log('OrderDetailsModal - customer:', selectedOrder.customer);
-  }
 
   if (!selectedOrder) return null;
 
@@ -207,6 +232,36 @@ export function OrderDetailsModal({ selectedOrder, onClose, onUpdateStatus, isPr
                   );
                 }
               })()}
+            </div>
+          </div>
+
+          {/* Livreur assigné */}
+          <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+            <h4 className="font-semibold flex items-center space-x-2">
+              <Truck className="h-4 w-4" />
+              <span>Livreur assigné</span>
+            </h4>
+            <div className="flex items-center space-x-3">
+              <select
+                value={selectedLivreurId}
+                onChange={(e) => setSelectedLivreurId(e.target.value)}
+                className="flex-1 border border-border rounded-lg px-3 py-2 bg-background text-sm"
+              >
+                <option value="">Aucun livreur</option>
+                {deliveryPersons.map((person) => (
+                  <option key={person.id} value={person.id}>
+                    {person.nomComplet} ({person.vehicle})
+                  </option>
+                ))}
+              </select>
+              <Button
+                onClick={handleAssignDeliveryPerson}
+                loading={isAssigning}
+                disabled={(selectedLivreurId || '') === (selectedOrder.deliveryPerson?.id || '')}
+                className="whitespace-nowrap"
+              >
+                Assigner
+              </Button>
             </div>
           </div>
 

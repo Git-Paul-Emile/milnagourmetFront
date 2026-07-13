@@ -4,6 +4,11 @@ const ChristmasSnow: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Accessibilité : ne pas générer de neige si l'utilisateur préfère réduire les animations
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
     let snowActive = true;
     let snowInterval: NodeJS.Timeout;
     const snowIntensity = 300; // ms entre chaque flocon
@@ -131,7 +136,7 @@ const ChristmasSnow: React.FC = () => {
           }
         `}
       </style>
-      <div ref={containerRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9999 }}></div>
+      <div ref={containerRef} aria-hidden="true" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9999 }}></div>
     </>
   );
 };

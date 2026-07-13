@@ -22,7 +22,7 @@ export function StoreStatusBar({ isChristmasTheme = false }: StoreStatusBarProps
       {storeStatus.message}
       {storeStatus.nextChange && (
         <span className="ml-2 text-xs opacity-80">
-          • {storeStatus.nextChange}
+          {storeStatus.nextChange}
         </span>
       )}
     </div>

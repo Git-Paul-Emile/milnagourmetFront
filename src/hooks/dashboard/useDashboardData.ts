@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { Order, Product, User as UserType, Customer, StoreHours, ProductCategoryItem, CreationSize, CreationOptions, DashboardStats } from '@/types';
 import { DeliveryZone, DeliveryPerson } from '@/types/dashboard';
 import { calculateCustomersFromOrders, calculateDashboardStats } from '@/utils/dashboard/statsCalculations';
-import { useDeliveryZones } from './useDeliveryZones';
-import { useDeliveryPersons } from './useDeliveryPersons';
 import { useProductCategories } from './useProductCategories';
 import { useCreationOptions } from './useCreationOptions';
 import { useCreationSizes } from './useCreationSizes';
@@ -62,8 +60,6 @@ export const useDashboardData = (): DashboardData => {
   const [loading, setLoading] = useState(true);
 
   // Utilisation des hooks personnalisés
-  const deliveryZonesHook = useDeliveryZones();
-  const deliveryPersonsHook = useDeliveryPersons(deliveryZonesHook.deliveryZones.map(z => ({ id: z.id, name: z.name })));
   const productCategoriesHook = useProductCategories();
   const creationOptionsHook = useCreationOptions();
   const creationSizesHook = useCreationSizes();
@@ -115,9 +111,7 @@ export const useDashboardData = (): DashboardData => {
       setAllProductsForTab(productsFromAPI);
       setUsers(regularUsers);
       setDeliveryZones(deliveryZonesFromAPI);
-      deliveryZonesHook.setDeliveryZones(deliveryZonesFromAPI);
-      deliveryPersonsHook.setDeliveryPersons(deliveryPersonsFromAPI);
-      setDeliveryPersons(deliveryPersonsFromAPI); // Add this for the state
+      setDeliveryPersons(deliveryPersonsFromAPI);
       // Note: storeHours pourrait être géré séparément
       productCategoriesHook.setProductCategories(productCategoriesFromAPI);
       creationSizesHook.setCreationSizes(creationSizesFromAPI);

@@ -14,7 +14,7 @@ export function LogoSection({ logo, availableImages, onLogoUpload, onLogoSelect 
   const [showGallery, setShowGallery] = React.useState(false);
 
   // Filtrer uniquement les images de logos
-  const logoImages = availableImages.filter(image => image.value.includes('/uploads/logos/'));
+  const logoImages = availableImages.filter(image => image.value.includes('/milnagourmet/logos/'));
 
   return (
     <div className="bg-card rounded-lg border border-border p-4 sm:p-6">

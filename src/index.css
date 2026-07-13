@@ -12,10 +12,10 @@ Couleurs principales : Turquoise (#16B8BD) et couleurs gourmandes
     --foreground: 343 84% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 343 84% 15%; /* Aligné sur --foreground (cohérence des tokens) */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 343 84% 15%; /* Aligné sur --foreground (cohérence des tokens) */
 
     /* Milna Brand Colors */
     --primary: 184 89% 40.7%; /* #16B8BD - Turquoise principal */
@@ -23,9 +23,9 @@ Couleurs principales : Turquoise (#16B8BD) et couleurs gourmandes
     --primary-light: 184 89% 55%;
     --primary-dark: 184 89% 30%;
 
-    --secondary: 25 100% 60%; /* #FF9933 - Orange gourmand */
+    --secondary: 338 71% 52%; /* #DC2E6D - Framboise gourmande (remplace l'orange ; blanc dessus = 4.5:1, AA) */
     --secondary-foreground: 0 0% 100%;
-    --secondary-light: 25 100% 70%;
+    --secondary-light: 338 75% 65%;
 
     --accent: 184 89% 40.7%; /* #18B6BD - Turquoise accent */
     --accent-foreground: 0 0% 100%;
@@ -61,7 +61,7 @@ Couleurs principales : Turquoise (#16B8BD) et couleurs gourmandes
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 184 89% 40.7%; /* Focus ring aligné sur la couleur de marque (focus visible cohérent) */
 
     --radius: 0.5rem;
 
@@ -97,9 +97,9 @@ Couleurs principales : Turquoise (#16B8BD) et couleurs gourmandes
     --primary-light: 184 89% 60%;
     --primary-dark: 184 89% 35%;
 
-    --secondary: 25 100% 65%;
+    --secondary: 338 75% 62%; /* Framboise éclaircie pour le mode sombre */
     --secondary-foreground: 343 84% 8%;
-    --secondary-light: 25 100% 75%;
+    --secondary-light: 338 75% 72%;
 
     --accent: 184 89% 50%;
     --accent-foreground: 0 0% 100%;
@@ -116,7 +116,7 @@ Couleurs principales : Turquoise (#16B8BD) et couleurs gourmandes
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 184 89% 50%; /* Focus ring aligné sur la couleur de marque (mode sombre) */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -135,12 +135,19 @@ Couleurs principales : Turquoise (#16B8BD) et couleurs gourmandes
 
   body {
     @apply bg-background text-foreground font-inter;
-    scroll-behavior: smooth;
   }
 
-  /* Custom Scrollbar */
+  /* Défilement fluide uniquement si l'utilisateur n'a pas demandé la réduction des animations */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* Custom Scrollbar — 8px minimum pour une zone de saisie accessible */
   ::-webkit-scrollbar {
-    width: 2px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
@@ -149,7 +156,7 @@ Couleurs principales : Turquoise (#16B8BD) et couleurs gourmandes
 
   ::-webkit-scrollbar-thumb {
     background: hsl(var(--primary));
-    border-radius: 1px;
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -348,6 +355,20 @@ Couleurs principales : Turquoise (#16B8BD) et couleurs gourmandes
     background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
     background-size: 200px 100%;
     animation: shimmer 2s infinite;
+  }
+}
+
+/* Accessibilité : respect de la préférence utilisateur "réduire les animations" (WCAG 2.3.3)
+   Neutralise les animations décoratives infinies (float, glow, shimmer, neige, feux d'artifice)
+   et raccourcit les transitions pour les utilisateurs sensibles au mouvement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

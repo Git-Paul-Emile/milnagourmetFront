@@ -4,6 +4,10 @@ const NewYearEffects: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Accessibilité : pas de confettis si l'utilisateur préfère réduire les animations
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
 
     // Créer des confettis
     function createConfetti() {
@@ -160,7 +164,7 @@ const NewYearEffects: React.FC = () => {
           }
         `}
       </style>
-      <div ref={containerRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9997 }}></div>
+      <div ref={containerRef} aria-hidden="true" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9997 }}></div>
     </>
   );
 };

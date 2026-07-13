@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,19 +11,23 @@ import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { ToastContainer } from "@/components/Layout/ToastContainer";
 import { GlobalEffects } from "@/components/GlobalEffects";
 import { ProtectedRoute } from "@/components/Auth/ProtectedRoute";
+import { PageLoader } from "@/components/PageLoader";
 import Index from "./pages/Index";
-import Profile from "./pages/Profile";
-import { Dashboard } from "./pages/Dashboard";
-import { AdminLogin } from "./pages/AdminLogin";
-import NotFound from "./pages/NotFound";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfUse from "./pages/TermsOfUse";
-import LegalNotices from "./pages/LegalNotices";
+
+// Chargées à la demande : réduit fortement le bundle initial (dashboard admin
+// avec recharts/xlsx, pages secondaires) puisqu'elles ne servent qu'à une
+// fraction des visiteurs.
+const Profile = lazy(() => import("./pages/Profile"));
+const Dashboard = lazy(() => import("./pages/Dashboard").then((m) => ({ default: m.Dashboard })));
+const AdminLogin = lazy(() => import("./pages/AdminLogin").then((m) => ({ default: m.AdminLogin })));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfUse = lazy(() => import("./pages/TermsOfUse"));
+const LegalNotices = lazy(() => import("./pages/LegalNotices"));
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  console.log('App rendering');
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -40,24 +45,26 @@ const App = () => {
                     v7_relativeSplatPath: true,
                   }}
                 >
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/admin/login" element={<AdminLogin />} />
-                    <Route path="/politique-confidentialite" element={<PrivacyPolicy />} />
-                    <Route path="/conditions-utilisation" element={<TermsOfUse />} />
-                    <Route path="/mentions-legales" element={<LegalNotices />} />
-                    <Route
-                      path="/dashboard"
-                      element={
-                        <ProtectedRoute requiredRole="ADMIN" adminLoginPath="/admin/login">
-                          <Dashboard />
-                        </ProtectedRoute>
-                      }
-                    />
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+                  <Suspense fallback={<PageLoader />}>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/admin/login" element={<AdminLogin />} />
+                      <Route path="/politique-confidentialite" element={<PrivacyPolicy />} />
+                      <Route path="/conditions-utilisation" element={<TermsOfUse />} />
+                      <Route path="/mentions-legales" element={<LegalNotices />} />
+                      <Route
+                        path="/dashboard"
+                        element={
+                          <ProtectedRoute requiredRole="ADMIN" adminLoginPath="/admin/login">
+                            <Dashboard />
+                          </ProtectedRoute>
+                        }
+                      />
+                      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Suspense>
                 </BrowserRouter>
               </BrandingProvider>
             </ThemeProvider>

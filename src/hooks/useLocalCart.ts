@@ -11,6 +11,13 @@ export interface LocalCartItem {
   quantity: number;
   image?: string;
   description?: string;
+  customCreation?: {
+    size: { id: number; nom: string; prix: number };
+    selectedFruits: string[];
+    selectedSauces: string[];
+    selectedCereales: string[];
+    totalPrice: number;
+  };
 }
 
 export interface LocalCart {

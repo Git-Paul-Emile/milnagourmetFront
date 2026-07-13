@@ -18,7 +18,7 @@ export const deliveryZoneService = {
   },
 
   async getDeliveryZoneById(id: string) {
-    const response = await httpClient.get(`/api/delivery-zones/${id}`);
+    const response = await httpClient.get<DeliveryZone>(`/api/delivery-zones/${id}`);
     return response.data;
   },
 

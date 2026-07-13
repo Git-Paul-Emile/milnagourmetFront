@@ -1,8 +1,11 @@
 import React from 'react';
 import { useAdminLoginForm } from '@/hooks/useAdminLoginForm';
 import { AdminLoginHeader, AdminLoginForm, AdminLoginFooter } from '@/components/AdminLogin';
+import { useSEO } from '@/hooks/useSEO';
 
 export function AdminLogin() {
+  useSEO({ title: 'Connexion Admin - Milna Gourmet', noIndex: true });
+
   const {
     formData,
     fieldErrors,

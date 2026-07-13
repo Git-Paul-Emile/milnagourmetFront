@@ -14,7 +14,7 @@ export function BannerSection({ banner, availableImages, onBannerUpload, onBanne
   const [showGallery, setShowGallery] = React.useState(false);
 
   // Filtrer uniquement les images de bannières
-  const bannerImages = availableImages.filter(image => image.value.includes('/uploads/banners/'));
+  const bannerImages = availableImages.filter(image => image.value.includes('/milnagourmet/banners/'));
 
   return (
     <div className="bg-card rounded-lg border border-border p-4 sm:p-6">

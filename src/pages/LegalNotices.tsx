@@ -2,8 +2,11 @@ import React from 'react';
 import { Header } from '@/components/Layout/Header';
 import { Footer } from '@/components/Layout/Footer';
 import { ScrollToTop } from '@/components/Layout/ScrollToTop';
+import { useSEO } from '@/hooks/useSEO';
 
 const LegalNotices = () => {
+  useSEO({ title: 'Mentions Légales - Milna Gourmet', description: 'Mentions légales du site Milna Gourmet : éditeur, hébergeur et informations légales.' });
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -16,7 +19,7 @@ const LegalNotices = () => {
             <div className="mb-4">
               <p><strong>Milna Gourmet</strong></p>
               <p>Adresse : Kalikack, Libreville, Gabon</p>
-              <p>Téléphone : +24106610304</p>
+              <p>Téléphone : +24106610304 / +241 065 75 12 42</p>
               <p>Email : business.libreville23@gmail.com</p>
               {/* <p>SIRET : [Numéro SIRET]</p>
               <p>Capital social : [Montant du capital social] €</p> */}

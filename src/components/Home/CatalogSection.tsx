@@ -10,14 +10,12 @@ import { cn } from '@/lib/utils';
 import { CategoryFilters } from './CategoryFilters';
 import { CreationSection } from './CreationSection';
 import { AddCategoryModal } from './AddCategoryModal';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselDots } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 
 export function CatalogSection() {
-  console.log('CatalogSection rendering');
   const { user } = useAuth();
   const { catalogData, products, categories, loading, setCategories } = useCatalogData();
-  console.log('CatalogSection: catalogData', catalogData, 'products', products?.length, 'loading', loading);
   const { theme } = useTheme();
   const isChristmasTheme = theme?.name === 'Noël';
 
@@ -63,7 +61,6 @@ export function CatalogSection() {
           3: 'creation'
         };
         setCategoryIdToName(fallbackMapping);
-        console.log('Utilisation du mapping de fallback:', fallbackMapping);
       }
     };
 
@@ -191,7 +188,6 @@ export function CatalogSection() {
       // Mettre à jour l'état local
       setCategories(prev => [...prev, newCategory]);
 
-      console.log('Catégorie ajoutée avec succès');
     } catch (error) {
       console.error('Erreur lors de l\'ajout de la catégorie:', error);
       // En cas d'erreur API, ajouter localement quand même
@@ -263,7 +259,6 @@ export function CatalogSection() {
                       <>
                         <CarouselPrevious className="-left-4" />
                         <CarouselNext className="-right-4" />
-                        <CarouselDots />
                       </>
                     )}
                   </Carousel>
@@ -323,7 +318,6 @@ export function CatalogSection() {
                           <>
                             <CarouselPrevious className="-left-4" />
                             <CarouselNext className="-right-4" />
-                            <CarouselDots />
                           </>
                         )}
                       </Carousel>

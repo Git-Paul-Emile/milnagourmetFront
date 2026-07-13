@@ -30,8 +30,8 @@ export function CartFooter({ deliveryZone, isOrdering, onOrder, onClearCart }: C
               ) : state.user.zoneLivraison ? (
                 <div>
                   <p className="text-muted-foreground">{state.user.zoneLivraison}</p>
-                  <p className="text-xs text-yellow-600 dark:text-yellow-400 mt-1">
-                    ⚠️ Zone non trouvée dans la liste active
+                  <p className="text-xs text-yellow-700 dark:text-yellow-400 mt-1" role="alert">
+                    Zone non trouvée dans la liste active
                   </p>
                 </div>
               ) : (

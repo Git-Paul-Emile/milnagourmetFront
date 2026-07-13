@@ -7,7 +7,7 @@ export { siteService } from './siteService';
 export { productService } from './productService';
 export { orderService } from './orderService';
 export { userService } from './userService';
-export { creationService } from './creationService';
+export { creationService, type CreationOptionItem } from './creationService';
 export { configService } from './configService';
 
 // Export des services WhatsApp et téléphone

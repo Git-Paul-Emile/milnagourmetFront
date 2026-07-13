@@ -2,13 +2,14 @@ import { CreationSize } from '@/types';
 import { AppAction } from '@/contexts/appContextHelpers';
 import { LocalCreationOptions, CreationConfig } from '../hooks/useCustomCreation';
 import { siteService } from '@/services';
+import { DEFAULT_AVATAR_TOAST_IMAGE, DEFAULT_CREATION_IMAGE } from '@/constants/media';
 
-const AVATAR_TOAST_FALLBACK = `${import.meta.env.VITE_API_URL}/uploads/avatarToast/milna-owner.jpg`;
+const AVATAR_TOAST_FALLBACK = DEFAULT_AVATAR_TOAST_IMAGE;
 
 const getAvatarToast = async (): Promise<string> => {
   try {
     const response = await siteService.getAvatarToast();
-    return `${import.meta.env.VITE_API_URL}${(response.data as { image: string }).image}`;
+    return (response.data as { image: string }).image;
   } catch (error) {
     console.error('Erreur lors de la récupération de l\'avatar toast:', error);
     return AVATAR_TOAST_FALLBACK;
@@ -42,7 +43,7 @@ export async function addCustomCreationToCart(
       description,
       price: config.price,
       quantity: creation.quantity,
-      image: `${import.meta.env.VITE_API_URL}/uploads/creation/yogurt-creation.jpg`,
+      image: DEFAULT_CREATION_IMAGE,
       customCreation: {
         size: selectedSize,
         selectedFruits: creation.fruits,

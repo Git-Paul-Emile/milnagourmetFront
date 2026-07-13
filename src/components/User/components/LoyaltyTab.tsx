@@ -36,16 +36,12 @@ export function LoyaltyTab() {
   const loadLoyaltyData = async () => {
     try {
       setLoading(true);
-      console.log('Tentative de chargement des données de fidélité...');
-      console.log('Token disponible:', httpClient.hasToken());
 
       const [pointsResponse, historyResponse] = await Promise.all([
         httpClient.get<LoyaltyData>('/api/loyalty/points'),
         httpClient.get<LoyaltyHistory[]>('/api/loyalty/history')
       ]);
 
-      console.log('Réponse points brute:', pointsResponse);
-      console.log('Réponse historique brute:', historyResponse);
 
       if (pointsResponse.status === 'success') {
         setLoyaltyData(pointsResponse.data);

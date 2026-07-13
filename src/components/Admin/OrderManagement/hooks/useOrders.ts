@@ -57,10 +57,27 @@ export const useOrders = () => {
     }
   };
 
+  const assignDeliveryPerson = async (orderId: string, livreurId: string | null) => {
+    try {
+      const response = await orderService.assignDeliveryPerson(orderId, livreurId);
+      const updatedOrder = response.data as Order;
+
+      setOrders(prev => prev.map(order =>
+        order.id === orderId ? { ...order, deliveryPerson: updatedOrder.deliveryPerson } : order
+      ));
+
+      return updatedOrder.deliveryPerson;
+    } catch (error: unknown) {
+      console.error('Erreur lors de l\'assignation du livreur:', error);
+      throw error;
+    }
+  };
+
   return {
     orders,
     loading,
     loadOrders,
-    updateOrderStatus
+    updateOrderStatus,
+    assignDeliveryPerson
   };
 };

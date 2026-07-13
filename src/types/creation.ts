@@ -9,7 +9,6 @@ export interface CreationSize {
   cerealesAutorise: boolean;
   active: boolean;
   ordreAffichage: number;
-  creeLe: string;
 }
 
 export interface CreationOptions {

@@ -11,6 +11,8 @@ import {
   useProductOperations
 } from './ProductsTab/index';
 import { useProductCategories } from '@/hooks/dashboard/useProductCategories';
+import { usePagination } from '@/hooks/usePagination';
+import { PaginationControls } from '@/components/shared/PaginationControls';
 import { CategoryModal } from '@/components/Dashboard/CategoryModal';
 import { Modal } from '@/components/Modal';
 import { Product, ProductCategoryItem, CreationSize, CreationOptions } from '@/types';
@@ -61,6 +63,8 @@ export function ProductsTab({
     resetFilters
   } = useProductFilters(allProductsForTab);
 
+  const { page, setPage, totalPages, paginatedItems, total, pageSize } = usePagination(filteredAndSortedProducts, 9);
+
   const {
     productCategories,
     addCategoryModal,
@@ -82,8 +86,7 @@ export function ProductsTab({
     setEditingProduct,
     handleToggleAvailability,
     handleEditProduct,
-    handleSaveProduct,
-    handleDeleteProduct
+    handleSaveProduct
   } = useProductOperations(loadDashboardData, displaySuccessToast);
 
   const handleToggleAvailabilityWrapper = async (productId: string, currentStatus: boolean) => {
@@ -185,12 +188,20 @@ export function ProductsTab({
 
       {/* Liste des produits */}
       <ProductList
-        products={filteredAndSortedProducts}
+        products={paginatedItems}
         productCategories={productCategories}
         creationOptions={creationOptions}
         onEditProduct={handleEditProduct}
         onToggleAvailability={handleToggleAvailabilityWrapper}
         onDeleteProduct={handleDeleteProductClick}
+      />
+
+      <PaginationControls
+        page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        total={total}
+        pageSize={pageSize}
       />
 
       {/* Modal d'édition */}

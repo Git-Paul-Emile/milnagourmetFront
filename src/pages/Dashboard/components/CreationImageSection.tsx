@@ -14,7 +14,7 @@ export function CreationImageSection({ creationImage, availableImages, onCreatio
   const [showGallery, setShowGallery] = React.useState(false);
 
   // Filtrer uniquement les images de création
-  const creationImages = availableImages.filter(image => image.value.includes('/uploads/creation/'));
+  const creationImages = availableImages.filter(image => image.value.includes('/milnagourmet/creation/'));
 
   return (
     <div className="bg-card rounded-lg border border-border p-4 sm:p-6">

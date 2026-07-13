@@ -5,7 +5,6 @@ import {
   TestimonialsHeader,
   TestimonialCard,
   CarouselNavigation,
-  CarouselDots,
   AddTestimonialButton,
 } from './components/Testimonials';
 import { AddTestimonialModal } from './AddTestimonialModal';
@@ -15,7 +14,7 @@ import { cn } from '@/lib/utils';
 
 export function TestimonialsSection() {
   const { testimonials, loading, reloadTestimonials } = useTestimonials();
-  const { emblaRef, scrollPrev, scrollNext, scrollTo, selectedIndex, scrollSnaps } = useTestimonialCarousel();
+  const { emblaRef, scrollPrev, scrollNext, scrollSnaps } = useTestimonialCarousel();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { state } = useApp();
   const { theme } = useTheme();
@@ -54,13 +53,6 @@ export function TestimonialsSection() {
               scrollPrev={scrollPrev}
               scrollNext={scrollNext}
               showNavigation={scrollSnaps.length > 1}
-            />
-
-            <CarouselDots
-              scrollSnaps={scrollSnaps}
-              selectedIndex={selectedIndex}
-              scrollTo={scrollTo}
-              showDots={scrollSnaps.length > 1}
             />
           </div>
 

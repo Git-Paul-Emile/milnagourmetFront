@@ -4,8 +4,9 @@ import { siteService } from '@/services';
 import { TestimonialFormData } from './types';
 import { TESTIMONIAL_CONSTANTS } from './constants';
 import { validateImageFile } from './imageUtils';
+import { DEFAULT_AVATAR_TOAST_IMAGE } from '@/constants/media';
 
-const AVATAR_TOAST_FALLBACK = '/uploads/avatarToast/milna-owner.jpg';
+const AVATAR_TOAST_FALLBACK = DEFAULT_AVATAR_TOAST_IMAGE;
 
 export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) => {
   const { state, dispatch } = useApp();
@@ -32,7 +33,6 @@ export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) =
       try {
         const response = await siteService.getAvatarToast();
         const imageUrl = (response.data as { image: string }).image;
-        console.log('Avatar toast récupéré:', imageUrl);
         setAvatarToast(imageUrl);
       } catch (error) {
         console.error('Erreur lors de la récupération de l\'avatar toast:', error);
@@ -60,8 +60,7 @@ export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) =
 
     const validation = validateImageFile(file);
     if (!validation.isValid) {
-      const avatarUrl = `${import.meta.env.VITE_API_URL}${avatarToast}`;
-      console.log('Toast avatar URL:', avatarUrl);
+      const avatarUrl = avatarToast;
       dispatch({
         type: 'ADD_TOAST',
         payload: {
@@ -88,7 +87,7 @@ export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) =
           id: Date.now().toString(),
           type: 'error',
           message: 'Erreur lors de l\'upload de l\'image.',
-          avatar: `${import.meta.env.VITE_API_URL}${avatarToast}`
+          avatar: avatarToast
         }
       });
     }
@@ -126,7 +125,7 @@ export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) =
           id: Date.now().toString(),
           type: 'error',
           message: 'Veuillez remplir tous les champs obligatoires.',
-          avatar: `${import.meta.env.VITE_API_URL}${avatarToast}`
+          avatar: avatarToast
         }
       });
       return;
@@ -148,7 +147,7 @@ export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) =
           id: Date.now().toString(),
           type: 'success',
           message: 'Votre témoignage a été soumis avec succès !.',
-          avatar: `${import.meta.env.VITE_API_URL}${avatarToast}`
+          avatar: avatarToast
         }
       });
 
@@ -162,7 +161,7 @@ export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) =
           id: Date.now().toString(),
           type: 'error',
           message: 'Erreur lors de l\'ajout du témoignage. Veuillez réessayer.',
-          avatar: `${import.meta.env.VITE_API_URL}${avatarToast}`
+          avatar: avatarToast
         }
       });
     } finally {

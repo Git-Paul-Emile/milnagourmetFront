@@ -4,7 +4,7 @@ export function calculateBestSellingProducts(orders: Order[]) {
   const productSales = new Map<string, { product: Product; totalSold: number; revenue: number }>();
 
   orders.forEach(order => {
-    if (order.status !== 'cancelled') {
+    if (order.status !== 'annulee') {
       order.items.forEach(item => {
         if (item.product) {
           const productId = item.product.id;
@@ -37,7 +37,7 @@ export function calculateTopIngredients(orders: Order[]) {
   const cerealeCount = new Map<string, number>();
 
   orders.forEach(order => {
-    if (order.status !== 'cancelled') {
+    if (order.status !== 'annulee') {
       order.items.forEach(item => {
         if (item.product?.category === 'creation' && item.customCreation) {
           // Compter les fruits

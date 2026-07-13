@@ -155,15 +155,8 @@ export const siteService = {
     return httpClient.get<string[]>('/api/upload/used-images');
   },
 
-  async deleteImage(imagePath: string) {
-    // imagePath is like '/uploads/folder/filename.jpg'
-    console.log('deleteImage called with:', imagePath);
-    const pathParts = imagePath.replace(/^\/uploads\//, '').split('/');
-    if (pathParts.length !== 2) {
-      throw new Error('Invalid image path format');
-    }
-    const [folder, filename] = pathParts;
-    console.log('Parsed folder:', folder, 'filename:', filename);
-    return httpClient.delete(`/api/upload/images/${folder}/${filename}`);
+  async deleteImage(publicId: string) {
+    // publicId est l'identifiant Cloudinary complet (ex: milnagourmet/produits/xxx)
+    return httpClient.delete(`/api/upload/images?publicId=${encodeURIComponent(publicId)}`);
   },
 };

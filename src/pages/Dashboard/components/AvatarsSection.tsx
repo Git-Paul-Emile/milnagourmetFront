@@ -14,7 +14,7 @@ export function AvatarsSection({ avatarToast, availableImages, onAvatarToastUplo
   const [showGallery, setShowGallery] = React.useState(false);
 
   // Filtrer uniquement les images d'avatars de toast
-  const avatarToastImages = availableImages.filter(image => image.value.includes('/uploads/avatarToast/'));
+  const avatarToastImages = availableImages.filter(image => image.value.includes('/milnagourmet/avatarToast/'));
 
   return (
     <div className="bg-card rounded-lg border border-border p-4 sm:p-6">

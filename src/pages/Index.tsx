@@ -6,9 +6,14 @@ import { HeroSection } from '@/components/Home/HeroSection';
 import { CatalogSection } from '@/components/Home/CatalogSection';
 import { TestimonialsSection } from '@/components/Home/TestimonialsSection';
 import { ContactSection } from '@/components/Home/ContactSection';
+import { useSEO } from '@/hooks/useSEO';
 
 const Index = () => {
-  console.log('Index page rendering');
+  useSEO({
+    title: 'Milna Gourmet - Le Salon du Yaourt | Yaourts Gourmets Faits Maison',
+    description: 'Découvrez Milna Gourmet, votre salon du yaourt premium. Yaourts crémeux, liquides et créations personnalisées. Commandez via WhatsApp - Livraison rapide.'
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <Header />

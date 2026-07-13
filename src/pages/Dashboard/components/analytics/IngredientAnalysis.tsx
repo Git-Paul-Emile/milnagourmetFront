@@ -48,7 +48,7 @@ export function IngredientAnalysis({ stats }: IngredientAnalysisProps) {
       <IngredientList
         title="Analyse des fruits"
         data={stats.topFruits}
-        color="text-orange-700"
+        color="text-secondary"
       />
       <IngredientList
         title="Analyse des sauces"

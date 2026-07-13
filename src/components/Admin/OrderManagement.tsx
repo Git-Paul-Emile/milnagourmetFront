@@ -25,6 +25,7 @@ const OrderManagementContent: React.FC<OrderManagementProps> = ({ isOpen, onClos
     dateFilter,
     setDateFilter,
     updateOrderStatus,
+    assignDeliveryPerson,
     isProcessing,
     selectedOrder,
     setSelectedOrder,
@@ -78,6 +79,7 @@ const OrderManagementContent: React.FC<OrderManagementProps> = ({ isOpen, onClos
         selectedOrder={selectedOrder}
         onClose={() => setSelectedOrder(null)}
         onUpdateStatus={handleUpdateOrderStatus}
+        onAssignDeliveryPerson={assignDeliveryPerson}
         isProcessing={isProcessing}
       />
 

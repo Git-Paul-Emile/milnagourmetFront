@@ -5,12 +5,12 @@ export const optionTypes: Record<OptionType, OptionItem> = {
   fruits: {
     name: 'Fruits',
     icon: Apple,
-    color: 'text-orange-800',
-    bgColor: 'bg-orange-100',
-    borderColor: 'border-orange-200',
-    hoverBgColor: 'hover:bg-orange-100',
-    buttonColor: 'text-orange-600 hover:text-orange-800',
-    buttonHoverColor: 'hover:bg-orange-100'
+    color: 'text-pink-800',
+    bgColor: 'bg-pink-100',
+    borderColor: 'border-pink-200',
+    hoverBgColor: 'hover:bg-pink-100',
+    buttonColor: 'text-pink-600 hover:text-pink-800',
+    buttonHoverColor: 'hover:bg-pink-100'
   },
   sauces: {
     name: 'Sauces',

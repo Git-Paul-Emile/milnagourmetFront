@@ -58,7 +58,6 @@ export function useProductOperations(
           // Uploader l'image via l'endpoint backend
           const uploadResult = await productService.uploadImage(imageFile);
           formData.append('image', uploadResult.path); // Le backend retourne le chemin /src/assets/nom_image
-          console.log('Image uploadée avec succès:', uploadResult.path);
         } catch (error) {
           console.error('Erreur lors de l\'upload de l\'image:', error);
           // En cas d'erreur, on continue avec le chemin existant ou vide
@@ -80,18 +79,11 @@ export function useProductOperations(
     }
   };
 
-  const handleDeleteProduct = (product: Product) => {
-    // This would typically open a delete confirmation modal
-    // For now, we'll just log it
-    console.log('Delete product:', product);
-  };
-
   return {
     editingProduct,
     setEditingProduct,
     handleToggleAvailability,
     handleEditProduct,
-    handleSaveProduct,
-    handleDeleteProduct
+    handleSaveProduct
   };
 }

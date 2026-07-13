@@ -20,4 +20,7 @@ export interface Cart {
   itemCount: number;
   deliveryFee?: number;
   totalWithDelivery?: number;
+  pointsUsed?: number;
+  pointsDiscount?: number;
+  totalWithDiscount?: number;
 }

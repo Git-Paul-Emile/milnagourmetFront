@@ -3,6 +3,7 @@ import { Product, User as UserType, DeliveryZone, DeliveryPerson, ProductCategor
 import { productService, userService } from '@/services';
 import { deliveryPersonService } from '@/services/deliveryPerson';
 import { siteService } from '@/services/siteService';
+import { useApp } from '@/contexts/useApp';
 
 interface ImageItem {
   value: string;
@@ -73,6 +74,15 @@ export interface DashboardModalsActions {
 }
 
 export const useDashboardModals = (loadDashboardData?: () => Promise<void>, reloadGallery?: () => Promise<void>): DashboardModalsState & DashboardModalsActions => {
+  const { dispatch } = useApp();
+
+  const displayErrorToast = (message: string) => {
+    dispatch({
+      type: 'ADD_TOAST',
+      payload: { id: Date.now().toString(), type: 'error', message }
+    });
+  };
+
   // États pour les modals et messages
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; item?: Product | UserType | DeliveryPerson | ImageItem | Testimonial; type: 'product' | 'user' | 'deliveryPerson' | 'image' | 'testimonial' }>({ isOpen: false, type: 'product' });
   const [addProductModal, setAddProductModal] = useState(false);
@@ -126,10 +136,9 @@ export const useDashboardModals = (loadDashboardData?: () => Promise<void>, relo
         await deliveryPersonService.delete((deleteModal.item as DeliveryPerson).id);
         displaySuccessToast('Livreur supprimé avec succès');
       } else if (deleteModal.type === 'image') {
-        const filename = (deleteModal.item as ImageItem).value;
-        console.log('Suppression d\'image demandée pour:', filename);
-        if (filename) {
-          await siteService.deleteImage(filename);
+        const publicId = (deleteModal.item as ImageItem).value;
+        if (publicId) {
+          await siteService.deleteImage(publicId);
           displaySuccessToast('Image supprimée avec succès');
           // Reload gallery after image deletion
           if (reloadGallery) {
@@ -149,7 +158,7 @@ export const useDashboardModals = (loadDashboardData?: () => Promise<void>, relo
       }
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
-      // You might want to show an error toast here
+      displayErrorToast(error instanceof Error ? error.message : 'Erreur lors de la suppression');
     }
   };
 
@@ -175,7 +184,6 @@ export const useDashboardModals = (loadDashboardData?: () => Promise<void>, relo
           // Uploader l'image via l'endpoint backend
           const uploadResult = await productService.uploadImage(imageFile);
           imagePath = uploadResult.path; // Le backend retourne le chemin /src/assets/nom_image
-          console.log('Image uploadée avec succès:', imagePath);
         } catch (error) {
           console.error('Erreur lors de l\'upload de l\'image:', error);
           // En cas d'erreur, on continue avec le chemin existant ou vide
@@ -192,7 +200,6 @@ export const useDashboardModals = (loadDashboardData?: () => Promise<void>, relo
         image: imagePath
       };
 
-      console.log('Données du produit à créer:', productData);
 
       await productService.createProduct(productData);
       displaySuccessToast('Produit ajouté avec succès');
@@ -202,7 +209,7 @@ export const useDashboardModals = (loadDashboardData?: () => Promise<void>, relo
       }
     } catch (error) {
       console.error('Erreur lors de l\'ajout du produit:', error);
-      // You might want to show an error toast here
+      displayErrorToast(error instanceof Error ? error.message : 'Erreur lors de l\'ajout du produit');
     }
   };
 

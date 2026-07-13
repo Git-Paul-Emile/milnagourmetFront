@@ -1,18 +1,11 @@
 // Types pour les commandes
 
 import { CartItem } from './cart';
+import type { DeliveryZone } from './dashboard';
 
 export interface CustomerInfo {
   name: string;
   phone: string;
-}
-
-export interface DeliveryZone {
-  id: string;
-  name: string;
-  deliveryFee: number;
-  estimatedTime: string;
-  active: boolean;
 }
 
 export interface Order {
@@ -40,4 +33,5 @@ export interface Order {
   whatsappLink?: string; // Lien de la conversation WhatsApp
   whatsappStatus?: 'pending' | 'sent'; // Statut de l'envoi WhatsApp
   deliveryZone?: DeliveryZone | null; // Zone de livraison avec frais
+  deliveryPerson?: { id: string; nomComplet: string; phone: string } | null;
 }

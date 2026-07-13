@@ -2,6 +2,7 @@ import React from 'react';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { ContactInfo } from '@/types';
 import { cn } from '@/lib/utils';
+import { SECONDARY_PHONE } from '@/constants/contact';
 
 interface ContactSectionProps {
   contactInfo: ContactInfo | null;
@@ -22,15 +23,18 @@ export function ContactSection({ contactInfo, isChristmasTheme = false }: Contac
               "h-4 w-4",
               "text-primary"
             )} />
-            <a
-              href={`tel:${contactInfo.phone}`}
-              className={cn(
-                "transition-colors",
-                "text-muted-foreground hover:text-primary"
-              )}
-            >
-              {contactInfo.phone}
-            </a>
+            <div>
+              <a
+                href={`tel:${contactInfo.phone}`}
+                className={cn(
+                  "transition-colors",
+                  "text-muted-foreground hover:text-primary"
+                )}
+              >
+                {contactInfo.phone}
+              </a>
+              <span className="block text-sm text-muted-foreground">{SECONDARY_PHONE}</span>
+            </div>
           </div>
         )}
         {contactInfo?.email && (

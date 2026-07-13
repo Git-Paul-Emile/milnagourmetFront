@@ -1,10 +1,23 @@
 import { ProductCategoryItem } from '@/types';
-import { httpClient } from './httpClient';
+import { httpClient, buildQueryString } from './httpClient';
+
+// Paramètres optionnels de pagination/recherche/filtre/tri pour GET /api/products.
+// Si aucun n'est fourni, l'endpoint reste rétro-compatible et renvoie la liste complète.
+export interface ProductListParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  category?: string;
+  disponible?: 'true' | 'false';
+  sortBy?: 'name' | 'price' | 'date';
+  sortOrder?: 'asc' | 'desc';
+}
 
 // Service pour les produits
 export const productService = {
-  async getProducts() {
-    return httpClient.get('/api/products');
+  async getProducts(params?: ProductListParams) {
+    const query = params ? buildQueryString({ ...params }) : '';
+    return httpClient.get(`/api/products${query}`);
   },
 
   async createProduct(productData: {
@@ -68,8 +81,8 @@ export const productService = {
     return response.data!;
   },
 
-  async getAvailableImages(): Promise<{ value: string; label: string; isUsed: boolean }[]> {
+  async getAvailableImages(): Promise<{ value: string; label: string; isUsed: boolean; publicId?: string }[]> {
     const response = await httpClient.get('/api/upload/images');
-    return response.data as { value: string; label: string; isUsed: boolean }[];
+    return response.data as { value: string; label: string; isUsed: boolean; publicId?: string }[];
   },
 };

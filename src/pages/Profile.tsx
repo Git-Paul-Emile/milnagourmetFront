@@ -10,8 +10,11 @@ import { useProfile } from '@/pages/Profile/hooks/useProfile';
 import { useOrders } from '@/pages/Profile/hooks/useOrders';
 import { ProfileTab, OrdersTab, SettingsTab } from '@/pages/Profile/components';
 import { LoyaltyTab } from '@/components/User/components/LoyaltyTab';
+import { useSEO } from '@/hooks/useSEO';
 
 const Profile = () => {
+  useSEO({ title: 'Mon Profil - Milna Gourmet', description: 'Gérez vos informations, vos commandes et votre programme de fidélité Milna Gourmet.', noIndex: true });
+
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
 

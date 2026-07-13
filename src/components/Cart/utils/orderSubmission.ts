@@ -1,4 +1,5 @@
 import { DeliveryZone, CartItem } from '@/types';
+import { orderService } from '@/services';
 import { CustomerInfo } from '../hooks/useCustomerInfo';
 
 interface OrderSubmissionParams {
@@ -37,22 +38,12 @@ export async function submitOrder({
     })),
     total: totalWithDelivery,
     deliveryFee: deliveryFee,
+    deliveryZoneId: selectedZone.id,
     pointsUsed: pointsUsed,
     pointsDiscount: pointsDiscount,
     notes: '',
   };
 
-  // Envoyer à l'API backend
-  const response = await fetch('/api/orders', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(orderData),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Erreur lors de la commande');
-  }
+  // Envoyer à l'API backend via le service centralisé (gère token, credentials, refresh)
+  await orderService.createOrder(orderData);
 }

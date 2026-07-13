@@ -79,7 +79,7 @@ export async function buildCartOrderMessage(cart: Cart, user?: User | null): Pro
   let deliveryZoneName = 'À confirmer';
   if (user?.deliveryZoneId) {
     try {
-      const zone = await deliveryZoneService.getDeliveryZoneById(user.deliveryZoneId) as DeliveryZone;
+      const zone = await deliveryZoneService.getDeliveryZoneById(String(user.deliveryZoneId)) as DeliveryZone;
       deliveryZoneName = zone.name;
     } catch (error) {
       console.error('Erreur lors de la récupération de la zone de livraison:', error);

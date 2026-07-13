@@ -22,6 +22,7 @@ export interface OrderContextType {
 
   // Actions
   updateOrderStatus: (orderId: string, status: Order['status'], message?: string) => Promise<void>;
+  assignDeliveryPerson: (orderId: string, livreurId: string | null) => Promise<void>;
   isProcessing: boolean;
 
   // Modal

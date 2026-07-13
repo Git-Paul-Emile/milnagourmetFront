@@ -33,7 +33,7 @@ export function getPluralSuffix(type: OptionType): string {
 export function getAddButtonColorClass(type: OptionType): string {
   switch (type) {
     case 'fruits':
-      return 'bg-orange-500 text-white hover:bg-orange-600';
+      return 'bg-secondary text-secondary-foreground hover:bg-secondary/90';
     case 'sauces':
       return 'bg-blue-500 text-white hover:bg-blue-600';
     case 'cereales':

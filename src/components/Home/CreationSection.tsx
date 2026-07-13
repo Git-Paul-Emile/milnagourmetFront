@@ -12,7 +12,7 @@ export function CreationSection({ catalogData, onCreationOpen }: CreationSection
       <div className="bg-gradient-card rounded-2xl p-12 max-w-2xl mx-auto border border-border">
         <h3 className="text-2xl font-bold mb-4">{catalogData?.creationTitle || 'Création Personnalisée'}</h3>
         <p className="text-muted-foreground mb-8">
-          {catalogData?.creationDescription || 'Composez votre yaourt gourmet selon vos envies ! Choisissez votre taille, vos fruits, vos sauces et vos céréales.'}
+          {catalogData?.creationDescription || 'Composez votre yaourt gourmet selon vos envies ! Choisissez votre taille, vos fruits et vos sauces.'}
         </p>
 
         <button

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Eye, MessageCircle } from 'lucide-react';
+import { Eye, MapPin, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Order } from '@/types';
 import { getStatusColorSync, getStatusTextSync } from '../utils/utils';
@@ -33,13 +33,15 @@ export function OrderList({ filteredOrders, onSelectOrder }: OrderListProps) {
                   </p>
                 )}
                 {order.deliveryLocation && (
-                  <p className="text-xs text-muted-foreground">
-                    📍 {order.deliveryLocation}
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <MapPin className="h-3 w-3 shrink-0" aria-hidden="true" />
+                    {order.deliveryLocation}
                   </p>
                 )}
                 {order.whatsappLink && (
-                  <p className="text-xs text-blue-600">
-                    💬 Conversation WhatsApp disponible
+                  <p className="text-xs text-primary flex items-center gap-1">
+                    <MessageCircle className="h-3 w-3 shrink-0" aria-hidden="true" />
+                    Conversation WhatsApp disponible
                   </p>
                 )}
               </div>
@@ -59,17 +61,19 @@ export function OrderList({ filteredOrders, onSelectOrder }: OrderListProps) {
                     href={order.whatsappLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 hover:bg-muted rounded-full transition-colors"
+                    className="p-3 hover:bg-muted rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     title="Voir conversation WhatsApp"
+                    aria-label="Voir la conversation WhatsApp"
                   >
-                    <MessageCircle className="h-4 w-4 text-green-600" />
+                    <MessageCircle className="h-4 w-4 text-green-600" aria-hidden="true" />
                   </a>
                 )}
                 <button
                   onClick={() => onSelectOrder(order)}
-                  className="p-2 hover:bg-muted rounded-full transition-colors"
+                  className="p-3 hover:bg-muted rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label={`Voir le détail de la commande ${order.id.slice(-6)}`}
                 >
-                  <Eye className="h-4 w-4" />
+                  <Eye className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
             </div>

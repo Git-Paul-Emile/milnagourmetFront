@@ -41,6 +41,10 @@ export const authService = {
     return httpClient.get<AuthUser>('/api/auth/me');
   },
 
+  async updateProfile(data: { nom: string; telephone: string; deliveryZoneId: string; motDePasse?: string; ancienMotDePasse?: string }) {
+    return httpClient.put<AuthUser>('/api/auth/profile', data);
+  },
+
   async deleteAccount() {
     return httpClient.delete('/api/auth/account');
   },

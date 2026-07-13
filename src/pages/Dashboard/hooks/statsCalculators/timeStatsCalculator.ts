@@ -18,7 +18,7 @@ export function calculateTimeBasedStats(orders: Order[]) {
   const todayRevenue = orders
     .filter(order => {
       const orderDate = new Date(order.date || order.createdAt || '');
-      return orderDate >= today && order.status !== 'cancelled';
+      return orderDate >= today && order.status !== 'annulee';
     })
     .reduce((sum, order) => sum + order.total, 0);
 
@@ -33,7 +33,7 @@ export function calculateTimeBasedStats(orders: Order[]) {
   const weekRevenue = orders
     .filter(order => {
       const orderDate = new Date(order.date || order.createdAt || '');
-      return orderDate >= weekStart && order.status !== 'cancelled';
+      return orderDate >= weekStart && order.status !== 'annulee';
     })
     .reduce((sum, order) => sum + order.total, 0);
 
@@ -48,7 +48,7 @@ export function calculateTimeBasedStats(orders: Order[]) {
   const monthRevenue = orders
     .filter(order => {
       const orderDate = new Date(order.date || order.createdAt || '');
-      return orderDate >= monthStart && order.status !== 'cancelled';
+      return orderDate >= monthStart && order.status !== 'annulee';
     })
     .reduce((sum, order) => sum + order.total, 0);
 
@@ -70,7 +70,7 @@ export function calculateTimeBasedStats(orders: Order[]) {
   const previousMonthRevenue = orders
     .filter(order => {
       const orderDate = new Date(order.date || order.createdAt || '');
-      return orderDate >= previousMonthStart && orderDate <= previousMonthEnd && order.status !== 'cancelled';
+      return orderDate >= previousMonthStart && orderDate <= previousMonthEnd && order.status !== 'annulee';
     })
     .reduce((sum, order) => sum + order.total, 0);
 
@@ -88,7 +88,7 @@ export function calculateTimeBasedStats(orders: Order[]) {
   const previousWeekRevenue = orders
     .filter(order => {
       const orderDate = new Date(order.date || order.createdAt || '');
-      return orderDate >= previousWeekStart && orderDate <= previousWeekEnd && order.status !== 'cancelled';
+      return orderDate >= previousWeekStart && orderDate <= previousWeekEnd && order.status !== 'annulee';
     })
     .reduce((sum, order) => sum + order.total, 0);
 

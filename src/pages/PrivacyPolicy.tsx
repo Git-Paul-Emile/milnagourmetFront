@@ -2,8 +2,11 @@ import React from 'react';
 import { Header } from '@/components/Layout/Header';
 import { Footer } from '@/components/Layout/Footer';
 import { ScrollToTop } from '@/components/Layout/ScrollToTop';
+import { useSEO } from '@/hooks/useSEO';
 
 const PrivacyPolicy = () => {
+  useSEO({ title: 'Politique de Confidentialité - Milna Gourmet', description: 'Découvrez comment Milna Gourmet collecte, utilise et protège vos données personnelles.' });
+
   return (
     <div className="min-h-screen bg-background">
       <Header />

@@ -4,6 +4,8 @@ import { OrderStats } from './OrderStats';
 import { OrderList } from './OrderList';
 import { OrderLoadingState } from './OrderLoadingState';
 import { OrderEmptyState } from './OrderEmptyState';
+import { PaginationControls } from '@/components/shared/PaginationControls';
+import { usePagination } from '@/hooks/usePagination';
 import { Order } from '@/types';
 
 interface OrderManagementContentProps {
@@ -33,6 +35,10 @@ export function OrderManagementBody({
   filteredOrders,
   onSelectOrder,
 }: OrderManagementContentProps) {
+  // Pagination client-side de la liste déjà filtrée/triée, pour ne pas afficher
+  // des centaines de commandes en une seule fois dans le gestionnaire.
+  const { page, setPage, totalPages, paginatedItems, total, pageSize } = usePagination(filteredOrders, 10);
+
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <div className="flex-shrink-0 p-6 pb-0">
@@ -64,9 +70,21 @@ export function OrderManagementBody({
         ) : filteredOrders.length === 0 ? (
           <OrderEmptyState />
         ) : (
-          <OrderList filteredOrders={filteredOrders} onSelectOrder={onSelectOrder} />
+          <OrderList filteredOrders={paginatedItems} onSelectOrder={onSelectOrder} />
         )}
       </div>
+
+      {!loading && filteredOrders.length > 0 && (
+        <div className="flex-shrink-0 px-6 pb-4">
+          <PaginationControls
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            total={total}
+            pageSize={pageSize}
+          />
+        </div>
+      )}
     </div>
   );
 }

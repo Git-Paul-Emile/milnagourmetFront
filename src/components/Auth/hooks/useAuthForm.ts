@@ -71,23 +71,23 @@ export const useAuthForm = ({ initialMode, onClose }: UseAuthFormProps) => {
     setGlobalError('');
 
     try {
+      // Récupérer le panier guest depuis useLocalCart (utile pour l'inscription et la connexion)
+      const { getLocalCartItems, clearLocalCart: clearCart } = await import('@/hooks/useLocalCart');
+      const clearLocalCart = clearCart;
+      const guestCartItems = getLocalCartItems();
+      const parsedGuestCart = guestCartItems.length > 0 ? guestCartItems : undefined;
+
       let response;
-      let clearLocalCart: (() => void) | undefined;
       if (mode === 'register') {
         response = await register({
           telephone: formData.telephone,
           nomComplet: formData.nomComplet,
           zoneLivraisonId: formData.zoneLivraison, // Le formulaire stocke maintenant l'ID
           password: formData.password,
-          confirmPassword: formData.confirmPassword
+          confirmPassword: formData.confirmPassword,
+          guestCart: parsedGuestCart
         });
       } else {
-        // Récupérer le panier guest depuis useLocalCart
-        const { getLocalCartItems, clearLocalCart: clearCart } = await import('@/hooks/useLocalCart');
-        clearLocalCart = clearCart;
-        const guestCartItems = getLocalCartItems();
-        const parsedGuestCart = guestCartItems.length > 0 ? guestCartItems : undefined;
-
         response = await login({
           telephone: formData.telephone,
           password: formData.password,
@@ -102,49 +102,40 @@ export const useAuthForm = ({ initialMode, onClose }: UseAuthFormProps) => {
           payload: response.data.user
         });
 
-        // Si c'était une connexion (pas une inscription), charger le panier fusionné depuis le backend
-        if (mode === 'login') {
-          try {
-            const { cartService } = await import('@/services/cart');
-            const backendCart = await cartService.getCart();
+        // Charger le panier fusionné (invité + existant) depuis le backend
+        try {
+          const { cartService } = await import('@/services/cart');
+          const backendCart = await cartService.getCart();
 
-            if (backendCart) {
-              // Convertir le panier backend au format frontend
-              const frontendCartItems = backendCart.items.map(item => ({
-                id: item.id.includes('creation') ? item.id : `${item.id}-${Date.now()}`, // Ajouter timestamp pour les produits réguliers
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-                image: item.image,
-                description: item.description
-              }));
+          if (backendCart) {
+            // Convertir le panier backend au format frontend
+            const frontendCartItems = backendCart.items.map(item => ({
+              id: item.id.includes('creation') ? item.id : `${item.id}-${Date.now()}`, // Ajouter timestamp pour les produits réguliers
+              name: item.name,
+              price: item.price,
+              quantity: item.quantity,
+              image: item.image,
+              description: item.description,
+              product: item.product,
+              customCreation: item.customCreation
+            }));
 
-              // Calculer les totaux
-              const { calculateCartTotals, calculateDeliveryFee } = await import('@/contexts/appContextHelpers');
-              const deliveryFee = await calculateDeliveryFee(response.data.user);
-              const totals = calculateCartTotals(frontendCartItems, deliveryFee);
+            // Calculer les totaux
+            const { calculateCartTotals, calculateDeliveryFee } = await import('@/contexts/appContextHelpers');
+            const deliveryFee = await calculateDeliveryFee(response.data.user);
 
-              // Mettre à jour le panier dans l'AppContext
-              dispatch({
-                type: 'SET_USER',
-                payload: response.data.user
-              });
-              // Remplacer le panier actuel par le panier fusionné
-              dispatch({ type: 'SET_CART_ITEMS', payload: frontendCartItems });
-              // Mettre à jour les frais de livraison
-              dispatch({ type: 'UPDATE_DELIVERY_FEE', payload: deliveryFee });
-
-              // Supprimer le panier guest du localStorage
-              if (clearLocalCart) clearLocalCart();
-            } else {
-              // Supprimer quand même le panier guest du localStorage
-              if (clearLocalCart) clearLocalCart();
-            }
-          } catch (cartError) {
-            console.error('Erreur lors du chargement du panier fusionné:', cartError);
-            // En cas d'erreur, vider quand même le panier guest
-            if (clearLocalCart) clearLocalCart();
+            // Remplacer le panier actuel par le panier fusionné
+            dispatch({ type: 'SET_CART_ITEMS', payload: frontendCartItems });
+            // Mettre à jour les frais de livraison
+            dispatch({ type: 'UPDATE_DELIVERY_FEE', payload: deliveryFee });
           }
+
+          // Le panier guest a été fusionné côté backend, on peut vider le localStorage
+          clearLocalCart();
+        } catch (cartError) {
+          console.error('Erreur lors du chargement du panier fusionné:', cartError);
+          // En cas d'erreur, vider quand même le panier guest
+          clearLocalCart();
         }
       }
 

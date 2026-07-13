@@ -79,7 +79,7 @@ export function AuthSection({
         onClick={onRegisterClick}
         className={cn(
           "px-4 py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all text-sm font-medium",
-          "bg-gradient-to-r from-primary to-secondary text-primary-foreground"
+          "bg-gradient-to-r from-primary to-primary-light text-primary-foreground"
         )}
       >
         S'inscrire

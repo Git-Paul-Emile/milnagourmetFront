@@ -3,7 +3,7 @@ import { useApp } from '@/contexts/useApp';
 import { creationService, CreationOptionItem } from '@/services';
 import { CreationSize, CreationOptions as ApiCreationOptions } from '@/types';
 
-export type Size = 'moyen' | 'maxi';
+export type Size = string;
 
 export interface LocalCreationOptions {
   size: Size;

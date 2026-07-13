@@ -28,13 +28,13 @@ export function OrdersTab({ orders }: OrdersTabProps) {
                   <p className="font-bold text-lg">{formatPrice(order.total)}</p>
                   <span className={cn(
                     'inline-block px-2 py-1 rounded-full text-xs font-medium',
-                    order.status === 'delivered' && 'bg-green-100 text-green-800',
-                    order.status === 'pending' && 'bg-yellow-100 text-yellow-800',
-                    order.status === 'cancelled' && 'bg-red-100 text-red-800'
+                    order.status === 'livree' && 'bg-green-100 text-green-800',
+                    order.status === 'recu' && 'bg-yellow-100 text-yellow-800',
+                    order.status === 'annulee' && 'bg-red-100 text-red-800'
                   )}>
-                    {order.status === 'delivered' && 'Livrée'}
-                    {order.status === 'pending' && 'En cours'}
-                    {order.status === 'cancelled' && 'Annulée'}
+                    {order.status === 'livree' && 'Livrée'}
+                    {order.status === 'recu' && 'En cours'}
+                    {order.status === 'annulee' && 'Annulée'}
                   </span>
                 </div>
               </div>

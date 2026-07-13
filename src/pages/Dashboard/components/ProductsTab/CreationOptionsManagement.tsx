@@ -98,7 +98,7 @@ export function CreationOptionsManagement({
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 items-center sm:items-start">
               <button
                 onClick={onFruitsModal}
-                className="w-full sm:w-auto bg-orange-500 text-white px-3 py-1 rounded-lg hover:bg-orange-600 transition-colors text-sm flex items-center justify-center space-x-1"
+                className="w-full sm:w-auto bg-secondary text-secondary-foreground px-3 py-1 rounded-lg hover:bg-secondary/90 transition-colors text-sm flex items-center justify-center space-x-1"
               >
                 <Apple className="h-4 w-4" />
                 <span>Fruits ({creationOptions.fruits.length})</span>
@@ -123,7 +123,7 @@ export function CreationOptionsManagement({
             {/* Fruits */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-2 border border-border rounded">
               <div className="flex items-center space-x-3">
-                <Apple className="h-5 w-5 text-orange-500" />
+                <Apple className="h-5 w-5 text-secondary" />
                 <div>
                   <span className="font-medium">Fruits</span>
                   <span className="text-sm text-muted-foreground ml-2">

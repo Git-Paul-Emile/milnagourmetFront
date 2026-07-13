@@ -95,7 +95,7 @@ export function SettingsTab({ storeHours, loadDashboardData, displaySuccessToast
       displaySuccessToast('Tous les paramètres ont été sauvegardés');
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error);
-      // TODO: Afficher un message d'erreur
+      alert(error instanceof Error ? error.message : 'Erreur lors de la sauvegarde des paramètres. Veuillez réessayer.');
     } finally {
       setIsSaving(false);
     }

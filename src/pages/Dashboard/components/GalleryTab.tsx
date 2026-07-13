@@ -14,7 +14,7 @@ interface GalleryImageItem {
   name: string;
   displayName: string;
   isActive: boolean;
-  value: string; // Ajouter value
+  publicId: string;
 }
 
 interface ModalImageItem {
@@ -36,18 +36,15 @@ export function GalleryTab({ displaySuccessToast, setDeleteModal, reloadTrigger 
     try {
       // Récupérer les images utilisées
       const usedImagesResponse = await siteService.getUsedImages();
-      console.log('Réponse API getUsedImages:', usedImagesResponse);
       const usedImages: string[] = usedImagesResponse.status === 'success' && Array.isArray(usedImagesResponse.data) ? usedImagesResponse.data : [];
-      console.log('Images utilisées:', usedImages);
 
       // Récupérer toutes les images disponibles depuis l'API
       const imagesResponse = await siteService.listImages();
-      console.log('Réponse API listImages:', imagesResponse);
 
       if (imagesResponse.status === 'success' && Array.isArray(imagesResponse.data)) {
-        const allImagesData = imagesResponse.data as { value: string; label: string; isUsed?: boolean }[];
+        const allImagesData = imagesResponse.data as { value: string; label: string; isUsed?: boolean; publicId: string }[];
 
-        // Grouper par catégorie basée sur le chemin
+        // Grouper par catégorie basée sur le dossier Cloudinary
         const categoryMap: { [key: string]: GalleryImageItem[] } = {
           'Bannière': [],
           'Logos': [],
@@ -63,26 +60,24 @@ export function GalleryTab({ displaySuccessToast, setDeleteModal, reloadTrigger 
 
         allImagesData.forEach(image => {
           let category = 'Autres';
-          if (image.value.includes('/uploads/banners/')) category = 'Bannière';
-          else if (image.value.includes('/uploads/logos/')) category = 'Logos';
-          else if (image.value.includes('/uploads/produits/')) category = 'Produits';
-          else if (image.value.includes('/uploads/creation/')) category = 'Création';
-          else if (image.value.includes('/uploads/temoignages/')) category = 'Témoignages';
-          else if (image.value.includes('/uploads/categories/')) category = 'Catégories';
-          else if (image.value.includes('/uploads/fruits/')) category = 'Fruits';
-          else if (image.value.includes('/uploads/sauces/')) category = 'Sauces';
-          else if (image.value.includes('/uploads/cereales/')) category = 'Céréales';
-          else if (image.value.includes('/uploads/avatarToast/')) category = 'Avatars';
+          if (image.value.includes('/milnagourmet/banners/')) category = 'Bannière';
+          else if (image.value.includes('/milnagourmet/logos/')) category = 'Logos';
+          else if (image.value.includes('/milnagourmet/produits/')) category = 'Produits';
+          else if (image.value.includes('/milnagourmet/creation/')) category = 'Création';
+          else if (image.value.includes('/milnagourmet/temoignages/')) category = 'Témoignages';
+          else if (image.value.includes('/milnagourmet/categories/')) category = 'Catégories';
+          else if (image.value.includes('/milnagourmet/fruits/')) category = 'Fruits';
+          else if (image.value.includes('/milnagourmet/sauces/')) category = 'Sauces';
+          else if (image.value.includes('/milnagourmet/cereales/')) category = 'Céréales';
+          else if (image.value.includes('/milnagourmet/avatarToast/')) category = 'Avatars';
 
-          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
           const galleryImage = {
-            src: `${API_URL}${image.value}`,
+            src: image.value,
             name: image.value.split('/').pop() || '',
             displayName: image.label,
             isActive: usedImages.includes(image.value),
-            value: image.value // Ajouter la valeur originale
+            publicId: image.publicId
           };
-          console.log('Image:', image.value, 'isActive:', galleryImage.isActive);
           categoryMap[category].push(galleryImage);
         });
 
@@ -90,7 +85,6 @@ export function GalleryTab({ displaySuccessToast, setDeleteModal, reloadTrigger 
           .filter(([_, images]) => images.length > 0)
           .map(([category, images]) => ({ category, images }));
 
-        console.log('Images organisées par catégorie:', allImages);
         setImages(allImages);
       } else {
         console.error('Erreur lors de la récupération des images:', imagesResponse);
@@ -172,11 +166,10 @@ export function GalleryTab({ displaySuccessToast, setDeleteModal, reloadTrigger 
                     )}
                     <button
                       onClick={() => {
-                        console.log('Bouton supprimer cliqué pour:', image.value, 'isActive:', image.isActive);
                         setDeleteModal({
                           isOpen: true,
                           item: {
-                            value: image.value, // already the correct path like /uploads/folder/filename.jpg
+                            value: image.publicId, // public_id Cloudinary utilisé pour la suppression
                             label: image.displayName // display name
                           } as ModalImageItem,
                           type: 'image'

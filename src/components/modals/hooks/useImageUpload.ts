@@ -1,6 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Product } from '@/types';
 import { productService } from '@/services';
+import {
+  DEFAULT_CREATION_IMAGE,
+  DEFAULT_BANNER_IMAGE,
+  DEFAULT_PRODUCT_NATURE_IMAGE,
+  DEFAULT_PRODUCT_LIQUID_IMAGE
+} from '@/constants/media';
 
 export function useImageUpload() {
   const [imageUploadMode, setImageUploadMode] = useState<'dropdown' | 'upload'>('dropdown');
@@ -17,10 +23,10 @@ export function useImageUpload() {
         console.error('Erreur lors du chargement des images:', error);
         // Fallback vers une liste par défaut en cas d'erreur
         setAvailableImages([
-          { value: '/uploads/produits/yogurt-nature.jpg', label: 'Yaourt Nature', isUsed: false },
-          { value: '/uploads/produits/yogurt-liquid.jpg', label: 'Yaourt Liquide', isUsed: false },
-          { value: '/uploads/creation/yogurt-creation.jpg', label: 'Création Personnalisée', isUsed: false },
-          { value: '/uploads/banners/hero-banner.jpg', label: 'Bannière Héro', isUsed: false }
+          { value: DEFAULT_PRODUCT_NATURE_IMAGE, label: 'Yaourt Nature', isUsed: false },
+          { value: DEFAULT_PRODUCT_LIQUID_IMAGE, label: 'Yaourt Liquide', isUsed: false },
+          { value: DEFAULT_CREATION_IMAGE, label: 'Création Personnalisée', isUsed: false },
+          { value: DEFAULT_BANNER_IMAGE, label: 'Bannière Héro', isUsed: false }
         ]);
       }
     };

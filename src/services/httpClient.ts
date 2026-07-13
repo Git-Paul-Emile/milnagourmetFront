@@ -1,10 +1,33 @@
 import { AuthUser, RefreshResponse } from '@/types';
 
+// Métadonnées de pagination renvoyées par le backend quand une liste est paginée
+// (présentes uniquement si `page`/`limit` ont été envoyés dans la requête)
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
 // Types pour les réponses API
 export interface ApiResponse<T = unknown> {
   status: string;
   message: string;
   data?: T;
+  meta?: PaginationMeta;
+}
+
+// Construit une query string à partir d'un objet de paramètres, en ignorant les valeurs
+// undefined/null/vides pour ne jamais envoyer de filtre "vide" au backend
+export function buildQueryString(params: Record<string, string | number | undefined>): string {
+  const searchParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      searchParams.set(key, String(value));
+    }
+  });
+  const query = searchParams.toString();
+  return query ? `?${query}` : '';
 }
 
 // Classe pour gérer les requêtes HTTP avec gestion des tokens

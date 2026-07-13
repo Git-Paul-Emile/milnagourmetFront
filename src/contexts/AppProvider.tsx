@@ -61,7 +61,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
               image: item.image,
               description: item.description,
               product: undefined,
-              customCreation: undefined,
+              customCreation: item.customCreation ? {
+                ...item.customCreation,
+                size: {
+                  ...item.customCreation.size,
+                  maxFruits: 0,
+                  maxSauces: 0,
+                  cerealesAutorise: false,
+                  active: true,
+                  ordreAffichage: 0
+                }
+              } : undefined,
             }));
 
             // Définir les items du panier sans déclencher de persistance

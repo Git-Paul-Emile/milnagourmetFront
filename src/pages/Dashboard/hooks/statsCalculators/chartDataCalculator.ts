@@ -116,9 +116,6 @@ export async function calculateSizeData(orders: Order[]) {
 }
 
 export async function calculateOrderStatusData(orders: Order[]) {
-  // Log immédiat pour vérifier que la fonction est appelée
-  console.log('[OrderStatusChart] calculateOrderStatusData appelée avec', orders?.length || 0, 'commandes');
-  
   try {
     // Vérifier que les commandes sont bien passées
     if (!orders || orders.length === 0) {
@@ -130,18 +127,6 @@ export async function calculateOrderStatusData(orders: Order[]) {
         { status: 'Annulée', count: 0 }
       ];
     }
-
-    // Debug: afficher les statuts réels des commandes (TOUJOURS en développement)
-    console.log('[OrderStatusChart] 📊 Analyse de', orders.length, 'commandes');
-    const sampleStatuses = orders.slice(0, 5).map(o => ({ 
-      id: o.id, 
-      status: o.status, 
-      statusType: typeof o.status,
-      statusValue: o.status ? String(o.status) : 'undefined'
-    }));
-    console.log('[OrderStatusChart] Échantillon de commandes (premiers 5):', sampleStatuses);
-    const uniqueStatuses = [...new Set(orders.map(o => o.status ? String(o.status) : 'null'))];
-    console.log('[OrderStatusChart] Statuts uniques (bruts, avant normalisation):', uniqueStatuses);
 
     // Récupérer les configurations de statuts depuis l'API
     const statusConfigs = await configService.getOrderStatusConfig();
@@ -167,36 +152,20 @@ export async function calculateOrderStatusData(orders: Order[]) {
       
       const result = defaultStatuses.map(config => {
         const backendStatus = configToBackendMap[config.statut];
-        const count = backendStatus 
+        const count = backendStatus
           ? orders.filter(o => {
               if (!o.status) return false;
               const normalizedStatus = String(o.status).toLowerCase().trim();
-              const matches = normalizedStatus === backendStatus;
-              if (process.env.NODE_ENV === 'development' && matches) {
-                console.log(`[OrderStatusChart] Match trouvé: ${normalizedStatus} === ${backendStatus}`);
-              }
-              return matches;
-            }).length 
+              return normalizedStatus === backendStatus;
+            }).length
           : 0;
-        
+
         return {
           status: config.libelleFr,
           count
         };
       });
-      
-      // Debug: afficher les statuts trouvés dans les commandes (uniquement en développement)
-      if (process.env.NODE_ENV === 'development') {
-        const uniqueStatuses = [...new Set(orders.map(o => o.status ? String(o.status).toLowerCase().trim() : 'null'))];
-        const totalOrders = orders.length;
-        const ordersWithStatus = orders.filter(o => o.status).length;
-        console.log('[OrderStatusChart] Total commandes:', totalOrders);
-        console.log('[OrderStatusChart] Commandes avec statut:', ordersWithStatus);
-        console.log('[OrderStatusChart] Statuts uniques trouvés:', uniqueStatuses);
-        console.log('[OrderStatusChart] Résultat du calcul:', result);
-        console.log('[OrderStatusChart] Mapping attendu:', configToBackendMap);
-      }
-      
+
       return result;
     }
 
@@ -219,91 +188,26 @@ export async function calculateOrderStatusData(orders: Order[]) {
               return false;
             }
             
-            // Normaliser le statut de la commande
+            // Normaliser le statut de la commande et comparer au statut backend (minuscules)
             const orderStatus = String(o.status).toLowerCase().trim();
-            
-            // Vérifier plusieurs variantes possibles
-            // Le backend renvoie les statuts en minuscules, mais les commandes peuvent avoir:
-            // 1. Format attendu du backend: 'recu', 'livree', 'annulee' (minuscules)
-            // 2. Format DB en majuscules: 'RECU', 'LIVREE', 'ANNULEE'
-            // 3. Format mixte ou autres variations
-            const normalizedConfigStatus = config.statut.toLowerCase().trim();
-            const orderStatusUpper = orderStatus.toUpperCase();
-            const configStatusUpper = config.statut.toUpperCase();
-            
-            // Le backend renvoie toujours les statuts en minuscules
-            // Donc on compare directement avec backendStatus (qui est en minuscules)
-            const matches = orderStatus === backendStatus;
-            
-            // Log pour debug (toujours afficher pour identifier le problème)
-            if (matches) {
-              console.log(`[OrderStatusChart] ✓ Match trouvé: "${orderStatus}" === "${backendStatus}" (${config.libelleFr})`);
-            }
-            
-            return matches;
+            return orderStatus === backendStatus;
           }).length;
-          
-          // Debug supplémentaire si aucun match n'est trouvé
-          if (count === 0 && orders.length > 0) {
-            const sampleStatuses = orders.slice(0, 3).map(o => ({
-              id: o.id,
-              status: o.status ? String(o.status).toLowerCase().trim() : 'null',
-              expected: backendStatus
-            }));
-            console.log(`[OrderStatusChart] ⚠️ Aucun match pour "${config.statut}" (${config.libelleFr}). Cherché: "${backendStatus}". Échantillons:`, sampleStatuses);
-          }
         }
-        
+
         return {
           status: config.libelleFr,
           count
         };
       });
-    
-    // Debug: afficher un résumé (toujours afficher pour identifier le problème)
-    const uniqueStatusesNormalized = [...new Set(orders.map(o => o.status ? String(o.status).toLowerCase().trim() : 'null'))];
-    const uniqueStatusesRaw = [...new Set(orders.map(o => o.status ? String(o.status) : 'null'))];
+
     const totalOrders = orders.length;
-    const ordersWithStatus = orders.filter(o => o.status).length;
-    const ordersWithoutStatus = orders.filter(o => !o.status).length;
     const totalCounted = result.reduce((sum, item) => sum + item.count, 0);
     const unmatchedOrders = totalOrders - totalCounted;
-    
-    console.log('[OrderStatusChart] ===== RÉSUMÉ FINAL =====');
-    console.log('[OrderStatusChart] Total commandes analysées:', totalOrders);
-    console.log('[OrderStatusChart] Commandes avec statut:', ordersWithStatus);
-    console.log('[OrderStatusChart] Commandes sans statut:', ordersWithoutStatus);
-    console.log('[OrderStatusChart] Statuts trouvés (bruts):', uniqueStatusesRaw);
-    console.log('[OrderStatusChart] Statuts trouvés (normalisés):', uniqueStatusesNormalized);
-    console.log('[OrderStatusChart] Statuts attendus:', Object.values(configToBackendMap));
-    console.log('[OrderStatusChart] Total commandes comptées:', totalCounted);
-    console.log('[OrderStatusChart] Résultat:', result);
-    
-    // Afficher quelques exemples de commandes pour debug
-    if (orders.length > 0) {
-      const sampleOrders = orders.slice(0, 3).map(o => ({
-        id: o.id,
-        status: o.status || 'undefined',
-        statusNormalized: o.status ? String(o.status).toLowerCase().trim() : 'null'
-      }));
-      console.log('[OrderStatusChart] Exemples de commandes (premiers 3):', sampleOrders);
-    }
-    
+
     if (unmatchedOrders > 0 && orders.length > 0) {
-      console.warn('[OrderStatusChart] ⚠️', unmatchedOrders, 'commandes non comptées!');
-      const unmatchedStatuses = [...new Set(
-        orders
-          .filter(o => {
-            if (!o.status) return true;
-            const orderStatus = String(o.status).toLowerCase().trim();
-            return !Object.values(configToBackendMap).includes(orderStatus);
-          })
-          .map(o => o.status ? String(o.status) : 'null')
-      )];
-      console.log('[OrderStatusChart] Statuts non reconnus:', unmatchedStatuses);
+      console.warn('[OrderStatusChart] ⚠️', unmatchedOrders, 'commandes non comptées');
     }
-    console.log('[OrderStatusChart] ========================');
-    
+
     return result;
   } catch (error) {
     console.error('Erreur lors du calcul des données de statut des commandes:', error);

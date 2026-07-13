@@ -33,13 +33,8 @@ export const persistCartActionToBackend = async (
       // On évite de provoquer une double persistance côté frontend.
       // Pour réduire le bruit en console, n'afficher ce message qu'en développement.
       // in Vite: import.meta.env.DEV (non défini dans Node) — on vérifie donc la présence.
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if (typeof import.meta !== 'undefined' && (import.meta as any).env?.DEV) {
-          console.debug(`Persistance ignorée pour la création personnalisée: ${item.id} (gérée via API backend)`);
-        }
-      } catch (e) {
-        // En cas d'environnement sans import.meta (sécurité), on n'écrit rien.
+      if (import.meta.env?.DEV) {
+        console.debug(`Persistance ignorée pour la création personnalisée: ${item.id} (gérée via API backend)`);
       }
       return;
     }
@@ -61,7 +56,6 @@ export const persistCartActionToBackend = async (
       case 'add':
         if (item) {
           const productId = extractProductId(item.id);
-          console.log(`Persistance: ajout de ${item.quantity} x ${productId}`);
           // La quantité est la quantité ajoutée, ce qui est correct pour le backend
           await cartService.addToCart({
             productId: productId,
@@ -72,7 +66,6 @@ export const persistCartActionToBackend = async (
       case 'update':
         if (item) {
           const productId = extractProductId(item.id);
-          console.log(`Persistance: mise à jour de ${productId} à ${item.quantity}`);
           // La quantité est la nouvelle quantité totale, ce qui est correct pour le backend
           await cartService.updateCartItem({
             productId: productId,
@@ -85,18 +78,15 @@ export const persistCartActionToBackend = async (
           if (item.id.startsWith('creation-')) {
             // Pour les créations personnalisées, utiliser l'endpoint dédié
             const creationId = item.id.substring(9); // "creation-123" -> "123"
-            console.log(`Persistance: suppression de la création ${creationId}`);
             await cartService.removeCustomCreation(creationId);
           } else {
             // Pour les produits réguliers
             const productId = extractProductId(item.id);
-            console.log(`Persistance: suppression de ${productId}`);
             await cartService.removeFromCart(productId);
           }
         }
         break;
       case 'clear':
-        console.log('Persistance: vidage du panier');
         await cartService.clearCart();
         break;
     }

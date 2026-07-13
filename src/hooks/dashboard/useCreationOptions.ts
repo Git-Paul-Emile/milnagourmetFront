@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CreationOptions } from '../../types';
 import { creationService, CreationOptionItem } from '../../services/creationService';
+import { useApp } from '@/contexts/useApp';
 
 interface CreationOptionsWithIds {
   fruits: CreationOptionItem[];
@@ -9,6 +10,15 @@ interface CreationOptionsWithIds {
 }
 
 export function useCreationOptions(displaySuccessToast?: (message: string) => void) {
+  const { dispatch } = useApp();
+
+  const displayErrorToast = (message: string) => {
+    dispatch({
+      type: 'ADD_TOAST',
+      payload: { id: Date.now().toString(), type: 'error', message }
+    });
+  };
+
   const [creationOptions, setCreationOptions] = useState<CreationOptions>({
     fruits: [],
     sauces: [],
@@ -38,6 +48,7 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
       syncOptions(resp.data);
     } catch (error) {
       console.error('Erreur lors du chargement des options de création', error);
+      displayErrorToast('Erreur lors du chargement des options de création');
     }
   };
 
@@ -48,7 +59,7 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
   const handleBulkAddFruits = (newFruits: string[]) => {
     Promise.all(newFruits.map(nom => creationService.createFruit(nom)))
       .then(responses => {
-        const created = responses.map(r => (r as any).data as CreationOptionItem);
+        const created = responses.map(r => r.data as CreationOptionItem);
         const data = {
           ...optionsWithIds,
           fruits: [...optionsWithIds.fruits, ...created]
@@ -58,14 +69,14 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
       })
       .catch(err => {
         console.error('Erreur lors de l’ajout des fruits', err);
-        alert('Erreur lors de l’ajout des fruits');
+        displayErrorToast('Erreur lors de l’ajout des fruits');
       });
   };
 
   const handleBulkAddSauces = (newSauces: string[]) => {
     Promise.all(newSauces.map(nom => creationService.createSauce(nom)))
       .then(responses => {
-        const created = responses.map(r => (r as any).data as CreationOptionItem);
+        const created = responses.map(r => r.data as CreationOptionItem);
         const data = {
           ...optionsWithIds,
           sauces: [...optionsWithIds.sauces, ...created]
@@ -75,14 +86,14 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
       })
       .catch(err => {
         console.error('Erreur lors de l’ajout des sauces', err);
-        alert('Erreur lors de l’ajout des sauces');
+        displayErrorToast('Erreur lors de l’ajout des sauces');
       });
   };
 
   const handleBulkAddCereales = (newCereales: string[]) => {
     Promise.all(newCereales.map(nom => creationService.createCereale(nom)))
       .then(responses => {
-        const created = responses.map(r => (r as any).data as CreationOptionItem);
+        const created = responses.map(r => r.data as CreationOptionItem);
         const data = {
           ...optionsWithIds,
           cereales: [...optionsWithIds.cereales, ...created]
@@ -92,7 +103,7 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
       })
       .catch(err => {
         console.error('Erreur lors de l’ajout des céréales', err);
-        alert('Erreur lors de l’ajout des céréales');
+        displayErrorToast('Erreur lors de l’ajout des céréales');
       });
   };
 
@@ -110,7 +121,7 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
       })
       .catch(err => {
         console.error('Erreur lors de la suppression du fruit', err);
-        alert('Erreur lors de la suppression du fruit');
+        displayErrorToast('Erreur lors de la suppression du fruit');
       });
   };
 
@@ -128,7 +139,7 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
       })
       .catch(err => {
         console.error('Erreur lors de la suppression de la sauce', err);
-        alert('Erreur lors de la suppression de la sauce');
+        displayErrorToast('Erreur lors de la suppression de la sauce');
       });
   };
 
@@ -146,7 +157,7 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
       })
       .catch(err => {
         console.error('Erreur lors de la suppression de la céréale', err);
-        alert('Erreur lors de la suppression de la céréale');
+        displayErrorToast('Erreur lors de la suppression de la céréale');
       });
   };
 
@@ -165,7 +176,7 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
       })
       .catch(err => {
         console.error('Erreur lors de la modification du fruit', err);
-        alert('Erreur lors de la modification du fruit');
+        displayErrorToast('Erreur lors de la modification du fruit');
       });
   };
 
@@ -184,7 +195,7 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
       })
       .catch(err => {
         console.error('Erreur lors de la modification de la sauce', err);
-        alert('Erreur lors de la modification de la sauce');
+        displayErrorToast('Erreur lors de la modification de la sauce');
       });
   };
 
@@ -203,7 +214,7 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
       })
       .catch(err => {
         console.error('Erreur lors de la modification de la céréale', err);
-        alert('Erreur lors de la modification de la céréale');
+        displayErrorToast('Erreur lors de la modification de la céréale');
       });
   };
 

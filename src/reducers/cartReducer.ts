@@ -53,7 +53,8 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
           price: item.price,
           quantity: item.quantity,
           image: item.image,
-          description: item.description || ''
+          description: item.description || '',
+          customCreation: item.customCreation
         }));
 
         const localCart = {
@@ -89,7 +90,8 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
           price: item.price,
           quantity: item.quantity,
           image: item.image,
-          description: item.description || ''
+          description: item.description || '',
+          customCreation: item.customCreation
         }));
 
         const localCart = {
@@ -136,7 +138,8 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
           price: item.price,
           quantity: item.quantity,
           image: item.image,
-          description: item.description || ''
+          description: item.description || '',
+          customCreation: item.customCreation
         }));
 
         const localCart = {
