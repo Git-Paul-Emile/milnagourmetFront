@@ -10,6 +10,7 @@ import {
   LogOut,
   X,
   Image,
+  Gift,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useBranding } from '@/hooks/useBranding';
@@ -30,6 +31,7 @@ export function DashboardSidebar({ activeTab, onTabChange, pendingOrdersCount, i
     { id: 'overview', label: 'Vue d\'ensemble', icon: BarChart3 },
     { id: 'orders', label: 'Commandes', icon: ShoppingCart, badge: pendingOrdersCount > 0 ? pendingOrdersCount : undefined },
     { id: 'products', label: 'Produits', icon: Package },
+    { id: 'services', label: 'Services', icon: Gift },
     { id: 'users', label: 'Utilisateurs', icon: Users },
     { id: 'testimonials', label: 'Témoignages', icon: MessageSquare },
     { id: 'gallery', label: 'Galerie', icon: Image },

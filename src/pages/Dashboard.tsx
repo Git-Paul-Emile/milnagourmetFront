@@ -9,6 +9,7 @@ import { OrderManagement } from '@/components/Admin/OrderManagement';
 import { OverviewTab } from './Dashboard/components/OverviewTab';
 import { OrdersTab } from './Dashboard/components/OrdersTab';
 import { ProductsTab } from './Dashboard/components/ProductsTab';
+import { ServicesTab } from './Dashboard/components/ServicesTab';
 import { UsersTab } from './Dashboard/components/UsersTab';
 import { TestimonialsTab } from './Dashboard/components/TestimonialsTab';
 import { GalleryTab } from './Dashboard/components/GalleryTab';
@@ -112,6 +113,7 @@ export function Dashboard() {
             {activeTab === 'overview' && <OverviewTab stats={dashboardData.stats} setActiveTab={setActiveTab} setIsOrderManagementOpen={setIsOrderManagementOpen} />}
             {activeTab === 'orders' && <OrdersTab orders={dashboardData.orders} stats={dashboardData.stats} setIsOrderManagementOpen={setIsOrderManagementOpen} displaySuccessToast={modals.displaySuccessToast} />}
             {activeTab === 'products' && <ProductsTab allProductsForTab={dashboardData.allProductsForTab} creationSizes={creationSizesHook.creationSizes} creationOptions={creationOptionsHook.creationOptions} loadDashboardData={dashboardData.loadDashboardData} displaySuccessToast={modals.displaySuccessToast} setAddProductModal={modals.setAddProductModal} setDeleteModal={modals.setDeleteModal} setAddSizeModal={modals.setAddSizeModal} onEditSize={handleEditSize} onDeleteSize={handleDeleteSize} setFruitsModal={modals.setFruitsModal} setSaucesModal={modals.setSaucesModal} setCerealesModal={modals.setCerealesModal} />}
+            {activeTab === 'services' && <ServicesTab />}
             {activeTab === 'users' && <UsersTab users={dashboardData.users} orders={dashboardData.orders} deliveryZones={dashboardData.deliveryZones} loadDashboardData={dashboardData.loadDashboardData} displaySuccessToast={modals.displaySuccessToast} setDeleteModal={modals.setDeleteModal} />}
             {activeTab === 'testimonials' && <TestimonialsTab displaySuccessToast={modals.displaySuccessToast} setDeleteModal={modals.setDeleteModal} />}
             {activeTab === 'gallery' && <GalleryTab displaySuccessToast={modals.displaySuccessToast} setDeleteModal={modals.setDeleteModal} reloadTrigger={galleryReloadTrigger} />}

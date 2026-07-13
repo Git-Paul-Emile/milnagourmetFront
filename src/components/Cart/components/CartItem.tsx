@@ -10,6 +10,7 @@ interface CartItemProps {
     price: number;
     quantity: number;
     image?: string;
+    isServiceQuote?: boolean;
   };
   onUpdateQuantity: (id: string, quantity: number) => void;
   onRemoveItem: (id: string) => void;
@@ -34,7 +35,9 @@ export function CartItem({ item, onUpdateQuantity, onRemoveItem }: CartItemProps
             </p>
           )}
           <div className="flex items-center justify-between mt-3">
-            <span className="font-bold text-primary">{item.price} FCFA</span>
+            <span className="font-bold text-primary">
+              {item.isServiceQuote ? 'Prix sur devis' : `${item.price} FCFA`}
+            </span>
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}

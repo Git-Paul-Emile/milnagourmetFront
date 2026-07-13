@@ -29,6 +29,9 @@ export function buildOrderMessage(items: CartItem[], total: number, customerInfo
     message += `\nFrais de livraison : ${deliveryZone.deliveryFee} FCFA`;
   }
   message += `\nTotal : ${total} FCFA`;
+  if (items.some((item) => item.isServiceQuote)) {
+    message += `\nNB : les articles « sur devis » (panier, pancakes…) ne sont pas inclus dans le total — merci de me communiquer leur prix.`;
+  }
   message += `\n\n`;
   message += `Nom : ${customerInfo.name}`;
   message += `\nTéléphone : ${customerInfo.phone}`;
@@ -71,6 +74,9 @@ export async function buildCartOrderMessage(cart: Cart, user?: User | null): Pro
     message += `\nFrais de livraison : ${cart.deliveryFee} FCFA`;
   }
   message += `\nTotal : ${user ? cart.totalWithDelivery || cart.total : cart.total} FCFA`;
+  if (cart.items.some((item) => item.isServiceQuote)) {
+    message += `\nNB : les articles « sur devis » (panier, pancakes…) ne sont pas inclus dans le total — merci de me communiquer leur prix.`;
+  }
   message += `\n\n`;
   const customerName = user?.name || 'À confirmer';
   const customerPhone = user?.phone || 'À confirmer';

@@ -12,6 +12,8 @@ export interface CartItem {
   name: string;
   description?: string;
   image?: string;
+  /** Article "sur devis" (services spéciaux) : prix 0, communiqué par le vendeur après commande */
+  isServiceQuote?: boolean;
 }
 
 export interface Cart {

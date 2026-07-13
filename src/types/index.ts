@@ -10,3 +10,4 @@ export * from './auth';
 export * from './site';
 export * from './dashboard';
 export * from './common';
+export * from './specialService';

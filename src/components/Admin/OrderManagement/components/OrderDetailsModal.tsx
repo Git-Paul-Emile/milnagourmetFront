@@ -160,6 +160,17 @@ export function OrderDetailsModal({ selectedOrder, onClose, onUpdateStatus, onAs
             </div>
           </div>
 
+          {/* Notes de commande : compositions des services "sur devis" (panier, pancakes…) */}
+          {selectedOrder.notes && (
+            <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-4">
+              <h4 className="font-semibold mb-2">Notes — services sur devis</h4>
+              <p className="text-sm whitespace-pre-wrap">{selectedOrder.notes}</p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Pensez à communiquer le prix au client via WhatsApp.
+              </p>
+            </div>
+          )}
+
           {/* Order Items */}
           <div>
             <h4 className="font-semibold mb-3">Articles commandés</h4>

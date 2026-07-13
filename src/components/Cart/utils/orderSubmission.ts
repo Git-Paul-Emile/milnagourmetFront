@@ -41,7 +41,12 @@ export async function submitOrder({
     deliveryZoneId: selectedZone.id,
     pointsUsed: pointsUsed,
     pointsDiscount: pointsDiscount,
-    notes: '',
+    // Les compositions des services "sur devis" sont conservées dans les notes de la
+    // commande pour que l'admin les voie et que le vendeur puisse chiffrer le prix.
+    notes: cartItems
+      .filter((item) => item.isServiceQuote)
+      .map((item) => `${item.name} : ${item.description ?? ''}`)
+      .join(' | '),
   };
 
   // Envoyer à l'API backend via le service centralisé (gère token, credentials, refresh)

@@ -9,6 +9,7 @@ export { orderService } from './orderService';
 export { userService } from './userService';
 export { creationService, type CreationOptionItem } from './creationService';
 export { configService } from './configService';
+export { specialServicesService } from './specialServicesService';
 
 // Export des services WhatsApp et téléphone
 export * from './whatsapp';
