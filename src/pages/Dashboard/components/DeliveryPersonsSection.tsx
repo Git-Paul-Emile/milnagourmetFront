@@ -47,7 +47,7 @@ export function DeliveryPersonsSection({
         <h3 className="text-lg font-semibold">Livreurs</h3>
         <button
           onClick={() => setAddPersonModal(true)}
-          className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full sm:w-auto"
+          className="bg-button border border-button-border text-button-foreground px-4 py-2 rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors w-full sm:w-auto"
         >
           <Plus className="h-4 w-4 mr-2 inline" />
           Ajouter un livreur

@@ -26,8 +26,8 @@ export function FruitSelector({ fruits, selectedFruits, maxFruits, onToggleFruit
             className={cn(
               'p-3 rounded-lg border transition-all text-sm',
               selectedFruits.includes(fruit)
-                ? 'border-primary bg-primary text-primary-foreground'
-                : 'border-border hover:border-primary/50 disabled:opacity-50 disabled:cursor-not-allowed'
+                ? 'border-button-border bg-button border  hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                : 'border-border hover:border-button-border/50 disabled:opacity-50 disabled:cursor-not-allowed'
             )}
           >
             {fruit}

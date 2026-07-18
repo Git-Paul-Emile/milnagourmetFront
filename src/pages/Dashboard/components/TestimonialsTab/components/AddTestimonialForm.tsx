@@ -141,7 +141,7 @@ export function AddTestimonialForm({
           <button
             type="submit"
             disabled={submitting}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+            className="px-4 py-2 bg-button border border-button-border text-button-foreground rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors disabled:opacity-50"
           >
             {submitting ? 'Ajout en cours...' : 'Ajouter le témoignage'}
           </button>

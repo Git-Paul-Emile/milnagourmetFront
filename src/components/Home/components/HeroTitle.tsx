@@ -21,7 +21,7 @@ export function HeroTitle({ title, isChristmasTheme = false, isNewYearTheme = fa
           <span className={cn(
             "sm:ml-0 lg:ml-0 animate-pulse-soft relative drop-shadow-2xl",
             isNewYearTheme
-              ? "text-[#FFD700] [text-shadow:0_0_30px_rgba(255,215,0,0.5)]"
+              ? "text-[#F9F871] [text-shadow:0_0_30px_rgba(249,248,113,0.5)]"
               : "bg-gradient-to-r from-white via-yellow-100 to-white bg-clip-text text-transparent"
           )}>
             Gourmet

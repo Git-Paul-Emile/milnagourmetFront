@@ -49,7 +49,7 @@ export function StoreHoursSection({
           {onInitializeHours && (
             <button
               onClick={onInitializeHours}
-              className="bg-primary text-primary-foreground px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full sm:w-auto"
+              className="bg-button border border-button-border text-button-foreground px-6 py-2 rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors w-full sm:w-auto"
             >
               Définir les horaires
             </button>
@@ -113,7 +113,7 @@ export function StoreHoursSection({
         <button
           onClick={handleUpdateStoreHours}
           disabled={isSaving}
-          className="bg-primary text-primary-foreground px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+          className="bg-button border border-button-border text-button-foreground px-6 py-2 rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
         >
           Sauvegarder les horaires
         </button>

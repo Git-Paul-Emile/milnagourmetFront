@@ -81,7 +81,7 @@ export function UserProfile({ isOpen, onClose }: UserProfileProps) {
                   className={cn(
                     'flex-1 flex items-center justify-center space-x-2 py-4 px-6 transition-colors',
                     activeTab === tab.id
-                      ? 'border-b-2 border-primary text-primary bg-primary/5'
+                      ? 'border-b-2 border-button-border text-button-foreground bg-button hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border '
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                   )}
                 >

@@ -34,7 +34,7 @@ export function AnalyticsControls({
               onClick={() => setTimeRange(period.value as TimeRange)}
               className={`px-3 py-1 rounded-lg text-sm transition-colors ${
                 timeRange === period.value
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
                   : 'bg-muted hover:bg-muted/80'
               }`}
             >

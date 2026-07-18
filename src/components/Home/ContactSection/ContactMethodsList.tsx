@@ -10,7 +10,7 @@ interface ContactMethodsListProps {
 export function ContactMethodsList({ methods, isChristmasTheme = false }: ContactMethodsListProps) {
   return (
     <div className="lg:col-span-1">
-      <h3 className={cn("text-xl font-semibold mb-6", "text-foreground")}>Nous Contacter</h3>
+      <h3 className={cn("text-xl font-semibold mb-6", "text-[#212121]")}>Nous Contacter</h3>
       <div className="space-y-4">
         {methods.map((method, index) => (
           <button
@@ -20,8 +20,8 @@ export function ContactMethodsList({ methods, isChristmasTheme = false }: Contac
               'w-full p-4 rounded-xl transition-all duration-300',
               'hover-lift flex items-center space-x-4',
               'border border-border ' + (method.primary
-                ? 'bg-gradient-primary text-primary-foreground hover:shadow-glow'
-                : 'bg-card text-foreground hover:bg-primary/5')
+                ? 'bg-button border border-button-border text-button-foreground hover:shadow-glow'
+                : 'bg-card text-foreground hover:bg-button-hover hover:text-button-hover-foreground')
             )}
           >
             <div className={cn(

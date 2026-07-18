@@ -34,8 +34,8 @@ export function CategoryFilters({
           className={cn(
             'flex items-center space-x-2 px-6 py-3 rounded-full font-medium transition-all duration-300',
             activeCategory === category.id
-              ? 'bg-gradient-primary text-primary-foreground shadow-glow'
-              : 'bg-card text-foreground hover:bg-primary/10 hover:text-primary border border-border'
+              ? 'bg-button border border-button-border text-button-foreground shadow-glow'
+              : 'bg-card text-foreground hover:bg-button-hover hover:text-button-hover-foreground border border-border'
           )}
         >
           <span>{category.name}</span>
@@ -46,7 +46,7 @@ export function CategoryFilters({
       {user?.role === 'admin' && (
         <button
           onClick={onAddCategoryClick}
-          className="flex items-center space-x-2 px-4 py-3 rounded-full font-medium bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary border border-border border-dashed transition-all duration-300"
+          className="flex items-center space-x-2 px-4 py-3 rounded-full font-medium bg-muted text-muted-foreground hover:bg-button-hover hover:text-button-hover-foreground border border-border border-dashed transition-all duration-300"
           title="Ajouter une catégorie"
         >
           <Plus className="h-4 w-4" />

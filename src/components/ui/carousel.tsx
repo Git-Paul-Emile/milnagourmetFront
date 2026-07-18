@@ -253,7 +253,8 @@ const CarouselDots = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
             key={index}
             className={cn(
               "w-2 h-2 rounded-full transition-all",
-              index === selectedIndex ? "bg-primary" : "bg-muted-foreground/30"
+              /* Point de pagination : pas de bordure sur une pastille de 8px. */
+              index === selectedIndex ? "bg-button hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border" : "bg-muted-foreground/30"
             )}
             onClick={() => api?.scrollTo(index)}
           />

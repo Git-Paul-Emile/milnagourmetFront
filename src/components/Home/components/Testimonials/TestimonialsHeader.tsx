@@ -7,9 +7,9 @@ interface TestimonialsHeaderProps {
 export function TestimonialsHeader({ isChristmasTheme = false }: TestimonialsHeaderProps) {
   return (
     <div className="text-center mb-12">
-      <h2 className="text-3xl md:text-4xl font-bold mb-4">
-        <span className="text-foreground">Ce que disent nos </span>
-        <span className="bg-gradient-primary bg-clip-text text-transparent">Clients</span>
+      {/* Titre de section entièrement en #212121 (plus de dégradé). */}
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#212121]">
+        Ce que disent nos Clients
       </h2>
       <p className={cn("text-lg max-w-2xl mx-auto", "text-muted-foreground")}>
         Découvrez les avis authentiques de nos clients satisfaits qui font confiance

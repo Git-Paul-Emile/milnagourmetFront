@@ -119,7 +119,7 @@ export function CustomCreation({ isOpen, onClose }: CustomCreationProps) {
                   onClick={handleAddToCart}
                   loading={isAdding}
                   disabled={!isValid}
-                  className="flex items-center justify-center space-x-2 w-full sm:w-auto px-8 py-4 sm:px-6 sm:py-3 rounded-lg font-semibold transition-all transform-gpu bg-gradient-to-r from-primary to-primary-light text-primary-foreground hover:shadow-xl hover:shadow-primary/25 hover:scale-105 active:scale-95"
+                  className="flex items-center justify-center space-x-2 w-full sm:w-auto px-8 py-4 sm:px-6 sm:py-3 rounded-lg font-semibold transition-all transform-gpu bg-button text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground hover:shadow-xl hover:shadow-button/25 hover:scale-105 active:scale-95"
                 >
                   <ShoppingCart className="h-5 w-5" />
                   <span className="text-lg sm:text-base">Ajouter au panier</span>

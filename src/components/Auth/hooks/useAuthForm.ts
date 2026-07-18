@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useApp } from '@/contexts/useApp';
 import { deliveryZoneService } from '@/services/deliveryZone';
@@ -14,6 +15,7 @@ interface UseAuthFormProps {
 export const useAuthForm = ({ initialMode, onClose }: UseAuthFormProps) => {
   const { login, register } = useAuth();
   const { dispatch } = useApp();
+  const navigate = useNavigate();
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -141,6 +143,10 @@ export const useAuthForm = ({ initialMode, onClose }: UseAuthFormProps) => {
 
       onClose();
       resetForm();
+
+      if (mode === 'login' && response?.data?.user?.role === 'ADMIN') {
+        navigate('/dashboard');
+      }
     } catch (error: unknown) {
       console.error('Erreur lors de la connexion:', error);
       const message = error instanceof Error ? error.message : 'Une erreur inattendue s\'est produite';

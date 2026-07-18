@@ -24,9 +24,9 @@ export function EditThemeModal({
   onSave
 }: EditThemeModalProps) {
   const colorFields: Array<{ key: 'primary' | 'secondary' | 'accent'; label: string; fallback: string }> = [
-    { key: 'primary', label: 'Couleur principale', fallback: '#2cb67d' },
-    { key: 'secondary', label: 'Couleur secondaire', fallback: '#ff9f43' },
-    { key: 'accent', label: "Couleur d'accent", fallback: '#2cb67d' }
+    { key: 'primary', label: 'Couleur principale', fallback: '#4bb069' },
+    { key: 'secondary', label: 'Couleur secondaire', fallback: '#eb975e' },
+    { key: 'accent', label: "Couleur d'accent", fallback: '#4bb069' }
   ];
 
   return (
@@ -92,7 +92,7 @@ export function EditThemeModal({
           <button
             onClick={onSave}
             disabled={!editThemeName.trim()}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-button border border-button-border text-button-foreground px-4 py-2 rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Modifier
           </button>

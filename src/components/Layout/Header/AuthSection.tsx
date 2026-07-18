@@ -1,6 +1,5 @@
 import React from 'react';
-import { User, LogOut } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { User, LogOut, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import type { AuthUser } from '@/types';
@@ -11,6 +10,7 @@ interface AuthSectionProps {
   onRegisterClick: () => void;
   onLogout: () => void;
   onProfileClick: () => void;
+  onDashboardClick: () => void;
   isChristmasTheme?: boolean;
 }
 
@@ -20,9 +20,9 @@ export function AuthSection({
   onRegisterClick,
   onLogout,
   onProfileClick,
+  onDashboardClick,
   isChristmasTheme = false
 }: AuthSectionProps) {
-  const navigate = useNavigate();
   const { logout } = useAuth();
 
   const handleLogout = async () => {
@@ -37,11 +37,24 @@ export function AuthSection({
   if (user) {
     return (
       <div className="hidden md:flex items-center space-x-2">
+        {user.role === 'ADMIN' && (
+          <button
+            onClick={onDashboardClick}
+            className={cn(
+              "flex items-center space-x-2 px-3 py-2 rounded-lg transition-all hover:scale-105 hover:shadow-md",
+              "text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground"
+            )}
+            title="Tableau de bord"
+          >
+            <LayoutDashboard className="h-5 w-5" />
+            <span className="text-sm font-medium">Dashboard</span>
+          </button>
+        )}
         <button
           onClick={onProfileClick}
           className={cn(
             "flex items-center space-x-2 px-3 py-2 rounded-lg transition-all hover:scale-105 hover:shadow-md",
-            "text-primary hover:bg-primary/10"
+            "text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground"
           )}
           title="Mon profil"
         >
@@ -70,7 +83,7 @@ export function AuthSection({
         onClick={onLoginClick}
         className={cn(
           "px-4 py-2 rounded-lg transition-all hover:scale-105 hover:shadow-md text-sm font-medium",
-          "text-primary hover:bg-primary/10"
+          "text-button-foreground hover:bg-[#43A2F2] hover:text-white"
         )}
       >
         Connexion
@@ -79,7 +92,7 @@ export function AuthSection({
         onClick={onRegisterClick}
         className={cn(
           "px-4 py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all text-sm font-medium",
-          "bg-gradient-to-r from-primary to-primary-light text-primary-foreground"
+          "bg-button border border-button-border hover:bg-[#43A2F2] hover:text-white hover:border-[#43A2F2] text-button-foreground"
         )}
       >
         S'inscrire

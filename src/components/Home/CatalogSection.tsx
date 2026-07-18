@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { CustomCreation } from '@/components/Product/CustomCreation';
 import { ProductCard } from '@/components/Product/ProductCard';
 import { Product, ProductCategoryItem } from '@/types';
 import { productService, configService } from '@/services';
@@ -8,7 +7,6 @@ import { useCatalogData } from '@/hooks/useCatalogData';
 import { useTheme } from '@/hooks/useTheme';
 import { cn } from '@/lib/utils';
 import { CategoryFilters } from './CategoryFilters';
-import { CreationSection } from './CreationSection';
 import { AddCategoryModal } from './AddCategoryModal';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
@@ -20,7 +18,6 @@ export function CatalogSection() {
   const isChristmasTheme = theme?.name === 'Noël';
 
   const [activeCategory, setActiveCategory] = useState<'all' | string | number>('all');
-  const [isCreationOpen, setIsCreationOpen] = useState(false);
   const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false);
   const [categoryIdToName, setCategoryIdToName] = useState<{ [key: number]: string }>({});
   const [creationCategoryId, setCreationCategoryId] = useState<number | null>(null);
@@ -141,35 +138,12 @@ export function CatalogSection() {
     }, {} as Record<string | number, { category: { id: string | number; name: string }; products: Product[] }>);
   }, [activeCategories, products, categoryIdToName]);
 
-  // Fonction helper pour vérifier si la catégorie active est "Création"
-  const checkIsCreationCategory = (category: string | number): boolean => {
-    // Vérifier si c'est la string 'creation' (toujours prioritaire)
-    if (category === 'creation') return true;
-    
-    // Vérifier si c'est l'ID numérique de la catégorie "Création"
-    if (creationCategoryId !== null && category === creationCategoryId) return true;
-    
-    // Vérifier via le mapping si c'est un nombre
-    if (typeof category === 'number' && categoryIdToName[category] === 'creation') return true;
-    
-    // Vérifier aussi par nom de catégorie si on a accès aux catégories
-    if (typeof category === 'number') {
-      const foundCategory = categories.find(cat => cat.id === category);
-      if (foundCategory) {
-        const normalizedName = foundCategory.name?.toLowerCase().trim();
-        if (normalizedName === 'création' || normalizedName === 'creation') return true;
-      }
-    }
-    
-    return false;
-  };
-
-  // Construire la liste des catégories avec "Tout" et "Création" pour les filtres
-  // Toujours inclure "Création" même si creationCategoryId n'est pas encore chargé
+  // Construire la liste des catégories avec "Tout" pour les filtres.
+  // La "Création" n'est plus un onglet ici : c'est désormais une section
+  // indépendante affichée avant le catalogue (voir CustomCreationSection).
   const displayCategories = [
     { id: 'all', name: 'Tout' },
     ...activeCategories,
-    { id: 'creation', name: 'Création' }, // Toujours afficher le bouton "Création"
   ];
 
   const handleAddCategory = async (name: string, description: string) => {
@@ -207,9 +181,9 @@ export function CatalogSection() {
       <div className="container mx-auto px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className="text-foreground">Notre </span>
-            <span className="bg-gradient-primary bg-clip-text text-transparent">Catalogue</span>
+          {/* Titre de section entièrement en #212121 (plus de dégradé). */}
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#212121]">
+            Notre Catalogue
           </h2>
           <p className={cn("text-lg max-w-2xl mx-auto", "text-muted-foreground")}>
             {catalogData?.description || 'Découvrez notre sélection de yaourts gourmets, préparés avec amour et des ingrédients de qualité'}
@@ -225,15 +199,9 @@ export function CatalogSection() {
           isChristmasTheme={isChristmasTheme}
         />
 
-        {checkIsCreationCategory(activeCategory) ? (
-          <CreationSection
-            catalogData={catalogData}
-            onCreationOpen={() => setIsCreationOpen(true)}
-          />
-        ) : (
-          <div className="space-y-16">
-            {/* Afficher tous les produits en carrousel si "Tout" est sélectionné */}
-            {activeCategory === 'all' ? (
+        <div className="space-y-16">
+          {/* Afficher tous les produits en carrousel si "Tout" est sélectionné */}
+          {activeCategory === 'all' ? (
               (() => {
                 const allProducts = Object.values(productsByCategory).flatMap(({ products: categoryProducts }) => categoryProducts);
                 
@@ -271,16 +239,6 @@ export function CatalogSection() {
             ) : (
               /* Afficher uniquement la catégorie sélectionnée avec ses produits en carrousel */
               (() => {
-                // Vérifier si la catégorie sélectionnée est "Création" (au cas où elle serait dans productsByCategory)
-                if (checkIsCreationCategory(activeCategory)) {
-                  return (
-                    <CreationSection
-                      catalogData={catalogData}
-                      onCreationOpen={() => setIsCreationOpen(true)}
-                    />
-                  );
-                }
-                
                 const selectedCategoryData = productsByCategory[activeCategory];
                 if (!selectedCategoryData) {
                   return (
@@ -331,7 +289,6 @@ export function CatalogSection() {
               })()
             )}
           </div>
-        )}
 
         {/* Message si aucune catégorie n'a de produits */}
         {activeCategory === 'all' && Object.keys(productsByCategory).length === 0 && !loading && (
@@ -351,12 +308,6 @@ export function CatalogSection() {
           </div>
         )}
       </div>
-
-      {/* Custom Creation Modal */}
-      <CustomCreation
-        isOpen={isCreationOpen}
-        onClose={() => setIsCreationOpen(false)}
-      />
 
       <AddCategoryModal
         isOpen={isAddCategoryModalOpen}

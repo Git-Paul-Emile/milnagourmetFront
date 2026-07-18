@@ -11,7 +11,7 @@ export function AdminLoginFooter() {
       <div className="mt-6 text-center">
         <button
           onClick={() => navigate('/')}
-          className="text-sm text-muted-foreground hover:text-primary transition-colors"
+          className="text-sm text-muted-foreground hover:text-button-hover-foreground transition-colors"
         >
           {ADMIN_LOGIN_CONSTANTS.BACK_TO_SITE_TEXT}
         </button>

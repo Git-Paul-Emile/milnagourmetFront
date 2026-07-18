@@ -12,7 +12,7 @@ export const QuickActions = ({ setActiveTab, setIsOrderManagementOpen }: QuickAc
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <button
         onClick={() => setIsOrderManagementOpen(true)}
-        className="flex items-center space-x-3 p-4 bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
+        className="flex items-center space-x-3 p-4 bg-button text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground rounded-lg transition-colors"
       >
         <ShoppingCart className="h-6 w-6 text-primary" />
         <div>
@@ -23,7 +23,7 @@ export const QuickActions = ({ setActiveTab, setIsOrderManagementOpen }: QuickAc
 
       <button
         onClick={() => setActiveTab('products')}
-        className="flex items-center space-x-3 p-4 bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
+        className="flex items-center space-x-3 p-4 bg-button text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground rounded-lg transition-colors"
       >
         <Package className="h-6 w-6 text-primary" />
         <div>
@@ -34,7 +34,7 @@ export const QuickActions = ({ setActiveTab, setIsOrderManagementOpen }: QuickAc
 
       <button
         onClick={() => setActiveTab('users')}
-        className="flex items-center space-x-3 p-4 bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
+        className="flex items-center space-x-3 p-4 bg-button text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground rounded-lg transition-colors"
       >
         <Users className="h-6 w-6 text-primary" />
         <div>

@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { Menu } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { CreationSize } from '@/types';
 import { OrderManagement } from '@/components/Admin/OrderManagement';
@@ -40,7 +39,7 @@ export function Dashboard() {
   useSEO({ title: 'Tableau de bord - Milna Gourmet', noIndex: true });
 
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [isOrderManagementOpen, setIsOrderManagementOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -65,10 +64,16 @@ export function Dashboard() {
     creationSizesHook.handleDeleteSize(sizeName);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // Quitter /dashboard avant que l'état d'authentification ne change,
+    // sinon ProtectedRoute redirige vers /admin/login avant ce navigate('/').
+    navigate('/', { replace: true });
     localStorage.removeItem('milna-user');
-    navigate('/');
-    window.location.reload();
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
   };
 
   // Les images disponibles sont maintenant chargées depuis l'API dans les composants
@@ -85,16 +90,8 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Mobile Header */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-card border-b border-border lg:hidden">
-        <div className="flex items-center justify-between py-4 px-4">
-          <button
-            onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-            className="p-2 hover:bg-muted rounded"
-          >
-            <Menu className="h-6 w-6" />
-          </button>
-        </div>
+      <header className="fixed top-0 left-0 right-0 z-40 lg:left-64">
+        <DashboardHeader onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} />
       </header>
 
       <div className="flex">
@@ -107,7 +104,7 @@ export function Dashboard() {
           onLogout={handleLogout}
         />
 
-        <div className="flex-1 pt-24 lg:ml-64 lg:pt-8 p-8">
+        <div className="flex-1 pt-24 lg:ml-64 p-8">
           {/* Main Content */}
           <div className="flex-1">
             {activeTab === 'overview' && <OverviewTab stats={dashboardData.stats} setActiveTab={setActiveTab} setIsOrderManagementOpen={setIsOrderManagementOpen} />}

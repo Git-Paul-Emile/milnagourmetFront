@@ -15,7 +15,9 @@ export function NavigationLinks({ navigation, isChristmasTheme = false }: Naviga
           href={`/${item.href}`}
           className={cn(
             "transition-colors font-medium",
-            "text-foreground hover:text-primary"
+            /* Liens du menu en #212121 ; le survol garde une indication
+               visuelle en passant en semi-opaque. */
+            "text-[#212121] hover:text-[#212121]/70"
           )}
         >
           {item.name}

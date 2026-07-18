@@ -23,7 +23,7 @@ export function OrdersTab({ orders, stats, setIsOrderManagementOpen, displaySucc
         <div className="flex space-x-3">
           <button
             onClick={() => setIsOrderManagementOpen(true)}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+            className="bg-button border border-button-border text-button-foreground px-4 py-2 rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors"
           >
             Ouvrir le gestionnaire
           </button>

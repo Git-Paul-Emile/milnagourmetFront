@@ -182,10 +182,9 @@ export function ServicesTab() {
             </Button>
           </div>
 
-          {/* Composants (panier uniquement) */}
-          {service.code === 'panier' && (
-            <div className="space-y-3 pt-2 border-t border-border">
-              <h4 className="font-medium">Composants proposés aux clients</h4>
+          {/* Composants proposés aux clients */}
+          <div className="space-y-3 pt-2 border-t border-border">
+            <h4 className="font-medium">Composants proposés aux clients</h4>
               <div className="space-y-2">
                 {service.components.map((component) => (
                   <div
@@ -213,26 +212,25 @@ export function ServicesTab() {
                     </div>
                   </div>
                 ))}
-                {service.components.length === 0 && (
-                  <p className="text-sm text-muted-foreground">
-                    Aucun composant — ajoutez-en pour que les clients puissent composer leur panier.
-                  </p>
-                )}
-              </div>
-              <div className="flex gap-2">
-                <Input
-                  value={newComponent}
-                  onChange={(e) => setNewComponent(e.target.value)}
-                  placeholder="Nouveau composant (ex : Chocolats)"
-                  onKeyDown={(e) => e.key === 'Enter' && addComponent(service)}
-                />
-                <Button onClick={() => addComponent(service)} disabled={!newComponent.trim() || savingId === service.id}>
-                  <Plus className="h-4 w-4" />
-                  Ajouter
-                </Button>
-              </div>
+              {service.components.length === 0 && (
+                <p className="text-sm text-muted-foreground">
+                  Aucun composant — ajoutez-en pour que les clients puissent faire leur choix.
+                </p>
+              )}
             </div>
-          )}
+            <div className="flex gap-2">
+              <Input
+                value={newComponent}
+                onChange={(e) => setNewComponent(e.target.value)}
+                placeholder="Nouveau composant (ex : Chocolats)"
+                onKeyDown={(e) => e.key === 'Enter' && addComponent(service)}
+              />
+              <Button onClick={() => addComponent(service)} disabled={!newComponent.trim() || savingId === service.id}>
+                <Plus className="h-4 w-4" />
+                Ajouter
+              </Button>
+            </div>
+          </div>
         </div>
       ))}
 

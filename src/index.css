@@ -2,129 +2,229 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design System Milna Gourmet - Salon du Yaourt 
-Couleurs principales : Turquoise (#16B8BD) et couleurs gourmandes
-*/
+/* ==========================================================================
+   Design System Milna Gourmet — Salon du Yaourt
+   --------------------------------------------------------------------------
+   PALETTE DE MARQUE
+     Principales   : cyan  #21DDEA (hsl 184 84% 52%)  |  vert  #4bb069 (hsl 138 40% 49%)
+     Complémentaires: bleu #43A2F2 (hsl 207 87% 61%)  |  rose  #d64c86 (hsl 335 63% 57%)
+                      jaune #F9F871 (hsl  60 92% 71%) |  orange #eb975e (hsl  24 78% 64%)
+
+   PRINCIPE DIRECTEUR (accessibilité) :
+     Les couleurs de marque fournies sont vives et claires. Posées telles quelles
+     derrière du texte blanc, elles échouent au contraste WCAG AA (ex. #21DDEA sur
+     blanc = 1,6:1). On applique donc le modèle « teinte de marque + rampe » :
+       --{couleur}        → version assombrie, ACCESSIBLE : remplissages pleins,
+                            textes, icônes, bordures, focus (texte blanc dessus, ≥ 4,5:1)
+       --{couleur}-light  → la teinte de marque EXACTE : dégradés, halos, survols,
+                            aplats décoratifs, mode sombre
+     La marque reste visible partout (dégradés, hero, halos) sans sacrifier la lisibilité.
+
+   RÔLES SÉMANTIQUES
+     cyan   → primaire (identité, CTA principaux, liens, focus)
+     vert   → secondaire / succès (confirmation, disponibilité)
+     bleu   → accent informatif (infos, liens secondaires)
+     rose   → accent gourmand (hero, promotions, témoignages)
+     orange → alerte douce (avertissements, notes, étoiles)
+     jaune  → fond gourmand uniquement (trop clair pour porter du texte)
+   ========================================================================== */
 
 @layer base {
   :root {
+    /* --- Neutres : encre et surfaces légèrement teintées cyan pour l'harmonie --- */
     --background: 0 0% 100%;
-    --foreground: 343 84% 15%;
+    --foreground: 183.9 45% 12%; /* Encre bleu-vert profonde — 16:1 sur blanc */
 
     --card: 0 0% 100%;
-    --card-foreground: 343 84% 15%; /* Aligné sur --foreground (cohérence des tokens) */
+    --card-foreground: 183.9 45% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 343 84% 15%; /* Aligné sur --foreground (cohérence des tokens) */
+    --popover-foreground: 183.9 45% 12%;
 
-    /* Milna Brand Colors */
-    --primary: 184 89% 40.7%; /* #16B8BD - Turquoise principal */
+    --muted: 183.9 40% 97%; /* Voile cyan très clair pour les fonds de section */
+    --muted-foreground: 183.9 18% 42%; /* Texte secondaire — 5,2:1 sur blanc */
+
+    /* --- Primaire : cyan #21DDEA --- */
+    --primary: 183.9 82.7% 29%; /* Cyan profond — blanc dessus = 4,76:1 (AA) */
     --primary-foreground: 0 0% 100%;
-    --primary-light: 184 89% 55%;
-    --primary-dark: 184 89% 30%;
+    --primary-light: 183.9 82.7% 52.4%; /* #21DDEA — teinte de marque exacte */
+    --primary-dark: 183.9 82.7% 21%; /* Survol / état actif */
 
-    --secondary: 338 71% 52%; /* #DC2E6D - Framboise gourmande (remplace l'orange ; blanc dessus = 4.5:1, AA) */
+    /* --- Secondaire : vert #4bb069 --- */
+    --secondary: 137.8 40.2% 33%; /* Vert profond — blanc dessus = 5,4:1 (AA) */
     --secondary-foreground: 0 0% 100%;
-    --secondary-light: 338 75% 65%;
+    --secondary-light: 137.8 40.2% 49.2%; /* #4bb069 — teinte de marque exacte */
+    --secondary-dark: 137.8 40.2% 24%;
+    /* Survol : en mode clair l'aplat s'assombrit (le libellé est blanc).
+       En mode sombre il s'éclaircit, car le libellé y est une encre foncée —
+       l'assombrir ferait chuter le contraste. Ce token s'inverse donc. */
+    --secondary-hover: 137.8 40.2% 24%;
 
-    --accent: 184 89% 40.7%; /* #18B6BD - Turquoise accent */
+    /* --- Accent informatif : bleu #43A2F2 --- */
+    --accent: 207.4 87.1% 40%; /* Bleu profond — blanc dessus = 5,25:1 (AA) */
     --accent-foreground: 0 0% 100%;
+    --accent-light: 207.4 87.1% 60.6%; /* #43A2F2 — teinte de marque exacte */
 
-    --muted: 210 40% 98%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* --- Boutons d'action : bleu au repos, vert au survol ---------------
+       Ces deux teintes sont claires : un libellé blanc y échoue (2,73:1 et
+       1,31:1). Le libellé est donc une encre foncée (5,80:1 et 12,10:1).
+       Elles se détachent aussi mal d'un fond blanc (2,73:1 et 1,31:1, sous
+       le minimum de 3:1 de la WCAG 1.4.11) : une bordure plus soutenue rend
+       le contour du bouton toujours perceptible. */
+    --button: 207.4 87.1% 60.6%; /* #43A2F2 */
+    --button-foreground: 183.9 45% 12%;
+    --button-border: 207.4 87.1% 33%;
+    --button-hover: 137.8 40.2% 49.2%; /* #4bb069 */
+    --button-hover-foreground: 137.8 60% 10%;
+    --button-hover-border: 137.8 45% 24%;
 
-    /* Couleurs gourmandes */
-    --cream: 48 100% 96%; /* Crème */
-    --vanilla: 48 100% 88%; /* Vanille */
-    --berry: 340 82% 95%; /* Berry light */
-    
-    /* Gradients gourmands avancés */
+    /* --- Succès (adossé au vert de marque) --- */
+    --success: 137.8 40.2% 33%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 137.8 40.2% 49.2%;
+
+    /* --- Information (adossé au bleu complémentaire) --- */
+    --info: 207.4 87.1% 40%;
+    --info-foreground: 0 0% 100%;
+    --info-light: 207.4 87.1% 60.6%;
+
+    /* --- Alerte douce : orange #eb975e (aplat clair + encre foncée, motif standard) --- */
+    --warning: 24.3 77.9% 64.5%; /* #eb975e — teinte exacte */
+    --warning-foreground: 24 70% 14%; /* Encre brune — 6,4:1 sur l'orange */
+    --warning-strong: 24.3 72% 38%; /* Version texte/icône lisible sur blanc — 5,4:1 */
+
+    /* --- Accent gourmand : rose #d64c86 --- */
+    --pink: 334.8 62.7% 43%; /* Rose profond — blanc dessus = 6,18:1 (AA) */
+    --pink-foreground: 0 0% 100%;
+    --pink-light: 334.8 62.7% 56.9%; /* #d64c86 — teinte de marque exacte */
+
+    /* --- Jaune #F9F871 : fond uniquement, jamais de texte dessus --- */
+    --sunny: 59.6 91.9% 71%; /* #F9F871 — teinte exacte */
+    --sunny-foreground: 60 60% 14%; /* Encre olive foncée — 10,6:1 sur le jaune */
+
+    /* --- Voiles gourmands (fonds de cartes, badges doux) --- */
+    --cream: 59.6 92% 95%; /* Crème dérivée du jaune de marque */
+    --vanilla: 59.6 88% 86%; /* Vanille, dégradé de carte */
+    --berry: 334.8 62.7% 95%; /* Voile rosé */
+
+    /* --- Dégradés --- */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
     --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-light)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    /* Hero : les deux couleurs principales, cyan → vert (frais, naturel) */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary-light)) 0%, hsl(var(--secondary-light)) 100%);
     --gradient-card: linear-gradient(145deg, hsl(var(--cream)), hsl(var(--vanilla)));
-    --gradient-rainbow: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)), hsl(184 89% 40.7%));
-    --gradient-glow: linear-gradient(135deg, hsl(var(--primary) / 0.8), hsl(var(--secondary) / 0.8), hsl(184 89% 40.7% / 0.8));
-    
-    /* Ombres */
+    /* Arc-en-ciel : cyan → bleu → rose (les complémentaires en soutien) */
+    --gradient-rainbow: linear-gradient(135deg, hsl(var(--primary-light)), hsl(var(--accent-light)), hsl(var(--pink-light)));
+    --gradient-glow: linear-gradient(135deg, hsl(var(--primary-light) / 0.8), hsl(var(--accent-light) / 0.8), hsl(var(--pink-light) / 0.8));
+
+    /* --- Ombres teintées cyan (plus vivantes qu'un noir neutre) --- */
     --shadow-soft: 0 4px 20px hsl(var(--primary) / 0.1);
     --shadow-medium: 0 8px 30px hsl(var(--primary) / 0.15);
     --shadow-strong: 0 12px 40px hsl(var(--primary) / 0.2);
-    --shadow-glow: 0 0 30px hsl(var(--primary) / 0.3);
-    
-    /* Animations */
+    --shadow-glow: 0 0 30px hsl(var(--primary-light) / 0.45);
+
+    /* --- Animations --- */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 45%; /* Rouge — blanc dessus = 5,0:1 (AA) */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 184 89% 40.7%; /* Focus ring aligné sur la couleur de marque (focus visible cohérent) */
+    --border: 183.9 30% 89%; /* Bordure teintée cyan */
+    --input: 183.9 30% 89%;
+    --ring: 183.9 82.7% 34%; /* Focus visible — 3,6:1 sur blanc (WCAG 1.4.11) */
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* --- Sidebar (back-office) : neutres teintés cyan --- */
+    --sidebar-background: 183.9 40% 98%;
+    --sidebar-foreground: 183.9 30% 26%;
+    --sidebar-primary: 183.9 82.7% 29%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 183.9 40% 94%;
+    --sidebar-accent-foreground: 183.9 45% 18%;
+    --sidebar-border: 183.9 30% 89%;
+    --sidebar-ring: 183.9 82.7% 34%;
   }
 
   .dark {
-    --background: 343 84% 8%;
-    --foreground: 0 0% 98%;
+    /* Sur fond sombre, les teintes de marque vives deviennent lisibles :
+       on les remonte au premier plan avec une encre foncée par-dessus. */
+    --background: 183.9 45% 8%; /* Bleu-vert nuit */
+    --foreground: 183.9 20% 96%;
 
-    --card: 343 84% 10%;
-    --card-foreground: 0 0% 98%;
+    --card: 183.9 42% 11%;
+    --card-foreground: 183.9 20% 96%;
 
-    --popover: 343 84% 10%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 183.9 42% 11%;
+    --popover-foreground: 183.9 20% 96%;
 
-    --primary: 184 89% 50%;
-    --primary-foreground: 343 84% 8%;
-    --primary-light: 184 89% 60%;
-    --primary-dark: 184 89% 35%;
+    --muted: 183.9 30% 16%;
+    --muted-foreground: 183.9 15% 68%; /* 6,4:1 sur le fond sombre */
 
-    --secondary: 338 75% 62%; /* Framboise éclaircie pour le mode sombre */
-    --secondary-foreground: 343 84% 8%;
-    --secondary-light: 338 75% 72%;
+    --primary: 183.9 82.7% 52.4%; /* #21DDEA en pleine intensité */
+    --primary-foreground: 183.9 60% 8%;
+    --primary-light: 183.9 82.7% 66%;
+    --primary-dark: 183.9 82.7% 38%;
 
-    --accent: 184 89% 50%;
-    --accent-foreground: 0 0% 100%;
+    --secondary: 137.8 45% 50%;
+    --secondary-foreground: 183.9 60% 8%;
+    --secondary-light: 137.8 45% 62%;
+    --secondary-dark: 137.8 45% 34%;
+    --secondary-hover: 137.8 45% 62%; /* S'éclaircit en mode sombre (voir mode clair) */
 
-    --muted: 343 20% 15%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 207.4 87.1% 60.6%; /* #43A2F2 */
+    --accent-foreground: 183.9 60% 8%;
+    --accent-light: 207.4 87.1% 72%;
 
-    --cream: 48 50% 20%;
-    --vanilla: 48 50% 25%;
-    --berry: 340 40% 20%;
+    /* Boutons : mêmes teintes qu'en mode clair (elles sont assez lumineuses
+       pour ressortir sur un fond sombre), bordures éclaircies pour rester
+       visibles contre le fond nuit. */
+    --button: 207.4 87.1% 60.6%;
+    --button-foreground: 183.9 45% 12%;
+    --button-border: 207.4 87.1% 78%;
+    --button-hover: 137.8 40.2% 49.2%; /* #4bb069 */
+    --button-hover-foreground: 137.8 60% 10%;
+    --button-hover-border: 137.8 50% 78%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --success: 137.8 45% 50%;
+    --success-foreground: 183.9 60% 8%;
+    --success-light: 137.8 45% 62%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 184 89% 50%; /* Focus ring aligné sur la couleur de marque (mode sombre) */
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --info: 207.4 87.1% 60.6%;
+    --info-foreground: 183.9 60% 8%;
+    --info-light: 207.4 87.1% 72%;
+
+    --warning: 24.3 77.9% 64.5%;
+    --warning-foreground: 24 70% 12%;
+    --warning-strong: 24.3 80% 70%;
+
+    --pink: 334.8 62.7% 56.9%; /* #d64c86 */
+    --pink-foreground: 183.9 60% 6%; /* Encre plus profonde — 4,7:1 sur le rose */
+    --pink-light: 334.8 62.7% 68%;
+
+    --sunny: 59.6 70% 62%;
+    --sunny-foreground: 60 60% 10%;
+
+    --cream: 59.6 30% 18%;
+    --vanilla: 59.6 30% 24%;
+    --berry: 334.8 30% 20%;
+
+    --destructive: 0 65% 52%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 183.9 28% 20%;
+    --input: 183.9 28% 20%;
+    --ring: 184 84% 52%;
+
+    --sidebar-background: 183.9 42% 11%;
+    --sidebar-foreground: 183.9 15% 90%;
+    --sidebar-primary: 183.9 82.7% 52.4%;
+    --sidebar-primary-foreground: 183.9 60% 8%;
+    --sidebar-accent: 183.9 30% 18%;
+    --sidebar-accent-foreground: 183.9 15% 92%;
+    --sidebar-border: 183.9 28% 20%;
+    --sidebar-ring: 183.9 82.7% 52.4%;
   }
 }
 

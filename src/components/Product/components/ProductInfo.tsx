@@ -16,13 +16,13 @@ export function ProductInfo({ product }: ProductInfoProps) {
       <div>
         <h3 className={cn(
           "font-semibold text-lg transition-colors",
-          "text-foreground group-hover:text-primary"
+          "text-[#212121] group-hover:text-primary"
         )}>
           {product.name}
         </h3>
         <p className={cn(
           "text-sm line-clamp-2 mt-1",
-          "text-muted-foreground"
+          "text-[#8b8b8b]"
         )}>
           {product.description}
         </p>

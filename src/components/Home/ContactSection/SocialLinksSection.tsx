@@ -9,7 +9,7 @@ interface SocialLinksSectionProps {
 export function SocialLinksSection({ socialLinks, isChristmasTheme = false }: SocialLinksSectionProps) {
   return (
     <div className="lg:col-span-1">
-      <h3 className="text-xl font-semibold mb-6">Suivez-Nous</h3>
+      <h3 className="text-xl font-semibold mb-6 text-[#212121]">Suivez-Nous</h3>
 
       {/* Réseaux sociaux */}
       <div className="space-y-4 mb-8">

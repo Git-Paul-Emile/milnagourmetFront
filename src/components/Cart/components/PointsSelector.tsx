@@ -61,7 +61,7 @@ export function PointsSelector({
         /* Not using points yet */
         <button
           onClick={handleActivate}
-          className="w-full py-2 px-3 text-sm font-medium text-primary border border-primary/40 rounded hover:bg-primary/10 transition-colors"
+          className="w-full py-2 px-3 text-sm font-medium text-button-foreground border border-button-border/40 rounded hover:bg-button-hover hover:text-button-hover-foreground transition-colors"
         >
           Utiliser mes points (min. {MIN_POINTS_REQUIRED} pts)
         </button>

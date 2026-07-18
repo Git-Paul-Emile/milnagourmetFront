@@ -79,6 +79,7 @@ export function Header() {
                 }}
                 onLogout={handleLogout}
                 onProfileClick={() => navigate('/profile')}
+                onDashboardClick={() => navigate('/dashboard')}
                 isChristmasTheme={isChristmasTheme}
               />
               <ContactButtons isChristmasTheme={isChristmasTheme} />
@@ -107,6 +108,10 @@ export function Header() {
           }}
           onProfileClick={() => {
             navigate('/profile');
+            setIsMobileMenuOpen(false);
+          }}
+          onDashboardClick={() => {
+            navigate('/dashboard');
             setIsMobileMenuOpen(false);
           }}
           onWhatsAppClick={async () => {

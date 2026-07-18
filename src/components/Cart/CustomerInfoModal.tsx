@@ -135,7 +135,7 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
               </Button>
               <Button
                 type="submit"
-                className="flex-1 bg-gradient-to-r from-primary to-secondary hover:shadow-lg"
+                className="flex-1 bg-button text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground hover:shadow-lg"
                 loading={isSending}
               >
                 <Send className="h-4 w-4 mr-2" />

@@ -21,28 +21,28 @@ function OrderStatusStats({ stats }: OrderStatusStatsProps) {
         value={totalOrders}
         icon={ShoppingCart}
         color="hover:shadow-blue-500/10"
-        valueColor="text-[#460618]"
+        valueColor="text-foreground"
       />
       <StatCard
         title="Reçues"
         value={recuCount}
         icon={Clock}
         color="hover:shadow-blue-500/10"
-        valueColor="text-[#460618]"
+        valueColor="text-foreground"
       />
       <StatCard
         title="Livrées"
         value={livreeCount}
         icon={CheckCircle}
         color="hover:shadow-green-500/10"
-        valueColor="text-[#460618]"
+        valueColor="text-foreground"
       />
       <StatCard
         title="Annulées"
         value={annuleeCount}
         icon={XCircle}
         color="hover:shadow-red-500/10"
-        valueColor="text-[#460618]"
+        valueColor="text-foreground"
       />
     </div>
   );

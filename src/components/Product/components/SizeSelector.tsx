@@ -21,8 +21,8 @@ export function SizeSelector({ creationSizes, selectedSize, onSizeChange }: Size
             className={cn(
               'p-6 rounded-lg border-2 transition-all text-left',
               selectedSize === sizeConfig.nom
-                ? 'border-primary bg-primary/10'
-                : 'border-border hover:border-primary/50'
+                ? 'border-button-border bg-button hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                : 'border-border hover:border-button-border/50'
             )}
           >
             <h4 className="font-semibold text-lg capitalize">{sizeConfig.nom}</h4>

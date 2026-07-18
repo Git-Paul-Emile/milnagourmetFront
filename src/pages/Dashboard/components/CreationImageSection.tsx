@@ -42,7 +42,7 @@ export function CreationImageSection({ creationImage, availableImages, onCreatio
                     <button
                       type="button"
                       onClick={() => setShowGallery(!showGallery)}
-                      className="flex items-center space-x-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                      className="flex items-center space-x-2 text-sm font-medium text-button-foreground hover:text-button-hover-foreground/80 transition-colors"
                     >
                       <span>Images de création existantes ({creationImages.length})</span>
                       {showGallery ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -61,8 +61,8 @@ export function CreationImageSection({ creationImage, availableImages, onCreatio
                           onClick={() => onCreationImageSelect(image.value)}
                           className={`relative p-2 border-2 rounded-lg transition-all hover:scale-105 ${
                             creationImage === image.value
-                              ? 'border-primary bg-primary/10'
-                              : 'border-border hover:border-primary/50'
+                              ? 'border-button-border bg-button hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                              : 'border-border hover:border-button-border/50'
                           }`}
                         >
                           <img

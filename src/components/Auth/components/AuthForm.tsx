@@ -145,7 +145,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       <Button
         type="submit"
         loading={isLoading}
-        className="group relative w-full py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform-gpu overflow-hidden bg-gradient-to-r from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100 text-primary-foreground hover:shadow-xl hover:shadow-primary/25 hover:scale-105 hover:-translate-y-0.5 active:scale-95 before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700"
+        /* Modale connexion/inscription : fond #43A2F2 au repos, #4bb069 au
+           survol. Le libellé garde l'encre foncée --button-foreground —
+           elle donne 5,80:1 et 5,82:1, là où du blanc tomberait à 2,73:1
+           et 2,72:1 sur ces deux fonds clairs. */
+        className="group relative w-full py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform-gpu overflow-hidden bg-button text-button-foreground hover:bg-secondary-light hover:text-button-foreground hover:shadow-xl hover:shadow-button/25 hover:scale-105 hover:-translate-y-0.5 active:scale-95 before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700"
       >
         {mode === 'login' ? 'Se connecter' : 'Créer mon compte'}
       </Button>
@@ -156,7 +160,9 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           <button
             type="button"
             onClick={onSwitchMode}
-            className="ml-2 text-primary font-semibold hover:underline"
+            /* Lien texte, pas un bouton plein : il garde une couleur de lien
+               lisible (--accent, 5,27:1 sur fond clair). */
+            className="ml-2 text-accent font-semibold hover:underline"
           >
             {mode === 'login' ? 'S\'inscrire' : 'Se connecter'}
           </button>

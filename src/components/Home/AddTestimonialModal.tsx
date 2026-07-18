@@ -144,7 +144,7 @@ export function AddTestimonialModal({ isOpen, onClose, onSuccess }: AddTestimoni
               <Button
                 type="submit"
                 form="testimonial-form"
-                className="flex-1 bg-gradient-to-r from-primary to-primary-light hover:shadow-lg"
+                className="flex-1 bg-button text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground hover:shadow-lg"
                 loading={isSubmitting}
               >
                 Soumettre

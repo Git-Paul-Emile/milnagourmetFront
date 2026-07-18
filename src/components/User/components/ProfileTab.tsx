@@ -46,7 +46,7 @@ export function ProfileTab({
         {!isEditing ? (
           <button
             onClick={() => setIsEditing(true)}
-            className="flex items-center space-x-2 px-4 py-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+            className="flex items-center space-x-2 px-4 py-2 text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground rounded-lg transition-colors"
           >
             <Edit3 className="h-4 w-4" />
             <span>Modifier</span>
@@ -64,7 +64,7 @@ export function ProfileTab({
             </button>
             <button
               onClick={handleSaveProfile}
-              className="flex items-center space-x-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 bg-button border border-button-border text-button-foreground rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors"
             >
               <Save className="h-4 w-4" />
               <span>Sauvegarder</span>

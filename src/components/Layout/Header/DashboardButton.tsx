@@ -5,7 +5,7 @@ export function DashboardButton() {
   return (
     <button
       onClick={() => window.open('/dashboard', '_blank')}
-      className="p-2 text-foreground hover:text-primary transition-colors"
+      className="p-2 text-foreground hover:text-button-hover-foreground transition-colors"
       title="Tableau de bord"
     >
       <Settings className="h-6 w-6" />

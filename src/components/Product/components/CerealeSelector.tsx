@@ -19,8 +19,8 @@ export function CerealeSelector({ cereales, selectedCereales, onToggleCereale }:
             className={cn(
               'p-3 rounded-lg border transition-all text-sm',
               selectedCereales.includes(cereale)
-                ? 'border-primary bg-primary text-primary-foreground'
-                : 'border-border hover:border-primary/50'
+                ? 'border-button-border bg-button border  hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                : 'border-border hover:border-button-border/50'
             )}
           >
             {cereale}

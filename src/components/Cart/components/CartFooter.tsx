@@ -63,8 +63,8 @@ export function CartFooter({ deliveryZone, isOrdering, onOrder, onClearCart }: C
           disabled={isOrdering}
           className={cn(
             'group relative w-full flex items-center justify-center space-x-2 py-4 px-4 rounded-lg font-semibold transition-all duration-300 transform-gpu overflow-hidden',
-            'bg-gradient-to-r from-primary via-secondary to-primary bg-size-200 bg-pos-0 hover:bg-pos-100',
-            'text-primary-foreground hover:shadow-xl hover:shadow-primary/25 hover:scale-105 hover:-translate-y-0.5 active:scale-95',
+            'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border',
+            'text-button-foreground hover:shadow-xl hover:shadow-button/25 hover:scale-105 hover:-translate-y-0.5 active:scale-95',
             isOrdering && 'opacity-50 cursor-not-allowed',
             'before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700'
           )}

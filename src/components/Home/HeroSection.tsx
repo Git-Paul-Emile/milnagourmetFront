@@ -1,20 +1,49 @@
-import React from 'react';
-import { useParallax } from './hooks/useParallax';
+import React, { useEffect, useState } from 'react';
 import { useHeroData } from './hooks/useHeroData';
 import { useTheme } from '@/hooks/useTheme';
 import { HeroLoading } from './components/HeroLoading';
 import { HeroTitle } from './components/HeroTitle';
 import { HeroSubtitle } from './components/HeroSubtitle';
-import { HeroFeatures } from './components/HeroFeatures';
 import { HeroCTA } from './components/HeroCTA';
 import { HeroDecorations } from './components/HeroDecorations';
 import NewYearEffects from '../NewYearEffects';
 import { getFullImageUrl } from '@/utils/imageUtils';
 import { DEFAULT_BANNER_IMAGE } from '@/constants/media';
 
+/**
+ * Vidéo de fond du hero.
+ *
+ * Deux façons de la fournir, sans toucher à ce fichier :
+ *
+ * 1. URL distante — renseigner `VITE_HERO_VIDEO_URL` dans le `.env`.
+ *    Elle doit pointer vers un fichier vidéo (`.mp4`), pas vers une page web,
+ *    et être stable : les liens d'aperçu des banques d'images portent une
+ *    signature qui expire au bout de quelques minutes et cesseraient de
+ *    fonctionner.
+ *
+ * 2. Fichier local — déposer le `.mp4` dans `front/public/videos/`
+ *    sous le nom `hero-yaourt.mp4`. C'est la valeur par défaut.
+ *
+ * Dans les deux cas, si la vidéo est introuvable la lecture échoue en
+ * silence et l'image `poster` — la bannière actuelle — reste affichée.
+ */
+const HERO_VIDEO =
+  import.meta.env.VITE_HERO_VIDEO_URL || '/videos/hero-yaourt.mp4';
+
 export function HeroSection() {
-  const parallaxRef = useParallax();
   const { heroData, loading } = useHeroData();
+
+  // Accessibilité (WCAG 2.2.2) : une vidéo qui joue en boucle est une
+  // animation automatique. On ne la lance pas si l'utilisateur a demandé
+  // la réduction des animations ; l'image poster prend alors le relais.
+  const [motionAllowed, setMotionAllowed] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: no-preference)');
+    setMotionAllowed(mq.matches);
+    const onChange = () => setMotionAllowed(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
   const { theme } = useTheme();
   const isChristmasTheme = theme?.name === 'Noël';
   const isNewYearTheme = theme?.name === 'Nouvel An';
@@ -27,47 +56,48 @@ export function HeroSection() {
     return <HeroLoading />;
   }
 
+  /* Image poster : jamais depuis un CDN externe (Cloudinary) — bannière
+     locale par défaut, ou upload servi par notre propre backend. */
+  const posterImage =
+    heroData.banner && !heroData.banner.includes('cloudinary')
+      ? getFullImageUrl(heroData.banner)
+      : DEFAULT_BANNER_IMAGE;
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden -mt-8">
-      {/* Background avec parallax amélioré */}
-      <div className="absolute inset-0 parallax">
+    <section id="home" className="relative h-screen flex items-end overflow-hidden -mt-40">
+      {/* Fond : vidéo en boucle, avec la bannière en image poster.
+          L'image reste visible tant que la vidéo n'est pas chargée, et
+          définitivement si le fichier vidéo est absent. */}
+      <div className="absolute inset-0 overflow-hidden">
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          poster={posterImage}
+          autoPlay={motionAllowed}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+          tabIndex={-1}
+        >
+          <source src={HERO_VIDEO} type="video/mp4" />
+        </video>
+
+        {/* Filtre : noir à 10 % d'opacité. */}
+        <div aria-hidden="true" className="absolute inset-0 bg-black/10" />
+
+        {/* Fondu bas : assure la lisibilité du texte posé sur la vidéo. */}
         <div
-          ref={parallaxRef}
-          className="parallax-layer bg-cover bg-center bg-no-repeat transform-gpu transition-transform duration-1000 ease-out"
-          style={{
-            /* L'image de fond ne doit jamais être chargée depuis un CDN externe (Cloudinary) :
-               bannière locale par défaut, ou upload servi par notre propre backend */
-            backgroundImage: `url(${
-              heroData.banner && !heroData.banner.includes('cloudinary')
-                ? getFullImageUrl(heroData.banner)
-                : DEFAULT_BANNER_IMAGE
-            })`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            height: '120%',
-            width: '120%',
-            top: '-10%',
-            left: '-10%'
-          }}
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 via-black/40 to-transparent"
         />
-        <div className={`absolute inset-0 animate-pulse-soft ${
-          isNewYearTheme
-            ? "bg-gradient-to-br from-[rgba(10,10,10,0.8)] via-[rgba(30,39,73,0.7)] to-[rgba(15,27,61,0.7)]"
-            : "bg-gradient-to-br from-background/85 via-background/65 to-background/45"
-        }`} />
-        <div className={`absolute inset-0 ${
-          isNewYearTheme
-            ? "bg-gradient-to-t from-[rgba(30,39,73,0.3)] via-transparent to-[rgba(10,10,10,0.2)]"
-            : "bg-gradient-to-t from-background/25 via-transparent to-background/15"
-        }`} />
       </div>
 
       {/* Contenu */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pb-16 sm:pb-20">
         <div className="max-w-4xl mx-auto text-center lg:text-left">
           <HeroTitle title={heroData.title} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />
           <HeroSubtitle subtitle={heroData.subtitle} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />
-          <HeroFeatures features={heroData.features} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />
           <HeroCTA onCatalogClick={scrollToCatalog} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />
         </div>
       </div>

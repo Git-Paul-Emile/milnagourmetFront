@@ -17,7 +17,7 @@ const NewYearEffects: React.FC = () => {
       confetti.classList.add('confetti');
 
       // Couleurs possibles pour les confettis
-      const colors = ['#FFD700', '#C0C0C0', '#9B59B6', '#FFD700'];
+      const colors = ['#F9F871', '#C0C0C0', '#d64c86', '#F9F871'];
       confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 
       // Position horizontale aléatoire
@@ -60,7 +60,7 @@ const NewYearEffects: React.FC = () => {
       firework.style.left = x + 'px';
 
       // Couleur principale
-      const colors = ['#FFD700', '#9B59B6', '#C0C0C0'];
+      const colors = ['#F9F871', '#d64c86', '#C0C0C0'];
       const mainColor = colors[Math.floor(Math.random() * colors.length)];
 
       // Créer les particules
@@ -128,7 +128,7 @@ const NewYearEffects: React.FC = () => {
             z-index: 9997;
             width: 4px;
             height: 80px;
-            background: #FFD700;
+            background: #F9F871;
             animation: launch 1s ease-out forwards;
           }
 

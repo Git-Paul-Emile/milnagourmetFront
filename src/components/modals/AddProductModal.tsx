@@ -71,7 +71,7 @@ export function AddProductModal({ isOpen, onClose, onAdd, productCategories }: A
           </button>
           <button
             onClick={handleSubmit}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+            className="bg-button border border-button-border text-button-foreground px-4 py-2 rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors"
           >
             Ajouter le produit
           </button>

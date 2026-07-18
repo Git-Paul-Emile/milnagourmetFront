@@ -1,46 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { specialServicesService } from '@/services';
-import { SpecialService } from '@/types';
-import { ServiceOrderModal } from './ServiceOrderModal';
-import { Button } from '@/components/ui/button';
+import React from 'react';
+import { ArrowRight } from 'lucide-react';
 
 /**
- * Section "Nos services" : Panier gourmand, Boîte pancake (si activée par l'admin).
- * Les services inactifs ne sont pas renvoyés par l'API et n'apparaissent donc pas.
- * Prix sur devis : communiqué par le vendeur après réception de la commande.
+ * Section "Nos services" — réplique fidèle du visuel de référence.
+ *
+ * Version statique (provisoire) : 4 cartes colorées, une couleur par carte,
+ * titre en haut à gauche et lien "Order Now" en bas à gauche.
+ * Les images des produits sont volontairement absentes pour l'instant :
+ * l'emplacement (à droite de chaque carte) est réservé pour les ajouter plus tard.
  */
+
+interface ServiceCard {
+  title: string;
+  /** Couleur de fond de la carte, puisée dans la palette de marque. */
+  background: string;
+  /** Couleur du texte posé sur cette carte. */
+  ink: string;
+}
+
+/**
+ * Une couleur de fond par carte, avec l'encre associée.
+ *
+ * Bleu et rose : texte blanc, comme demandé. RÉSERVE D'ACCESSIBILITÉ —
+ * le contraste y reste sous le seuil WCAG AA de 4,5:1 pour le petit texte :
+ * 2,73:1 sur le bleu #43A2F2 et 4,01:1 sur le rose #d64c86. Les couleurs de
+ * fond n'ont volontairement pas été retouchées (ni voile, ni assombrissement)
+ * pour respecter les teintes choisies. Si la conformité AA devient requise,
+ * trois pistes : assombrir les deux fonds, revenir à une encre foncée, ou
+ * poser un voile sombre derrière le texte.
+ *
+ * Jaune et orange : encre #111111, car le blanc y est totalement illisible
+ * (1,12:1 et 2,30:1).
+ */
+const SERVICE_CARDS: ServiceCard[] = [
+  { title: 'Grilled Double Cheese Burger', background: '#43A2F2', ink: '#FFFFFF' }, // Bleu
+  { title: 'Tasty Yummy Cheesy Pizza', background: '#d64c86', ink: '#FFFFFF' },     // Rose
+  { title: 'New Menu Galaxy Donuts Time!', background: '#F9F871', ink: '#111111' }, // Jaune
+  { title: 'Fresh Delicious Veg Sandwich', background: '#eb975e', ink: '#111111' }, // Orange
+];
+
 export function ServicesSection() {
-  const [services, setServices] = useState<SpecialService[]>([]);
-  const [selectedService, setSelectedService] = useState<SpecialService | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    specialServicesService
-      .getActive()
-      .then((response) => {
-        if (!cancelled) setServices((response.data as SpecialService[]) ?? []);
-      })
-      .catch((error) => {
-        console.error('Erreur lors du chargement des services:', error);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  // Rien à afficher : pas de section vide dans la page
-  if (loading || services.length === 0) return null;
-
   return (
     <section id="services" className="py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Nos <span className="bg-gradient-primary bg-clip-text text-transparent">Services</span>
+          {/* Titre de section entièrement en #212121 (plus de dégradé). */}
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-[#212121]">
+            Nos Services
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Des attentions gourmandes préparées sur mesure. Le prix vous est communiqué
@@ -48,40 +54,42 @@ export function ServicesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
-          {services.map((service) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {SERVICE_CARDS.map((card) => (
             <article
-              key={service.id}
-              className="group relative rounded-xl overflow-hidden bg-card border border-border hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
+              key={card.title}
+              style={{ background: card.background, color: card.ink }}
+              className="group relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-3xl p-6 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:shadow-strong"
             >
-              {service.image && (
-                <div className="relative aspect-square overflow-hidden">
-                  <img
-                    src={service.image}
-                    alt={service.name}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <span className="absolute top-2 right-2 bg-primary text-primary-foreground px-2 py-1 rounded text-xs font-medium">
-                    Prix sur devis
-                  </span>
-                </div>
-              )}
-              <div className="p-4 space-y-3">
-                <h3 className="text-lg font-semibold">{service.name}</h3>
-                {service.description && (
-                  <p className="text-sm text-muted-foreground line-clamp-3">{service.description}</p>
-                )}
-                <Button className="w-full" onClick={() => setSelectedService(service)}>
-                  Commander
-                </Button>
-              </div>
+              {/* Halo décoratif. Sur les cartes à texte blanc il est assombri :
+                  un halo clair éclaircirait le fond et dégraderait encore le
+                  contraste du texte. */}
+              <span
+                aria-hidden="true"
+                className={`pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full blur-2xl ${
+                  card.ink === '#FFFFFF' ? 'bg-black/15' : 'bg-white/25'
+                }`}
+              />
+
+              {/* Titre en haut à gauche */}
+              <h3 className="relative z-10 max-w-[75%] text-xl font-bold leading-tight">
+                {card.title}
+              </h3>
+
+              {/* Lien "Order Now" en bas à gauche.
+                  Pas d'opacité réduite ici : elle ferait encore baisser le
+                  contraste du texte sur les cartes bleue et rose. */}
+              <button
+                type="button"
+                className="relative z-10 mt-auto inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 transition-all hover:underline"
+              >
+                Order Now
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </button>
             </article>
           ))}
         </div>
       </div>
-
-      <ServiceOrderModal service={selectedService} onClose={() => setSelectedService(null)} />
     </section>
   );
 }

@@ -13,7 +13,7 @@ export function StoreHoursSection({ storeHours, isChristmasTheme = false }: Stor
 
   return (
     <div className="lg:col-span-1">
-      <h3 className="text-xl font-semibold mb-6">Horaires d'Ouverture</h3>
+      <h3 className="text-xl font-semibold mb-6 text-[#212121]">Horaires d'Ouverture</h3>
 
       {/* Statut actuel */}
       <div className={cn(

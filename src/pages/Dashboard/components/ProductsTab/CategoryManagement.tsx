@@ -44,7 +44,7 @@ export function CategoryManagement({
         </p>
         <button
           onClick={onAddCategory}
-          className="w-full sm:w-auto bg-primary text-primary-foreground px-3 py-1 rounded-lg hover:bg-primary/90 transition-colors text-sm flex items-center justify-center space-x-1"
+          className="w-full sm:w-auto bg-button border border-button-border text-button-foreground px-3 py-1 rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors text-sm flex items-center justify-center space-x-1"
         >
           <Plus className="h-4 w-4" />
           <span>Ajouter une catégorie</span>
