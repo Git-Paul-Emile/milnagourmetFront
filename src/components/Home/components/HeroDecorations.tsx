@@ -1,8 +1,5 @@
-import { useTheme } from '@/hooks/useTheme';
 
 export function HeroDecorations() {
-  const { theme } = useTheme();
-  const isChristmasTheme = theme?.name === 'Noël';
   return (
     /* Décor purement visuel : masqué aux lecteurs d'écran (aria-hidden) et
        non-interactif (pointer-events-none) pour ne jamais bloquer les clics sur le contenu du hero */
@@ -28,18 +25,7 @@ export function HeroDecorations() {
       <div className="absolute bottom-1/3 left-1/2 w-3 h-3 bg-gradient-to-br from-secondary/25 to-transparent rounded-full animate-float opacity-50 hidden lg:block" style={{ animationDelay: '4.1s', animationDuration: '5.5s' }} />
 
       {/* Flocons de neige pour le thème Noël */}
-      {isChristmasTheme && (
-        <>
-          <div className="absolute top-10 left-10 w-2 h-2 bg-white/80 rounded-full animate-float opacity-90 hidden sm:block" style={{ animationDelay: '0s', animationDuration: '8s' }} />
-          <div className="absolute top-20 right-20 w-1.5 h-1.5 bg-white/80 rounded-full animate-float opacity-70 hidden sm:block" style={{ animationDelay: '1s', animationDuration: '7s' }} />
-          <div className="absolute top-40 left-1/4 w-2.5 h-2.5 bg-white/80 rounded-full animate-float opacity-60 hidden sm:block" style={{ animationDelay: '2s', animationDuration: '9s' }} />
-          <div className="absolute top-60 right-1/3 w-1 h-1 bg-white/80 rounded-full animate-float opacity-80 hidden sm:block" style={{ animationDelay: '3s', animationDuration: '6s' }} />
-          <div className="absolute top-80 left-2/3 w-2 h-2 bg-white/80 rounded-full animate-float opacity-50 hidden sm:block" style={{ animationDelay: '4s', animationDuration: '10s' }} />
-          <div className="absolute bottom-20 right-10 w-1.5 h-1.5 bg-white/80 rounded-full animate-float opacity-75 hidden sm:block" style={{ animationDelay: '5s', animationDuration: '8.5s' }} />
-          <div className="absolute bottom-40 left-20 w-2 h-2 bg-white/80 rounded-full animate-float opacity-65 hidden sm:block" style={{ animationDelay: '6s', animationDuration: '7.5s' }} />
-          <div className="absolute top-1/2 left-10 w-1 h-1 bg-white/80 rounded-full animate-float opacity-85 hidden sm:block" style={{ animationDelay: '7s', animationDuration: '9.5s' }} />
-        </>
-      )}
+      
     </div>
   );
 }

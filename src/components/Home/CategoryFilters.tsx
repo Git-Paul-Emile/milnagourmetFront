@@ -14,17 +14,9 @@ interface CategoryFiltersProps {
   setActiveCategory: (category: string | number) => void;
   user: AuthUser | null;
   onAddCategoryClick: () => void;
-  isChristmasTheme?: boolean;
 }
 
-export function CategoryFilters({
-  displayCategories,
-  activeCategory,
-  setActiveCategory,
-  user,
-  onAddCategoryClick,
-  isChristmasTheme = false,
-}: CategoryFiltersProps) {
+export function CategoryFilters({ displayCategories, activeCategory, setActiveCategory, user, onAddCategoryClick }: CategoryFiltersProps) {
   return (
     <div className="flex flex-wrap justify-center gap-3 mb-12">
       {displayCategories.map((category) => (
@@ -34,7 +26,7 @@ export function CategoryFilters({
           className={cn(
             'flex items-center space-x-2 px-6 py-3 rounded-full font-medium transition-all duration-300',
             activeCategory === category.id
-              ? 'bg-button border border-button-border text-button-foreground shadow-glow'
+              ? 'bg-button text-white'
               : 'bg-card text-foreground hover:bg-button-hover hover:text-button-hover-foreground border border-border'
           )}
         >

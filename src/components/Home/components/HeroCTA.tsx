@@ -3,11 +3,9 @@ import { cn } from '@/lib/utils';
 
 interface HeroCTAProps {
   onCatalogClick: () => void;
-  isChristmasTheme?: boolean;
-  isNewYearTheme?: boolean;
 }
 
-export function HeroCTA({ onCatalogClick, isChristmasTheme = false, isNewYearTheme = false }: HeroCTAProps) {
+export function HeroCTA({ onCatalogClick }: HeroCTAProps) {
   return (
     <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 animate-fade-in-up justify-center lg:justify-start max-w-full">
       <button
@@ -18,19 +16,13 @@ export function HeroCTA({ onCatalogClick, isChristmasTheme = false, isNewYearThe
           'hover:scale-105',
           'transition-all duration-500 ease-out',
           'animate-pulse-soft',
-          isNewYearTheme
-            ? 'bg-gradient-to-r from-[#F9F871] to-[#F9F871] border-2 border-[#F9F871] text-[#0A0A0A] hover:bg-[#d64c86] hover:shadow-[0_6px_30px_rgba(214,76,134,0.5)] shadow-[0_4px_20px_rgba(249,248,113,0.4)]'
-            : 'bg-[#43A2F2] border border-[#43A2F2] hover:bg-[#4bb069] hover:border-[#4bb069] text-white before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-r before:from-button/20 before:to-button/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300 hover:shadow-2xl hover:-translate-y-1'
-        )}
+          'bg-[#43A2F2] border border-[#43A2F2] hover:bg-[#4bb069] hover:border-[#4bb069] text-white before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-r before:from-button/20 before:to-button/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300 hover:shadow-2xl hover:-translate-y-1')}
       >
         <span className="relative z-10">Découvrir le Catalogue</span>
         <ArrowRight className="h-5 w-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
         <div className={cn(
           "absolute inset-0 rounded-lg blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-          isNewYearTheme
-            ? "bg-[#F9F871]/30"
-            : "bg-gradient-to-r from-primary/30 to-primary-light/30"
-        )} />
+          "bg-gradient-to-r from-primary/30 to-primary-light/30")} />
       </button>
     </div>
   );

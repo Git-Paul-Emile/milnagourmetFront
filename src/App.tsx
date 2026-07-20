@@ -7,9 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppProvider } from "@/contexts/AppContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { BrandingProvider } from "@/contexts/BrandingContext";
-import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { ToastContainer } from "@/components/Layout/ToastContainer";
-import { GlobalEffects } from "@/components/GlobalEffects";
 import { ProtectedRoute } from "@/components/Auth/ProtectedRoute";
 import { PageLoader } from "@/components/PageLoader";
 import Index from "./pages/Index";
@@ -33,9 +31,7 @@ const App = () => {
       <TooltipProvider>
         <AppProvider>
           <AuthProvider>
-            <ThemeProvider>
-              <BrandingProvider>
-                <GlobalEffects />
+            <BrandingProvider>
                 <Toaster />
                 <Sonner />
                 <ToastContainer />
@@ -66,8 +62,7 @@ const App = () => {
                     </Routes>
                   </Suspense>
                 </BrowserRouter>
-              </BrandingProvider>
-            </ThemeProvider>
+            </BrandingProvider>
           </AuthProvider>
         </AppProvider>
       </TooltipProvider>

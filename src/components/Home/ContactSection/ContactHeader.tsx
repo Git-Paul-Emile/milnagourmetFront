@@ -3,10 +3,9 @@ import { cn } from '@/lib/utils';
 interface ContactHeaderProps {
   title: string;
   description: string;
-  isChristmasTheme?: boolean;
 }
 
-export function ContactHeader({ title, description, isChristmasTheme = false }: ContactHeaderProps) {
+export function ContactHeader({ title, description }: ContactHeaderProps) {
   return (
     <div className="text-center mb-12">
       {/* Titre de section entièrement en #212121 (plus de dégradé). */}

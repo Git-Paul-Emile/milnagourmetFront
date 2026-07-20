@@ -7,15 +7,14 @@ import { cn } from '@/lib/utils';
 
 interface SocialSectionProps {
   socialMedia: SocialMedia | null;
-  isChristmasTheme?: boolean;
 }
 
-export function SocialSection({ socialMedia, isChristmasTheme = false }: SocialSectionProps) {
+export function SocialSection({ socialMedia }: SocialSectionProps) {
   return (
     <div className="space-y-4">
       <h3 className={cn(
         "text-lg font-semibold",
-        "text-foreground"
+        "text-white"
       )}>Suivez-nous</h3>
       <div className="flex space-x-4">
         {socialMedia?.instagram && (
@@ -23,10 +22,7 @@ export function SocialSection({ socialMedia, isChristmasTheme = false }: SocialS
             href={socialMedia.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(
-              "transition-colors",
-              "text-muted-foreground hover:text-primary"
-            )}
+            className="text-white/80"
           >
             <Instagram className="h-5 w-5" />
           </a>
@@ -36,10 +32,7 @@ export function SocialSection({ socialMedia, isChristmasTheme = false }: SocialS
             href={socialMedia.facebook}
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(
-              "transition-colors",
-              "text-muted-foreground hover:text-primary"
-            )}
+            className="text-white/80"
           >
             <Facebook className="h-5 w-5" />
           </a>
@@ -49,10 +42,7 @@ export function SocialSection({ socialMedia, isChristmasTheme = false }: SocialS
             href={socialMedia.tiktok}
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(
-              "transition-colors",
-              "text-muted-foreground hover:text-primary"
-            )}
+            className="text-white/80"
           >
             <FontAwesomeIcon icon={faTiktok} className="h-5 w-5" />
           </a>

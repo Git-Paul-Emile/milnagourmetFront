@@ -46,19 +46,6 @@ export function BrandingProvider({ children }: { children: ReactNode }) {
     loadBranding();
   }, [loadBranding, refreshKey]);
 
-  // Écouter les changements de thème pour recharger le branding
-  useEffect(() => {
-    const handleThemeChange = () => {
-      refreshBranding();
-    };
-
-    window.addEventListener('themeChanged', handleThemeChange);
-
-    return () => {
-      window.removeEventListener('themeChanged', handleThemeChange);
-    };
-  }, [refreshBranding]);
-
   return (
     <BrandingContext.Provider value={{ branding, loading, error, refreshBranding }}>
       {children}

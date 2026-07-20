@@ -40,17 +40,17 @@ describe('getFullImageUrl', () => {
       config: { API_URL: 'http://localhost:3000', IS_DEV: true, IS_PROD: false },
     }));
     const { getFullImageUrl } = await import('./imageUtils');
-    const prodUrl = 'https://milnagourmetback.onrender.com/uploads/logos/milna-logo.png';
+    const prodUrl = 'https://milnagourmetback-ujm7.onrender.com/uploads/logos/milna-logo.png';
 
     expect(getFullImageUrl(prodUrl)).toBe('http://localhost:3000/uploads/logos/milna-logo.png');
   });
 
   it('ne modifie pas les URL de production hors dev', async () => {
     vi.doMock('../config', () => ({
-      config: { API_URL: 'https://milnagourmetback.onrender.com', IS_DEV: false, IS_PROD: true },
+      config: { API_URL: 'https://milnagourmetback-ujm7.onrender.com', IS_DEV: false, IS_PROD: true },
     }));
     const { getFullImageUrl } = await import('./imageUtils');
-    const prodUrl = 'https://milnagourmetback.onrender.com/uploads/logos/milna-logo.png';
+    const prodUrl = 'https://milnagourmetback-ujm7.onrender.com/uploads/logos/milna-logo.png';
 
     expect(getFullImageUrl(prodUrl)).toBe(prodUrl);
   });

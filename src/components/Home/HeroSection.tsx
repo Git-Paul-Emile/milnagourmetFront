@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useHeroData } from './hooks/useHeroData';
-import { useTheme } from '@/hooks/useTheme';
 import { HeroLoading } from './components/HeroLoading';
 import { HeroTitle } from './components/HeroTitle';
 import { HeroSubtitle } from './components/HeroSubtitle';
 import { HeroCTA } from './components/HeroCTA';
 import { HeroDecorations } from './components/HeroDecorations';
-import NewYearEffects from '../NewYearEffects';
 import { getFullImageUrl } from '@/utils/imageUtils';
 import { DEFAULT_BANNER_IMAGE } from '@/constants/media';
 
@@ -44,9 +42,6 @@ export function HeroSection() {
     mq.addEventListener('change', onChange);
     return () => mq.removeEventListener('change', onChange);
   }, []);
-  const { theme } = useTheme();
-  const isChristmasTheme = theme?.name === 'Noël';
-  const isNewYearTheme = theme?.name === 'Nouvel An';
 
   const scrollToCatalog = () => {
     document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
@@ -96,14 +91,13 @@ export function HeroSection() {
       {/* Contenu */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pb-16 sm:pb-20">
         <div className="max-w-4xl mx-auto text-center lg:text-left">
-          <HeroTitle title={heroData.title} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />
-          <HeroSubtitle subtitle={heroData.subtitle} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />
-          <HeroCTA onCatalogClick={scrollToCatalog} isChristmasTheme={isChristmasTheme} isNewYearTheme={isNewYearTheme} />
+          <HeroTitle title={heroData.title} />
+          <HeroSubtitle subtitle={heroData.subtitle} />
+          <HeroCTA onCatalogClick={scrollToCatalog} />
         </div>
       </div>
 
       <HeroDecorations />
-      {theme?.name === 'Nouvel An' && <NewYearEffects />}
     </section>
   );
 }

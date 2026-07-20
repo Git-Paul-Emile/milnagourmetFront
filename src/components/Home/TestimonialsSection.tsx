@@ -9,7 +9,6 @@ import {
 } from './components/Testimonials';
 import { AddTestimonialModal } from './AddTestimonialModal';
 import { useApp } from '@/contexts/useApp';
-import { useTheme } from '@/hooks/useTheme';
 import { cn } from '@/lib/utils';
 
 export function TestimonialsSection() {
@@ -17,8 +16,6 @@ export function TestimonialsSection() {
   const { emblaRef, scrollPrev, scrollNext, scrollSnaps } = useTestimonialCarousel();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { state } = useApp();
-  const { theme } = useTheme();
-  const isChristmasTheme = theme?.name === 'Noël';
 
   if (loading) {
     return (
@@ -37,14 +34,14 @@ export function TestimonialsSection() {
     <>
       <section id="testimonials" className={cn("py-20", "bg-muted/30")}>
         <div className="container mx-auto px-4">
-          <TestimonialsHeader isChristmasTheme={isChristmasTheme} />
+          <TestimonialsHeader />
 
           {/* Carousel de témoignages */}
           <div className="relative">
             <div className="overflow-hidden" ref={emblaRef}>
               <div className="flex gap-6 justify-center">
                 {testimonials.map((testimonial, index) => (
-                  <TestimonialCard key={testimonial.id} testimonial={testimonial} index={index} isChristmasTheme={isChristmasTheme} />
+                  <TestimonialCard key={testimonial.id} testimonial={testimonial} index={index} />
                 ))}
               </div>
             </div>

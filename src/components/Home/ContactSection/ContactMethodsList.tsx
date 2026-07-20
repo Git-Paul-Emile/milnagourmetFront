@@ -1,51 +1,50 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ContactMethod } from '@/lib/contactUtils';
 
 interface ContactMethodsListProps {
   methods: ContactMethod[];
-  isChristmasTheme?: boolean;
+  address: string;
 }
 
-export function ContactMethodsList({ methods, isChristmasTheme = false }: ContactMethodsListProps) {
+export function ContactMethodsList({ methods, address }: ContactMethodsListProps) {
   return (
     <div className="lg:col-span-1">
       <h3 className={cn("text-xl font-semibold mb-6", "text-[#212121]")}>Nous Contacter</h3>
       <div className="space-y-4">
-        {methods.map((method, index) => (
+        {methods.map((method) => (
           <button
             key={method.title}
             onClick={method.action}
-            className={cn(
-              'w-full p-4 rounded-xl transition-all duration-300',
-              'hover-lift flex items-center space-x-4',
-              'border border-border ' + (method.primary
-                ? 'bg-button border border-button-border text-button-foreground hover:shadow-glow'
-                : 'bg-card text-foreground hover:bg-button-hover hover:text-button-hover-foreground')
-            )}
+            className="w-full p-4 rounded-xl transition-all duration-300 hover-lift flex items-start space-x-3 text-left text-foreground"
           >
-            <div className={cn(
-              'w-12 h-12 rounded-lg flex items-center justify-center',
-              method.primary
-                ? 'bg-primary-foreground/20'
-                : 'bg-primary/10'
-            )}>
-              {method.faIcon && <FontAwesomeIcon icon={method.faIcon} className={cn(
-                  'h-6 w-6',
-                  method.primary ? 'text-primary-foreground' : 'text-primary'
-                )} />}
-            </div>
-            <div className="text-left">
-              <div className={cn("font-semibold", "")}>{method.title}</div>
-              <div className={cn(
-                'text-sm',
-                method.primary ? 'text-primary-foreground/80' : 'text-muted-foreground'
-              )}>
+            {method.faIcon && <FontAwesomeIcon icon={method.faIcon} className="h-5 w-5 text-primary mt-1" />}
+            <div>
+              <h4 className="font-semibold mb-1">{method.title}</h4>
+              <p className="text-muted-foreground text-sm">
                 {method.description}
-              </div>
+              </p>
             </div>
           </button>
         ))}
+
+        <a
+          href="https://urlr.me/RVykJH"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block p-4 rounded-xl hover-lift"
+        >
+          <div className="flex items-start space-x-3">
+            <MapPin className="h-5 w-5 text-primary mt-1" />
+            <div>
+              <h4 className="font-semibold text-foreground mb-1">Notre Adresse</h4>
+              <p className="text-muted-foreground text-sm">
+                {address}
+              </p>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
   );

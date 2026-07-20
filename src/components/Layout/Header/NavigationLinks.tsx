@@ -3,10 +3,9 @@ import { cn } from '@/lib/utils';
 
 interface NavigationLinksProps {
   navigation: { name: string; href: string }[];
-  isChristmasTheme?: boolean;
 }
 
-export function NavigationLinks({ navigation, isChristmasTheme = false }: NavigationLinksProps) {
+export function NavigationLinks({ navigation }: NavigationLinksProps) {
   return (
     <div className="hidden md:flex items-center space-x-8">
       {navigation.map((item) => (

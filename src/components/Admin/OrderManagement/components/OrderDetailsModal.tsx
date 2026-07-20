@@ -179,7 +179,7 @@ export function OrderDetailsModal({ selectedOrder, onClose, onUpdateStatus, onAs
                 <div key={index} className="flex items-center justify-between bg-card rounded-lg p-3 border border-border">
                   <div className="flex items-center space-x-3">
                     {item.image && (
-                      <img src={`${import.meta.env.PROD ? 'https://milnagourmetback.onrender.com' : ''}${item.image}`} alt={item.name} className="w-12 h-12 object-cover rounded" />
+                      <img src={`${import.meta.env.PROD ? 'https://milnagourmetback-ujm7.onrender.com' : ''}${item.image}`} alt={item.name} className="w-12 h-12 object-cover rounded" />
                     )}
                     <div>
                       <h5 className="font-medium">{item.name}</h5>

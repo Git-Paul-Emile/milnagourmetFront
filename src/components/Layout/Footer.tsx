@@ -1,33 +1,34 @@
 import React from 'react';
 import { useFooterData } from './Footer/useFooterData';
-import { useTheme } from '@/hooks/useTheme';
-import { cn } from '@/lib/utils';
 import { FooterSkeleton } from './Footer/FooterSkeleton';
-import { ContactSection } from './Footer/ContactSection';
-import { HoursSection } from './Footer/HoursSection';
 import { SocialSection } from './Footer/SocialSection';
 import { LegalSection } from './Footer/LegalSection';
 import { CopyrightSection } from './Footer/CopyrightSection';
 
 export function Footer() {
-  const { contactInfo, socialMedia, loading } = useFooterData();
-  const { theme } = useTheme();
-  const isChristmasTheme = theme?.name === 'Noël';
+  const { socialMedia, loading } = useFooterData();
 
   if (loading) {
     return <FooterSkeleton />;
   }
 
   return (
-    <footer className={cn("border-t", "bg-muted/50 border-border")}>
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <ContactSection contactInfo={contactInfo} isChristmasTheme={isChristmasTheme} />
-          <HoursSection contactInfo={contactInfo} isChristmasTheme={isChristmasTheme} />
-          <SocialSection socialMedia={socialMedia} isChristmasTheme={isChristmasTheme} />
-          <LegalSection isChristmasTheme={isChristmasTheme} />
+    <footer
+      className="relative bg-cover bg-top flex items-end"
+      style={{
+        backgroundImage: "url('/images/footer-bg.png')",
+        aspectRatio: '633 / 197',
+      }}
+    >
+      <div className="container relative mx-auto w-full px-4 pt-12 pb-[98px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="flex items-center justify-center">
+            <img src="/images/logo.png" alt="Milna Gourmet" className="h-32 w-32" />
+          </div>
+          <SocialSection socialMedia={socialMedia} />
+          <LegalSection />
         </div>
-        <CopyrightSection isChristmasTheme={isChristmasTheme} />
+        <CopyrightSection />
       </div>
     </footer>
   );

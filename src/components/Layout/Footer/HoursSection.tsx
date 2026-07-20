@@ -5,15 +5,14 @@ import { cn } from '@/lib/utils';
 
 interface HoursSectionProps {
   contactInfo: ContactInfo | null;
-  isChristmasTheme?: boolean;
 }
 
-export function HoursSection({ contactInfo, isChristmasTheme = false }: HoursSectionProps) {
+export function HoursSection({ contactInfo }: HoursSectionProps) {
   return (
     <div className="space-y-4">
       <h3 className={cn(
         "text-lg font-semibold",
-        "text-foreground"
+        "text-white"
       )}>Horaires</h3>
       <div className="space-y-2">
         <div className="flex items-center space-x-3">
@@ -23,7 +22,7 @@ export function HoursSection({ contactInfo, isChristmasTheme = false }: HoursSec
           )} />
           <div className={cn(
             "text-sm",
-            "text-muted-foreground"
+            "text-white/80"
           )}>
             {contactInfo?.hours ? (
               <>

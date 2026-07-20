@@ -3,11 +3,7 @@ import { Link } from 'react-router-dom';
 import { useBranding } from '@/hooks/useBranding';
 import { cn } from '@/lib/utils';
 
-interface LogoProps {
-  isChristmasTheme?: boolean;
-}
-
-export function Logo({ isChristmasTheme = false }: LogoProps) {
+export function Logo() {
   const { branding } = useBranding();
 
   return (

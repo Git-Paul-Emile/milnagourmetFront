@@ -10,7 +10,6 @@ import { BannerSection } from './BannerSection';
 import { CreationImageSection } from './CreationImageSection';
 import { AvatarsSection } from './AvatarsSection';
 import { SocialMediaSection } from './SocialMediaSection';
-import { ThemeSection } from './ThemeSection';
 import { siteService } from '@/services/siteService';
 
 interface SettingsTabProps {
@@ -165,7 +164,6 @@ export function SettingsTab({ storeHours, loadDashboardData, displaySuccessToast
         onSocialMediaChange={handleSocialMediaChange}
       />
 
-      <ThemeSection displaySuccessToast={displaySuccessToast} />
 
       {/* Bouton de sauvegarde final */}
       <div className="flex justify-end">

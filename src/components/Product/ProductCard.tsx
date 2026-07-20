@@ -3,7 +3,6 @@ import { Product } from '@/types';
 import { ShareModal } from './ShareModal';
 import { cn } from '@/lib/utils';
 import { useProductCard } from './hooks/useProductCard';
-import { useTheme } from '@/hooks/useTheme';
 import { ProductImage } from './components/ProductImage';
 import { ProductInfo } from './components/ProductInfo';
 import { ProductActions } from './components/ProductActions';
@@ -15,8 +14,6 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onViewDetails }: ProductCardProps) {
   const { isShareModalOpen, setIsShareModalOpen, cardRef, handleAddToCart, handleShare } = useProductCard({ product });
-  const { theme } = useTheme();
-  const isChristmasTheme = theme?.name === 'Noël';
 
   return (
     <div

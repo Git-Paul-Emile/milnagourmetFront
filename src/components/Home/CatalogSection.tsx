@@ -4,7 +4,6 @@ import { Product, ProductCategoryItem } from '@/types';
 import { productService, configService } from '@/services';
 import { useAuth } from '@/hooks/useAuth';
 import { useCatalogData } from '@/hooks/useCatalogData';
-import { useTheme } from '@/hooks/useTheme';
 import { cn } from '@/lib/utils';
 import { CategoryFilters } from './CategoryFilters';
 import { AddCategoryModal } from './AddCategoryModal';
@@ -14,8 +13,6 @@ import Autoplay from 'embla-carousel-autoplay';
 export function CatalogSection() {
   const { user } = useAuth();
   const { catalogData, products, categories, loading, setCategories } = useCatalogData();
-  const { theme } = useTheme();
-  const isChristmasTheme = theme?.name === 'Noël';
 
   const [activeCategory, setActiveCategory] = useState<'all' | string | number>('all');
   const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false);
@@ -196,7 +193,6 @@ export function CatalogSection() {
           setActiveCategory={setActiveCategory}
           user={user}
           onAddCategoryClick={() => setIsAddCategoryModalOpen(true)}
-          isChristmasTheme={isChristmasTheme}
         />
 
         <div className="space-y-16">

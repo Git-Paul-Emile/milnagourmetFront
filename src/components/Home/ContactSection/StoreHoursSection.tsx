@@ -1,14 +1,12 @@
 import { Clock } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { useStoreHours } from '@/hooks/useStoreHours';
 import { ContactSectionData } from '@/types';
 
 interface StoreHoursSectionProps {
   storeHours: ContactSectionData['storeHours'];
-  isChristmasTheme?: boolean;
 }
 
-export function StoreHoursSection({ storeHours, isChristmasTheme = false }: StoreHoursSectionProps) {
+export function StoreHoursSection({ storeHours }: StoreHoursSectionProps) {
   const storeStatus = useStoreHours();
 
   return (
@@ -16,14 +14,9 @@ export function StoreHoursSection({ storeHours, isChristmasTheme = false }: Stor
       <h3 className="text-xl font-semibold mb-6 text-[#212121]">Horaires d'Ouverture</h3>
 
       {/* Statut actuel */}
-      <div className={cn(
-        'p-4 rounded-xl mb-6 border border-border',
-        storeStatus.isOpen
-          ? 'bg-gradient-primary text-primary-foreground'
-          : 'bg-muted text-muted-foreground'
-      )}>
+      <div className="p-4 rounded-xl mb-6 text-foreground">
         <div className="flex items-center space-x-2 mb-2">
-          <Clock className="h-5 w-5" />
+          <Clock className="h-5 w-5 text-primary" />
           <span className="font-semibold">
             {storeStatus.isOpen ? 'Ouvert Maintenant' : 'Fermé'}
           </span>

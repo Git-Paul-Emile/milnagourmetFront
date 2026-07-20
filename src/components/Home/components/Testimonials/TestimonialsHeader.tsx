@@ -1,10 +1,6 @@
 import { cn } from '@/lib/utils';
 
-interface TestimonialsHeaderProps {
-  isChristmasTheme?: boolean;
-}
-
-export function TestimonialsHeader({ isChristmasTheme = false }: TestimonialsHeaderProps) {
+export function TestimonialsHeader() {
   return (
     <div className="text-center mb-12">
       {/* Titre de section entièrement en #212121 (plus de dégradé). */}

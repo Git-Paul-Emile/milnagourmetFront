@@ -5,10 +5,9 @@ import { cn } from '@/lib/utils';
 interface MobileMenuToggleProps {
   isOpen: boolean;
   onToggle: () => void;
-  isChristmasTheme?: boolean;
 }
 
-export function MobileMenuToggle({ isOpen, onToggle, isChristmasTheme = false }: MobileMenuToggleProps) {
+export function MobileMenuToggle({ isOpen, onToggle }: MobileMenuToggleProps) {
   return (
     <button
       onClick={onToggle}

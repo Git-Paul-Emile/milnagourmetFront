@@ -2,11 +2,7 @@ import React from 'react';
 import { useStoreHours } from '@/hooks/useStoreHours';
 import { cn } from '@/lib/utils';
 
-interface StoreStatusBarProps {
-  isChristmasTheme?: boolean;
-}
-
-export function StoreStatusBar({ isChristmasTheme = false }: StoreStatusBarProps) {
+export function StoreStatusBar() {
   const storeStatus = useStoreHours();
 
   return (

@@ -5,11 +5,7 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import { contactMilnaWhatsApp, callMilna } from '@/services/whatsapp';
 import { cn } from '@/lib/utils';
 
-interface ContactButtonsProps {
-  isChristmasTheme?: boolean;
-}
-
-export function ContactButtons({ isChristmasTheme = false }: ContactButtonsProps) {
+export function ContactButtons() {
   return (
     <div className="hidden md:flex items-center space-x-2">
       <button

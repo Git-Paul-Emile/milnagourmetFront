@@ -7,7 +7,6 @@ import { UserProfile } from '@/components/User/UserProfile';
 import { OrderManagement } from '@/components/Admin/OrderManagement';
 import { useAuth } from '@/hooks/useAuth';
 import { contactMilnaWhatsApp, callMilna } from '@/services/whatsapp';
-import { useTheme } from '@/hooks/useTheme';
 import { cn } from '@/lib/utils';
 import { StoreStatusBar } from './Header/StoreStatusBar';
 import { Logo } from './Header/Logo';
@@ -25,8 +24,6 @@ export function Header() {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { navigation } = useNavigation();
-  const { theme } = useTheme();
-  const isChristmasTheme = theme?.name === 'Noël';
   const {
     isCartOpen,
     setIsCartOpen,
@@ -56,17 +53,17 @@ export function Header() {
 
   return (
     <>
-      <StoreStatusBar isChristmasTheme={isChristmasTheme} />
+      <StoreStatusBar />
       <header className={cn(
         "fixed top-8 left-0 right-0 z-40 backdrop-blur-sm border-b",
         "bg-background/95 border-border"
       )}>
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between py-4">
-            <Logo isChristmasTheme={isChristmasTheme} />
-            <NavigationLinks navigation={navigation} isChristmasTheme={isChristmasTheme} />
+            <Logo />
+            <NavigationLinks navigation={navigation} />
             <div className="flex items-center space-x-4">
-              <CartButton itemCount={state.cart.itemCount} onClick={() => setIsCartOpen(true)} isChristmasTheme={isChristmasTheme} />
+              <CartButton itemCount={state.cart.itemCount} onClick={() => setIsCartOpen(true)} />
               <AuthSection
                 user={state.user}
                 onLoginClick={() => {
@@ -80,10 +77,9 @@ export function Header() {
                 onLogout={handleLogout}
                 onProfileClick={() => navigate('/profile')}
                 onDashboardClick={() => navigate('/dashboard')}
-                isChristmasTheme={isChristmasTheme}
               />
-              <ContactButtons isChristmasTheme={isChristmasTheme} />
-              <MobileMenuToggle isOpen={isMobileMenuOpen} onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)} isChristmasTheme={isChristmasTheme} />
+              <ContactButtons />
+              <MobileMenuToggle isOpen={isMobileMenuOpen} onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
             </div>
           </nav>
         </div>

@@ -12,6 +12,7 @@ import { ArrowRight } from 'lucide-react';
 
 interface ServiceCard {
   title: string;
+  description: string;
   /** Couleur de fond de la carte, puisée dans la palette de marque. */
   background: string;
   /** Couleur du texte posé sur cette carte. */
@@ -33,10 +34,10 @@ interface ServiceCard {
  * (1,12:1 et 2,30:1).
  */
 const SERVICE_CARDS: ServiceCard[] = [
-  { title: 'Grilled Double Cheese Burger', background: '#43A2F2', ink: '#FFFFFF' }, // Bleu
-  { title: 'Tasty Yummy Cheesy Pizza', background: '#d64c86', ink: '#FFFFFF' },     // Rose
-  { title: 'New Menu Galaxy Donuts Time!', background: '#F9F871', ink: '#111111' }, // Jaune
-  { title: 'Fresh Delicious Veg Sandwich', background: '#eb975e', ink: '#111111' }, // Orange
+  { title: 'Panier Cadeau', description: 'Des paniers prêts à offrir.', background: '#43A2F2', ink: '#FFFFFF' }, // Bleu
+  { title: 'Panier Personnalisé', description: 'Créez votre panier selon vos envies.', background: '#d64c86', ink: '#FFFFFF' }, // Rose
+  { title: 'Boîte Mono Saveur', description: 'Une seule gourmandise dans la boîte.', background: '#F9F871', ink: '#111111' }, // Jaune
+  { title: 'Boîte Découverte', description: 'Un assortiment de plusieurs gourmandises.', background: '#eb975e', ink: '#111111' }, // Orange
 ];
 
 export function ServicesSection() {
@@ -71,19 +72,24 @@ export function ServicesSection() {
                 }`}
               />
 
-              {/* Titre en haut à gauche */}
-              <h3 className="relative z-10 max-w-[75%] text-xl font-bold leading-tight">
-                {card.title}
-              </h3>
+              {/* Titre et description en haut à gauche */}
+              <div className="relative z-10 max-w-[85%]">
+                <h3 className="text-xl font-bold leading-tight">
+                  {card.title}
+                </h3>
+                <p className="mt-2 text-sm opacity-90">
+                  {card.description}
+                </p>
+              </div>
 
-              {/* Lien "Order Now" en bas à gauche.
+              {/* Lien "Commander" en bas à gauche.
                   Pas d'opacité réduite ici : elle ferait encore baisser le
                   contraste du texte sur les cartes bleue et rose. */}
               <button
                 type="button"
                 className="relative z-10 mt-auto inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 transition-all hover:underline"
               >
-                Order Now
+                Commander
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </article>

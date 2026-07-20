@@ -15,8 +15,8 @@ export function getFullImageUrl(imageUrl: string | null | undefined): string {
   // If it's already an absolute URL, return as is
   if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
     // In development, replace production URLs with localhost
-    if (config.IS_DEV && imageUrl.includes('milnagourmetback.onrender.com')) {
-      return imageUrl.replace('https://milnagourmetback.onrender.com', 'http://localhost:3000');
+    if (config.IS_DEV && imageUrl.includes('milnagourmetback-ujm7.onrender.com')) {
+      return imageUrl.replace('https://milnagourmetback-ujm7.onrender.com', 'http://localhost:3000');
     }
     return imageUrl;
   }

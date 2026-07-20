@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://milnagourmetback.onrender.com/api/$1"
+      "destination": "https://milnagourmetback-ujm7.onrender.com/api/$1"
     },
     {
       "source": "/((?!api/).*)",

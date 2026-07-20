@@ -5,10 +5,9 @@ import { cn } from '@/lib/utils';
 interface CartButtonProps {
   itemCount: number;
   onClick: () => void;
-  isChristmasTheme?: boolean;
 }
 
-export function CartButton({ itemCount, onClick, isChristmasTheme = false }: CartButtonProps) {
+export function CartButton({ itemCount, onClick }: CartButtonProps) {
   return (
     <button
       onClick={onClick}

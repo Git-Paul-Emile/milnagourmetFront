@@ -6,10 +6,9 @@ import { getFullImageUrl } from '@/utils/imageUtils';
 interface TestimonialCardProps {
   testimonial: Testimonial;
   index: number;
-  isChristmasTheme?: boolean;
 }
 
-export function TestimonialCard({ testimonial, index, isChristmasTheme = false }: TestimonialCardProps) {
+export function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
   return (
     <div
       className="flex-none w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 animate-fade-in-up"
@@ -18,7 +17,7 @@ export function TestimonialCard({ testimonial, index, isChristmasTheme = false }
       <div
         className={cn(
           'rounded-xl p-6 border h-full',
-          'hover-lift transition-all duration-300',
+          'hover:-translate-y-2 transition-all duration-300',
           'relative',
           'bg-card border-border'
         )}

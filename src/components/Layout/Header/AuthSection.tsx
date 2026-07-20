@@ -11,18 +11,9 @@ interface AuthSectionProps {
   onLogout: () => void;
   onProfileClick: () => void;
   onDashboardClick: () => void;
-  isChristmasTheme?: boolean;
 }
 
-export function AuthSection({
-  user,
-  onLoginClick,
-  onRegisterClick,
-  onLogout,
-  onProfileClick,
-  onDashboardClick,
-  isChristmasTheme = false
-}: AuthSectionProps) {
+export function AuthSection({ user, onLoginClick, onRegisterClick, onLogout, onProfileClick, onDashboardClick }: AuthSectionProps) {
   const { logout } = useAuth();
 
   const handleLogout = async () => {
@@ -92,7 +83,7 @@ export function AuthSection({
         onClick={onRegisterClick}
         className={cn(
           "px-4 py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all text-sm font-medium",
-          "bg-button border border-button-border hover:bg-[#43A2F2] hover:text-white hover:border-[#43A2F2] text-button-foreground"
+          "bg-button hover:bg-[#43A2F2] text-white"
         )}
       >
         S'inscrire

@@ -1,15 +1,12 @@
 import React from 'react';
 import { Product } from '@/types';
 import { cn } from '@/lib/utils';
-import { useTheme } from '@/hooks/useTheme';
 
 interface ProductInfoProps {
   product: Product;
 }
 
 export function ProductInfo({ product }: ProductInfoProps) {
-  const { theme } = useTheme();
-  const isChristmasTheme = theme?.name === 'Noël';
 
   return (
     <div className="p-4 space-y-3">
