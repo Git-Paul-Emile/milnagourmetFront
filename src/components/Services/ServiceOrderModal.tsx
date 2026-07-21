@@ -139,7 +139,7 @@ export function ServiceOrderModal({ service, onClose }: ServiceOrderModalProps) 
       const total = availableComponents.reduce((s, c) => s + (quantities[c.id] ?? 0), 0);
       parts.push(`Assortiment : ${composition} (${total} pièces)`);
     }
-    parts.push(basePrice > 0 ? `À partir de ${basePrice.toLocaleString('fr-FR')} FCFA` : 'Prix sur devis');
+    parts.push(basePrice > 0 ? `À partir de ${basePrice.toLocaleString('fr-FR')} FCFA` : 'Prix sur commande');
     return parts.join(' — ');
   };
 
@@ -208,7 +208,7 @@ export function ServiceOrderModal({ service, onClose }: ServiceOrderModalProps) 
     }));
 
   const priceLabel =
-    basePrice > 0 ? `À partir de ${basePrice.toLocaleString('fr-FR')} FCFA` : 'Prix sur devis';
+    basePrice > 0 ? `À partir de ${basePrice.toLocaleString('fr-FR')} FCFA` : 'Prix sur commande';
 
   return (
     <Dialog open={!!service} onOpenChange={(open) => !open && onClose()}>

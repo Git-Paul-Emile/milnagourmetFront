@@ -36,7 +36,7 @@ export function CartItem({ item, onUpdateQuantity, onRemoveItem }: CartItemProps
           )}
           <div className="flex items-center justify-between mt-3">
             <span className="font-bold text-primary">
-              {item.isServiceQuote ? 'Prix sur devis' : `${item.price} FCFA`}
+              {item.isServiceQuote ? 'Prix sur commande' : `${item.price} FCFA`}
             </span>
             <div className="flex items-center space-x-2">
               <button

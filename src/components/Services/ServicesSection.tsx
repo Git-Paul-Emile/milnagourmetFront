@@ -93,7 +93,7 @@ function ServiceCard({ service, style, onOrder }: ServiceCardProps) {
       >
         {service.basePrice > 0
           ? `À partir de ${service.basePrice.toLocaleString('fr-FR')} FCFA`
-          : 'Prix sur devis'}
+          : 'Prix sur commande'}
       </span>
 
       {/* Titre et description (largeur limitée pour laisser la place à l'image) */}
