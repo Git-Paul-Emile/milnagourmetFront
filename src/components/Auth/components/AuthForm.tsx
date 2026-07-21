@@ -149,7 +149,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
            survol. Le libellé garde l'encre foncée --button-foreground —
            elle donne 5,80:1 et 5,82:1, là où du blanc tomberait à 2,73:1
            et 2,72:1 sur ces deux fonds clairs. */
-        className="group relative w-full py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform-gpu overflow-hidden bg-button text-button-foreground hover:bg-secondary-light hover:text-button-foreground hover:shadow-xl hover:shadow-button/25 hover:scale-105 hover:-translate-y-0.5 active:scale-95 before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700"
+        className="group relative w-full py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform-gpu overflow-hidden border-0 bg-button text-white hover:bg-button hover:text-white hover:border-0 hover:shadow-xl hover:shadow-button/25 hover:scale-105 hover:-translate-y-0.5 active:scale-95 before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700"
       >
         {mode === 'login' ? 'Se connecter' : 'Créer mon compte'}
       </Button>

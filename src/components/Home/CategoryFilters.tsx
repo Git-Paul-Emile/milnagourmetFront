@@ -24,10 +24,10 @@ export function CategoryFilters({ displayCategories, activeCategory, setActiveCa
           key={category.id}
           onClick={() => setActiveCategory(category.id)}
           className={cn(
-            'flex items-center space-x-2 px-6 py-3 rounded-full font-medium transition-all duration-300',
+            'flex items-center space-x-2 px-6 py-3 rounded-full font-medium transition-all duration-300 border',
             activeCategory === category.id
-              ? 'bg-button text-white'
-              : 'bg-card text-foreground hover:bg-button-hover hover:text-button-hover-foreground border border-border'
+              ? 'bg-button text-white border-transparent'
+              : 'bg-white text-foreground border-border hover:bg-white hover:text-foreground hover:border-button-hover-border'
           )}
         >
           <span>{category.name}</span>

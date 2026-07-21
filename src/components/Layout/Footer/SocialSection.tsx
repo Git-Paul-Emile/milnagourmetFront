@@ -11,18 +11,14 @@ interface SocialSectionProps {
 
 export function SocialSection({ socialMedia }: SocialSectionProps) {
   return (
-    <div className="space-y-4">
-      <h3 className={cn(
-        "text-lg font-semibold",
-        "text-white"
-      )}>Suivez-nous</h3>
-      <div className="flex space-x-4">
+    <div className="flex flex-col items-center justify-center text-center">
+      <div className="flex items-center justify-center gap-4">
         {socialMedia?.instagram && (
           <a
             href={socialMedia.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white/80"
+            className="text-white/80 transition-colors hover:text-white"
           >
             <Instagram className="h-5 w-5" />
           </a>
@@ -32,7 +28,7 @@ export function SocialSection({ socialMedia }: SocialSectionProps) {
             href={socialMedia.facebook}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white/80"
+            className="text-white/80 transition-colors hover:text-white"
           >
             <Facebook className="h-5 w-5" />
           </a>
@@ -42,7 +38,7 @@ export function SocialSection({ socialMedia }: SocialSectionProps) {
             href={socialMedia.tiktok}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white/80"
+            className="text-white/80 transition-colors hover:text-white"
           >
             <FontAwesomeIcon icon={faTiktok} className="h-5 w-5" />
           </a>

@@ -49,19 +49,23 @@ export function useCustomCreation(isOpen: boolean) {
         // Filtrer uniquement les options disponibles (disponible !== false)
         const optionsData = optionsResp.data as { fruits: CreationOptionItem[]; sauces: CreationOptionItem[]; cereales: CreationOptionItem[] } | null;
         if (optionsData) {
+          // On conserve { nom, image } (et non plus juste le nom) pour afficher
+          // les vignettes ; les doublons de nom sont retirés.
+          const mapItems = (items: CreationOptionItem[]) => {
+            const seen = new Set<string>();
+            return items
+              .filter(item => item.disponible !== false)
+              .filter(item => {
+                if (seen.has(item.nom)) return false;
+                seen.add(item.nom);
+                return true;
+              })
+              .map(item => ({ nom: item.nom, image: item.image ?? null }));
+          };
           setCreationOptions({
-            fruits: optionsData.fruits
-              .filter(f => f.disponible !== false)
-              .map(f => f.nom)
-              .filter((nom, index, arr) => arr.indexOf(nom) === index), // Supprimer les doublons
-            sauces: optionsData.sauces
-              .filter(s => s.disponible !== false)
-              .map(s => s.nom)
-              .filter((nom, index, arr) => arr.indexOf(nom) === index), // Supprimer les doublons
-            cereales: optionsData.cereales
-              .filter(c => c.disponible !== false)
-              .map(c => c.nom)
-              .filter((nom, index, arr) => arr.indexOf(nom) === index) // Supprimer les doublons
+            fruits: mapItems(optionsData.fruits),
+            sauces: mapItems(optionsData.sauces),
+            cereales: mapItems(optionsData.cereales)
           });
         } else {
           setCreationOptions(null);

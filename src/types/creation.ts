@@ -4,6 +4,7 @@ export interface CreationSize {
   id: number;
   nom: string;
   prix: number;
+  image?: string | null;
   maxFruits: number;
   maxSauces: number;
   cerealesAutorise: boolean;
@@ -11,10 +12,16 @@ export interface CreationSize {
   ordreAffichage: number;
 }
 
+// Une option de création (fruit, sauce, céréale) avec sa vignette.
+export interface CreationOptionItem {
+  nom: string;
+  image?: string | null;
+}
+
 export interface CreationOptions {
-  fruits: string[];
-  sauces: string[];
-  cereales: string[];
+  fruits: CreationOptionItem[];
+  sauces: CreationOptionItem[];
+  cereales: CreationOptionItem[];
 }
 
 export interface CustomCreation {

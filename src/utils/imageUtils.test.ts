@@ -15,7 +15,7 @@ describe('getFullImageUrl', () => {
 
   it('retourne telle quelle une URL Cloudinary absolue', async () => {
     const { getFullImageUrl } = await import('./imageUtils');
-    const cloudinaryUrl = 'https://res.cloudinary.com/dhkgaijuu/image/upload/milnagourmet/produits/yaourt.jpg';
+    const cloudinaryUrl = 'https://res.cloudinary.com/iujorfq3/image/upload/milnagourmet/produits/yaourt.jpg';
 
     expect(getFullImageUrl(cloudinaryUrl)).toBe(cloudinaryUrl);
   });

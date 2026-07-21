@@ -18,7 +18,7 @@ export function EmptyCart({ onClose }: EmptyCartProps) {
           onClose();
           document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
         }}
-        className="border border-button-border bg-button text-button-foreground px-6 py-3 rounded-lg font-semibold hover:border-button-hover-border hover:bg-button-hover hover:text-button-hover-foreground transition-colors"
+        className="border-0 bg-[#43A2F2] px-6 py-3 rounded-lg font-semibold text-white transition-transform duration-300 hover:bg-[#43A2F2] hover:text-white hover:scale-[1.02] active:scale-95"
       >
         Voir le Catalogue
       </button>
