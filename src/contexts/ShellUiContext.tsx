@@ -29,6 +29,17 @@ export interface ShellUiValeur {
   ouvrirPanier: () => void;
   fermerPanier: () => void;
 
+  /**
+   * Fenêtre de création personnalisée.
+   *
+   * Comme le panier, elle est déclenchée depuis deux endroits : le
+   * bandeau de la page d'accueil et la barre de navigation basse. Son
+   * état ne peut donc plus être local à la section.
+   */
+  creationOuverte: boolean;
+  ouvrirCreation: () => void;
+  fermerCreation: () => void;
+
   /** Modale de connexion / inscription. */
   authOuverte: boolean;
   modeAuth: ModeAuthentification;
@@ -52,11 +63,15 @@ export const ShellUiContext = createContext<ShellUiValeur | null>(null);
 
 export function ShellUiProvider({ children }: { children: ReactNode }) {
   const [panierOuvert, setPanierOuvert] = useState(false);
+  const [creationOuverte, setCreationOuverte] = useState(false);
   const [authOuverte, setAuthOuverte] = useState(false);
   const [modeAuth, setModeAuth] = useState<ModeAuthentification>('login');
 
   const ouvrirPanier = useCallback(() => setPanierOuvert(true), []);
   const fermerPanier = useCallback(() => setPanierOuvert(false), []);
+
+  const ouvrirCreation = useCallback(() => setCreationOuverte(true), []);
+  const fermerCreation = useCallback(() => setCreationOuverte(false), []);
 
   const definirModeAuth = useCallback((mode: ModeAuthentification) => {
     setModeAuth(mode);
@@ -78,6 +93,9 @@ export function ShellUiProvider({ children }: { children: ReactNode }) {
       panierOuvert,
       ouvrirPanier,
       fermerPanier,
+      creationOuverte,
+      ouvrirCreation,
+      fermerCreation,
       authOuverte,
       modeAuth,
       ouvrirAuth,
@@ -88,6 +106,9 @@ export function ShellUiProvider({ children }: { children: ReactNode }) {
       panierOuvert,
       ouvrirPanier,
       fermerPanier,
+      creationOuverte,
+      ouvrirCreation,
+      fermerCreation,
       authOuverte,
       modeAuth,
       ouvrirAuth,

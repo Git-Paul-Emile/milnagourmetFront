@@ -74,7 +74,12 @@ export default defineConfig(({ mode }) => ({
       // Manifeste
       // ------------------------------------------------------------
       manifest: {
-        name: "Milna Gourmet — Le Salon du Yaourt",
+        /* `name` est le texte qu'Android affiche sous l'icône sur SON
+           écran de lancement. Il n'existe aucun moyen de le masquer :
+           on le réduit donc au strict minimum. La baseline « Le Salon du
+           Yaourt » reste portée par le titre de la page et le manifeste
+           `description`. */
+        name: "Milna Gourmet",
         // Affiché sous l'icône : 12 caractères maximum sur Android,
         // au-delà le nom est tronqué avec des points de suspension.
         short_name: "Milna",

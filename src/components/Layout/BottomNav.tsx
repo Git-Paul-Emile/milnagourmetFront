@@ -32,15 +32,22 @@ import { useSectionActive } from '@/hooks/useSectionActive';
  */
 
 /** Sections de la page d'accueil surveillées pour l'état actif. */
-const SECTIONS = ['home', 'catalog', 'creation'] as const;
+const SECTIONS = ['home', 'catalog'] as const;
 
 interface EntreeNav {
   cle: string;
   libelle: string;
   Icone: typeof Home;
-  /** Ancre sur la page d'accueil, ou route dédiée. */
+  /** Ancre sur la page d'accueil. */
   ancre?: string;
+  /** Route dédiée. */
   route?: string;
+  /**
+   * Ouvre directement une fenêtre plutôt que de naviguer.
+   * « Créer » n'amène pas à une section : elle ouvre le configurateur,
+   * ce qui économise un défilement puis un second appui.
+   */
+  ouvre?: 'creation';
 }
 
 const ENTREES_GAUCHE: EntreeNav[] = [
@@ -49,7 +56,7 @@ const ENTREES_GAUCHE: EntreeNav[] = [
 ];
 
 const ENTREES_DROITE: EntreeNav[] = [
-  { cle: 'creation', libelle: 'Créer', Icone: Sparkles, ancre: 'creation' },
+  { cle: 'creation', libelle: 'Créer', Icone: Sparkles, ouvre: 'creation' },
   { cle: 'profil', libelle: 'Profil', Icone: User, route: '/profile' },
 ];
 
@@ -59,7 +66,7 @@ export function BottomNav() {
   const { pathname } = useLocation();
   const { state } = useApp();
   const { isAuthenticated } = useAuth();
-  const { ouvrirPanier, ouvrirAuth } = useShellUi();
+  const { ouvrirPanier, ouvrirAuth, ouvrirCreation, creationOuverte } = useShellUi();
 
   const surAccueil = pathname === '/';
   const sectionActive = useSectionActive(SECTIONS, estInstallee && surAccueil);
@@ -98,6 +105,16 @@ export function BottomNav() {
 
   const activer = useCallback(
     (entree: EntreeNav) => {
+      if (entree.ouvre === 'creation') {
+        /* Le configurateur est monté par la section « Création » de la
+           page d'accueil. Depuis une autre page il faut donc y revenir
+           d'abord ; l'état vivant dans le contexte (au-dessus du
+           routeur), il survit à la navigation. */
+        if (!surAccueil) navigate('/');
+        ouvrirCreation();
+        return;
+      }
+
       if (entree.route) {
         // Le profil n'a de sens qu'une fois connecté : on propose la
         // connexion plutôt que de rediriger vers une page vide.
@@ -110,15 +127,16 @@ export function BottomNav() {
       }
       if (entree.ancre) allerVersAncre(entree.ancre);
     },
-    [allerVersAncre, isAuthenticated, navigate, ouvrirAuth]
+    [allerVersAncre, isAuthenticated, navigate, ouvrirAuth, ouvrirCreation, surAccueil]
   );
 
   const estActive = useCallback(
     (entree: EntreeNav) => {
+      if (entree.ouvre === 'creation') return creationOuverte;
       if (entree.route) return pathname === entree.route;
       return surAccueil && sectionActive === entree.ancre;
     },
-    [pathname, sectionActive, surAccueil]
+    [creationOuverte, pathname, sectionActive, surAccueil]
   );
 
   if (!estInstallee) return null;
@@ -164,12 +182,12 @@ export function BottomNav() {
         >
           <span
             className={cn(
-              /* `-top-14` sur un cercle de 56 px (h-14) : le bas du cercle
-                 vient tangenter la bordure supérieure de la barre sans
-                 jamais la franchir. Toute autre valeur le ferait soit
-                 redescendre dans la barre, soit décoller au-dessus.
-                 Si le diamètre change, cette valeur doit changer avec lui. */
-              'absolute -top-14 flex h-14 w-14 items-center justify-center rounded-full',
+              /* Cercle CENTRÉ sur la bordure supérieure : `-top-7` vaut la
+                 moitié du diamètre (`h-14` = 56 px), donc 28 px au-dessus
+                 et 28 px en dessous du trait.
+                 Règle à conserver si le diamètre évolue : l'offset doit
+                 toujours valoir la moitié de la hauteur. */
+              'absolute -top-7 flex h-14 w-14 items-center justify-center rounded-full',
               'bg-primary text-primary-foreground',
               'shadow-lg shadow-primary/40',
               /* L'anneau à la couleur du fond détache le bouton de la

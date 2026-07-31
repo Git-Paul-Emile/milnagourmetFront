@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CatalogSectionData } from '@/types';
 import { siteService } from '@/services';
 import { CustomCreation } from '@/components/Product/CustomCreation';
+import { useShellUi } from '@/contexts/useShellUi';
 import { CreationSection } from './CreationSection';
 
 /**
@@ -14,7 +15,12 @@ import { CreationSection } from './CreationSection';
  */
 export function CustomCreationSection() {
   const [catalogData, setCatalogData] = useState<CatalogSectionData | null>(null);
-  const [isCreationOpen, setIsCreationOpen] = useState(false);
+
+  /* L'ouverture vient du contexte et non d'un état local : la barre de
+     navigation basse déclenche la même fenêtre depuis son entrée
+     « Créer ». Un état local ici obligerait à monter une seconde
+     instance du modal ailleurs dans l'arbre. */
+  const { creationOuverte, ouvrirCreation, fermerCreation } = useShellUi();
 
   useEffect(() => {
     let cancelled = false;
@@ -35,12 +41,9 @@ export function CustomCreationSection() {
     /* Pas de conteneur centré ici : le bandeau occupe 100 % de la largeur,
        la photo de fond va donc d'un bord à l'autre de l'écran. */
     <section id="creation" className="w-full">
-      <CreationSection
-        catalogData={catalogData}
-        onCreationOpen={() => setIsCreationOpen(true)}
-      />
+      <CreationSection catalogData={catalogData} onCreationOpen={ouvrirCreation} />
 
-      <CustomCreation isOpen={isCreationOpen} onClose={() => setIsCreationOpen(false)} />
+      <CustomCreation isOpen={creationOuverte} onClose={fermerCreation} />
     </section>
   );
 }

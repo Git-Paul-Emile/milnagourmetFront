@@ -12,7 +12,10 @@ export function Logo() {
         <img
           src={branding.logo}
           alt="Milna Gourmet"
-          className="h-12 w-12 animate-heartbeat"
+          /* Pas d'animation ici : le battement est réservé à l'écran de
+             lancement. Répété en permanence dans l'en-tête, il attire
+             l'œil en continu et fatigue à la lecture. */
+          className="h-12 w-12"
         />
       )}
       {/* Texte de marque : masqué sur mobile/PWA (logo seul), conservé en desktop large */}

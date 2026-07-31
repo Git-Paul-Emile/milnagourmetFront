@@ -487,16 +487,14 @@
    la hauteur de la barre pour que le dernier élément de chaque page
    (bouton de commande, pied de page) ne reste pas masqué derrière elle.
 
-   4rem = hauteur de la barre, 3,5rem = le cercle du panier qui la
-   surmonte entièrement, +0,5rem de respiration, + la zone sûre du bas
-   des iPhone récents (barre gestuelle).
+   4rem = hauteur de la barre, 1,75rem = la moitié du cercle du panier
+   qui la surmonte, +0,75rem de respiration, + la zone sûre du bas des
+   iPhone récents (barre gestuelle).
 --------------------------------------------------------------------- */
 body.has-bottom-nav {
-  padding-bottom: calc(8rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
 }
 
-/* Le bouton « retour en haut » doit remonter au-dessus de la barre,
-   sinon il chevauche le bouton central du panier. */
-body.has-bottom-nav .scroll-to-top {
-  bottom: calc(9rem + env(safe-area-inset-bottom));
-}
+/* Le bouton « retour en haut » n'existe plus qu'à partir de 1024 px
+   (voir ScrollToTop.tsx) : aucune règle de décalage n'est nécessaire, la
+   barre de navigation basse ne s'affiche jamais à cette largeur. */
