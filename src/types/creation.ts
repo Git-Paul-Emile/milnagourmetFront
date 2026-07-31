@@ -24,6 +24,21 @@ export interface CreationOptions {
   cereales: CreationOptionItem[];
 }
 
+/**
+ * Même donnée, réduite aux seuls noms.
+ *
+ * Le dashboard n'affiche que des libellés (listes de gestion, compteurs)
+ * et n'a pas besoin des vignettes. Il manipulait jusqu'ici des `string[]`
+ * tout en les déclarant `CreationOptionItem[]` : le type mentait sur le
+ * contenu réel. Ce type distinct rétablit la correspondance sans
+ * alourdir la vitrine, qui a bien besoin des images.
+ */
+export interface CreationOptionNames {
+  fruits: string[];
+  sauces: string[];
+  cereales: string[];
+}
+
 export interface CustomCreation {
   size: CreationSize;
   selectedFruits: string[];

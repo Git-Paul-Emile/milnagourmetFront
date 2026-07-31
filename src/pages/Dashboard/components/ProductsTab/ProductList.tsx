@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Edit, Trash2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Product, ProductCategoryItem, CreationOptions } from '@/types';
+import { Product, ProductCategoryItem, CreationOptionNames } from '@/types';
 import { Button } from '@/components/ui/button';
 
 interface ProductListProps {
   products: Product[];
   productCategories: ProductCategoryItem[];
-  creationOptions: CreationOptions;
+  creationOptions: CreationOptionNames;
   onEditProduct: (product: Product) => void;
   onToggleAvailability: (productId: string, currentStatus: boolean) => Promise<void>;
   onDeleteProduct: (product: Product) => void;

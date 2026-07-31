@@ -37,7 +37,9 @@ export const specialServicesService = {
   /** Modifier un composant (admin) */
   async updateComponent(
     componentId: number,
-    data: { nom?: string; disponible?: boolean; parDefaut?: boolean; quantiteDefaut?: number }
+    // `image` manquait alors que ServicesTab l'envoie déjà et que l'API
+    // l'accepte : la signature était en retard sur l'usage réel.
+    data: { nom?: string; disponible?: boolean; parDefaut?: boolean; quantiteDefaut?: number; image?: string | null }
   ) {
     return httpClient.put<ServiceComponent>(`/api/services/components/${componentId}`, data);
   },

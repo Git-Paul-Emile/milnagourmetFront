@@ -1,7 +1,7 @@
-import { CartItem, Cart, User, CustomerInfo, Product, DeliveryZone } from '@/types';
+import { CartItem, Cart, User, CustomerInfo, DeliveryZone } from '@/types';
 import { orderService } from './index';
 import { getContactInfo } from './contactInfoService';
-import { buildOrderMessage, buildCartOrderMessage, buildProductShareMessage, buildContactMessage } from './messageBuilder';
+import { buildOrderMessage, buildCartOrderMessage, buildContactMessage } from './messageBuilder';
 import { addOrderToUserHistory } from './orderHistoryManager';
 import { callMilna } from './phoneService';
 
@@ -53,15 +53,6 @@ export async function sendCartOrderToWhatsApp(cart: Cart, user?: User | null, po
   }
 
   // Plus d'ouverture WhatsApp - seulement confirmation dans l'app
-}
-
-export function shareProductOnWhatsApp(product: Product): void {
-  const message = buildProductShareMessage(product);
-
-  const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
-
-  window.open(whatsappUrl, '_blank');
 }
 
 export async function contactMilnaWhatsApp(message: string = ''): Promise<void> {

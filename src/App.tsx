@@ -10,6 +10,9 @@ import { BrandingProvider } from "@/contexts/BrandingContext";
 import { ToastContainer } from "@/components/Layout/ToastContainer";
 import { ProtectedRoute } from "@/components/Auth/ProtectedRoute";
 import { PageLoader } from "@/components/PageLoader";
+import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
+import { InstallPrompt } from "@/components/shared/InstallPrompt";
+import { UpdatePrompt } from "@/components/shared/UpdatePrompt";
 import Index from "./pages/Index";
 
 // Chargées à la demande : réduit fortement le bundle initial (dashboard admin
@@ -22,12 +25,17 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfUse = lazy(() => import("./pages/TermsOfUse"));
 const LegalNotices = lazy(() => import("./pages/LegalNotices"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 
 const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
+    // ErrorBoundary au sommet : sans lui, une exception de rendu dans
+    // n'importe quel composant affiche une page entièrement blanche.
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <AppProvider>
           <AuthProvider>
@@ -35,6 +43,11 @@ const App = () => {
                 <Toaster />
                 <Sonner />
                 <ToastContainer />
+                {/* Éléments PWA : invite d'installation, bandeau de mise à
+                    jour et indicateur hors connexion. Placés hors du
+                    routeur, ils restent visibles sur toutes les pages. */}
+                <UpdatePrompt />
+                <InstallPrompt />
                 <BrowserRouter
                   future={{
                     v7_startTransition: true,
@@ -49,6 +62,8 @@ const App = () => {
                       <Route path="/politique-confidentialite" element={<PrivacyPolicy />} />
                       <Route path="/conditions-utilisation" element={<TermsOfUse />} />
                       <Route path="/mentions-legales" element={<LegalNotices />} />
+                      <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
+                      <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
                       <Route
                         path="/dashboard"
                         element={
@@ -66,7 +81,8 @@ const App = () => {
           </AuthProvider>
         </AppProvider>
       </TooltipProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 

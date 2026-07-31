@@ -26,8 +26,17 @@ export async function submitOrder({
   const totalWithDelivery = subtotal + deliveryFee - pointsDiscount;
 
   // Préparer les données pour l'API
+  const emailClient = customerInfo.email.trim().toLowerCase();
+
   const orderData = {
-    customer: null, // Pour invités
+    // Commande invité : pas de compte rattaché. On transmet malgré tout
+    // les coordonnées saisies pour que le suivi puisse être envoyé.
+    customer: {
+      id: '',
+      name: customerInfo.name,
+      phone: customerInfo.phone,
+      ...(emailClient ? { email: emailClient } : {}),
+    },
     items: cartItems.map(item => ({
       id: item.id,
       name: item.name,

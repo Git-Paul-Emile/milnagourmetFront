@@ -1,4 +1,5 @@
 import React from 'react';
+import { Wallet } from 'lucide-react';
 import { DeliveryZone } from '@/types';
 
 interface OrderSummaryProps {
@@ -41,6 +42,18 @@ export function OrderSummary({ itemCount, subtotal, selectedZone, pointsDiscount
           <span>{total} FCFA</span>
         </div>
       </div>
+
+      {/* Modalité de règlement affichée avant validation.
+          Aucun paiement en ligne n'est proposé : le client règle le
+          livreur. L'indiquer ici évite l'abandon de panier par crainte
+          d'avoir à saisir une carte bancaire. */}
+      <p className="flex items-center gap-1.5 border-t pt-2 text-xs text-muted-foreground">
+        <Wallet className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+        <span>
+          <strong className="font-medium text-foreground">Paiement à la livraison.</strong>{' '}
+          Aucun paiement en ligne n'est demandé.
+        </span>
+      </p>
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Product } from '@/types';
-import { ShareModal } from './ShareModal';
 import { cn } from '@/lib/utils';
 import { useProductCard } from './hooks/useProductCard';
 import { ProductImage } from './components/ProductImage';
@@ -13,7 +12,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onViewDetails }: ProductCardProps) {
-  const { isShareModalOpen, setIsShareModalOpen, cardRef, handleAddToCart, handleShare } = useProductCard({ product });
+  const { cardRef, handleAddToCart } = useProductCard({ product });
 
   return (
     <div
@@ -25,18 +24,11 @@ export function ProductCard({ product, onViewDetails }: ProductCardProps) {
         'bg-card border border-border hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-br before:from-white/5 before:to-transparent before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300'
       )}
     >
-      <ProductImage product={product} onViewDetails={onViewDetails} onShare={handleShare} />
+      <ProductImage product={product} onViewDetails={onViewDetails} />
       <ProductInfo product={product} />
       <div className="px-4 pb-4">
         <ProductActions product={product} onAddToCart={handleAddToCart} />
       </div>
-
-      {/* Share Modal */}
-      <ShareModal
-        isOpen={isShareModalOpen}
-        onClose={() => setIsShareModalOpen(false)}
-        product={product}
-      />
     </div>
   );
 }

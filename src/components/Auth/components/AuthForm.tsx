@@ -1,5 +1,5 @@
 import React from 'react';
-import { User as UserIcon, Phone, Info } from 'lucide-react';
+import { User as UserIcon, Phone, Info, Mail } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AuthMode, FormData, FieldErrors } from '../types/authTypes';
 import { InputField } from './InputField';
@@ -8,6 +8,7 @@ import { SelectField } from './SelectField';
 import { Button } from '@/components/ui/button';
 import { useFloating, useInteractions, useHover, useFocus, useDismiss, useRole, FloatingPortal, arrow, shift, flip } from '@floating-ui/react';
 import { DeliveryZone } from '@/types';
+import { Link } from 'react-router-dom';
 
 interface AuthFormProps {
   mode: AuthMode;
@@ -111,13 +112,32 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       </div>
 
       {mode === 'register' && (
-        <SelectField
-          label="Zone de livraison"
-          value={formData.zoneLivraison}
-          onChange={(value) => onInputChange('zoneLivraison', value)}
-          options={deliveryZones}
-          error={fieldErrors.zoneLivraison}
-        />
+        <>
+          <div className="space-y-1">
+            <InputField
+              label="Adresse email (facultatif)"
+              icon={Mail}
+              type="email"
+              value={formData.email}
+              onChange={(value) => onInputChange('email', value)}
+              placeholder="vous@exemple.com"
+              error={fieldErrors.email}
+            />
+            {/* Message explicite : c'est la seule information qui permet de
+                récupérer un compte dont le mot de passe a été oublié. */}
+            <p className="text-xs text-muted-foreground">
+              Nécessaire pour réinitialiser votre mot de passe en cas d'oubli.
+            </p>
+          </div>
+
+          <SelectField
+            label="Zone de livraison"
+            value={formData.zoneLivraison}
+            onChange={(value) => onInputChange('zoneLivraison', value)}
+            options={deliveryZones}
+            error={fieldErrors.zoneLivraison}
+          />
+        </>
       )}
 
       <PasswordField
@@ -129,6 +149,17 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         onToggleShowPassword={() => setShowPassword(!showPassword)}
         error={fieldErrors.password}
       />
+
+      {mode === 'login' && (
+        <div className="text-right">
+          <Link
+            to="/mot-de-passe-oublie"
+            className="text-sm text-accent hover:underline"
+          >
+            Mot de passe oublié ?
+          </Link>
+        </div>
+      )}
 
       {mode === 'register' && (
         <PasswordField

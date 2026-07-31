@@ -1,4 +1,4 @@
-import { CartItem, Cart, User, CustomerInfo, DeliveryZone, Product } from '@/types';
+import { CartItem, Cart, User, CustomerInfo, DeliveryZone } from '@/types';
 import { getTimeBasedGreeting } from '@/utils/greeting';
 import { deliveryZoneService } from './deliveryZone';
 
@@ -29,6 +29,7 @@ export function buildOrderMessage(items: CartItem[], total: number, customerInfo
     message += `\nFrais de livraison : ${deliveryZone.deliveryFee} FCFA`;
   }
   message += `\nTotal : ${total} FCFA`;
+  message += `\nRèglement : paiement à la livraison`;
   if (items.some((item) => item.isServiceQuote)) {
     message += `\nNB : les articles « sur devis » (panier, pancakes…) ne sont pas inclus dans le total — merci de me communiquer leur prix.`;
   }
@@ -74,6 +75,7 @@ export async function buildCartOrderMessage(cart: Cart, user?: User | null): Pro
     message += `\nFrais de livraison : ${cart.deliveryFee} FCFA`;
   }
   message += `\nTotal : ${user ? cart.totalWithDelivery || cart.total : cart.total} FCFA`;
+  message += `\nRèglement : paiement à la livraison`;
   if (cart.items.some((item) => item.isServiceQuote)) {
     message += `\nNB : les articles « sur devis » (panier, pancakes…) ne sont pas inclus dans le total — merci de me communiquer leur prix.`;
   }
@@ -99,14 +101,6 @@ export async function buildCartOrderMessage(cart: Cart, user?: User | null): Pro
   message += `\nHeure : ${new Date().toLocaleTimeString('fr-FR')}`;
 
   return message;
-}
-
-export function buildProductShareMessage(product: Product): string {
-  return `🍯 *${product.name}* - Milna Gourmet\n\n` +
-         `💰 Prix: ${product.price} F\n` +
-         `📝 ${product.description}\n\n` +
-         `🛍️ Commandez maintenant chez Milna Gourmet - Le Salon du Yaourt !\n` +
-         `📞 Contactez-nous sur WhatsApp`;
 }
 
 export function buildContactMessage(message: string = ''): string {

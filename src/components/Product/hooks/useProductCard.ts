@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { Product } from '@/types';
 import { useApp } from '@/contexts/useApp';
 import { useAvatarToast } from '@/hooks/useAvatarToast';
@@ -10,20 +10,7 @@ interface UseProductCardProps {
 export function useProductCard({ product }: UseProductCardProps) {
   const { dispatch } = useApp();
   const avatarToast = useAvatarToast();
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-
-  // Fermer le modal si on clique en dehors de la carte
-  useEffect(() => {
-    if (!isShareModalOpen) return;
-    const handleClick = (e: MouseEvent) => {
-      if (cardRef.current && !cardRef.current.contains(e.target as Node)) {
-        setIsShareModalOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, [isShareModalOpen]);
 
   const handleAddToCart = () => {
     dispatch({
@@ -49,15 +36,8 @@ export function useProductCard({ product }: UseProductCardProps) {
     });
   };
 
-  const handleShare = () => {
-    setIsShareModalOpen(true);
-  };
-
   return {
-    isShareModalOpen,
-    setIsShareModalOpen,
     cardRef,
-    handleAddToCart,
-    handleShare
+    handleAddToCart
   };
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Phone } from 'lucide-react';
+import { User, Phone, Mail } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CustomerInfo } from '../hooks/useCustomerInfo';
@@ -42,6 +42,25 @@ export function CustomerInfoFields({ customerInfo, onFieldChange }: CustomerInfo
           onChange={(e) => onFieldChange('phone', e.target.value)}
           className="w-full"
         />
+      </div>
+
+      {/* Email — facultatif */}
+      <div className="space-y-2">
+        <Label htmlFor="email" className="flex items-center space-x-2">
+          <Mail className="h-4 w-4" />
+          <span>Email (facultatif)</span>
+        </Label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="vous@exemple.com"
+          value={customerInfo.email}
+          onChange={(e) => onFieldChange('email', e.target.value)}
+          className="w-full"
+        />
+        <p className="text-xs text-muted-foreground">
+          Pour recevoir la confirmation et le suivi de votre commande.
+        </p>
       </div>
     </>
   );

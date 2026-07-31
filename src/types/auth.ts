@@ -6,6 +6,8 @@ export interface AuthUser {
   id: string;
   nomComplet: string;
   telephone: string;
+  /** Facultatif : sert aux notifications et au mot de passe oublié. */
+  email?: string | null;
   zoneLivraisonId: string | null;
   zoneLivraison: string | null; // Nom de la zone pour affichage
   role: string;
@@ -29,6 +31,8 @@ export interface LoginCredentials {
 export interface RegisterData {
   telephone: string;
   nomComplet: string;
+  /** Facultatif. Sans email, la réinitialisation de mot de passe est impossible. */
+  email?: string;
   zoneLivraisonId: string;
   password: string;
   confirmPassword: string;

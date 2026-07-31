@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Order, Product, User as UserType, Customer, StoreHours, ProductCategoryItem, CreationSize, CreationOptions, DashboardStats } from '@/types';
+import { Order, Product, User as UserType, Customer, StoreHours, ProductCategoryItem, CreationSize, CreationOptionNames, DashboardStats } from '@/types';
 import { DeliveryZone, DeliveryPerson } from '@/types/dashboard';
 import { calculateCustomersFromOrders, calculateDashboardStats } from '@/utils/dashboard/statsCalculations';
 import { useProductCategories } from './useProductCategories';
@@ -94,7 +94,9 @@ export const useDashboardData = (): DashboardData => {
       const creationSizesResponse = await creationService.getCreationSizes();
       const creationSizesFromAPI: CreationSize[] = (creationSizesResponse as ApiResponse<CreationSize[]>).data || [];
 
-      const creationOptionsFromAPI: CreationOptions = {
+      // Valeur initiale vide : les options réelles sont chargées par
+      // `useCreationOptions`, qui les stocke sous forme de noms.
+      const creationOptionsFromAPI: CreationOptionNames = {
         fruits: [],
         sauces: [],
         cereales: []

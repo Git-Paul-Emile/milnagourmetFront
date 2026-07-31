@@ -28,6 +28,7 @@ export const useAuthForm = ({ initialMode, onClose }: UseAuthFormProps) => {
     confirmPassword: '',
     nomComplet: '',
     telephone: '',
+    email: '',
     zoneLivraison: ''
   });
 
@@ -81,12 +82,17 @@ export const useAuthForm = ({ initialMode, onClose }: UseAuthFormProps) => {
 
       let response;
       if (mode === 'register') {
+        const emailSaisi = formData.email.trim().toLowerCase();
         response = await register({
           telephone: formData.telephone,
           nomComplet: formData.nomComplet,
           zoneLivraisonId: formData.zoneLivraison, // Le formulaire stocke maintenant l'ID
           password: formData.password,
           confirmPassword: formData.confirmPassword,
+          // Champ facultatif : on ne l'envoie que s'il est renseigné.
+          // Envoyer une chaîne vide violerait la contrainte d'unicité
+          // en base dès le deuxième compte sans email.
+          ...(emailSaisi ? { email: emailSaisi } : {}),
           guestCart: parsedGuestCart
         });
       } else {
@@ -169,6 +175,7 @@ export const useAuthForm = ({ initialMode, onClose }: UseAuthFormProps) => {
       confirmPassword: '',
       nomComplet: '',
       telephone: '',
+      email: '',
       zoneLivraison: ''
     });
     setShowPassword(false);

@@ -1,16 +1,14 @@
 import React from 'react';
-import { Share2, Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import { Product } from '@/types';
-import { cn } from '@/lib/utils';
 import { getFullImageUrl } from '@/utils/imageUtils';
 
 interface ProductImageProps {
   product: Product;
   onViewDetails?: (product: Product) => void;
-  onShare: () => void;
 }
 
-export function ProductImage({ product, onViewDetails, onShare }: ProductImageProps) {
+export function ProductImage({ product, onViewDetails }: ProductImageProps) {
   return (
     <div className="relative aspect-square overflow-hidden">
       <img
@@ -26,17 +24,9 @@ export function ProductImage({ product, onViewDetails, onShare }: ProductImagePr
         </div>
       )}
 
-
       {/* Actions rapides */}
-      <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col space-y-1">
-        <button
-          onClick={onShare}
-          className="p-2 bg-background/80 hover:bg-background text-foreground rounded-full shadow-medium transition-colors"
-          title="Partager"
-        >
-          <Share2 className="h-4 w-4" />
-        </button>
-        {onViewDetails && (
+      {onViewDetails && (
+        <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col space-y-1">
           <button
             onClick={() => onViewDetails(product)}
             className="p-2 bg-background/80 hover:bg-background text-foreground rounded-full shadow-medium transition-colors"
@@ -44,8 +34,8 @@ export function ProductImage({ product, onViewDetails, onShare }: ProductImagePr
           >
             <Eye className="h-4 w-4" />
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

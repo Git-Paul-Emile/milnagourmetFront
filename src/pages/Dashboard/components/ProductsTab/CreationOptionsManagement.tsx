@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Edit, Trash2, Apple, Cookie, Wheat, Plus } from 'lucide-react';
-import { CreationSize, CreationOptions } from '@/types';
+import { CreationSize, CreationOptionNames } from '@/types';
 import { Modal } from '@/components/Modal';
 
 interface CreationOptionsManagementProps {
   creationSizes: CreationSize[];
-  creationOptions: CreationOptions;
+  creationOptions: CreationOptionNames;
   onAddSize: () => void;
   onEditSize: (size: CreationSize) => void;
   onDeleteSize: (sizeName: string) => void;

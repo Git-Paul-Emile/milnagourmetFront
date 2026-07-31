@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CreationOptions } from '../../types';
+import { CreationOptionNames } from '../../types';
 import { creationService, CreationOptionItem } from '../../services/creationService';
 import { useApp } from '@/contexts/useApp';
 
@@ -19,7 +19,7 @@ export function useCreationOptions(displaySuccessToast?: (message: string) => vo
     });
   };
 
-  const [creationOptions, setCreationOptions] = useState<CreationOptions>({
+  const [creationOptions, setCreationOptions] = useState<CreationOptionNames>({
     fruits: [],
     sauces: [],
     cereales: []

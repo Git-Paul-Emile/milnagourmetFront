@@ -15,12 +15,12 @@ import { usePagination } from '@/hooks/usePagination';
 import { PaginationControls } from '@/components/shared/PaginationControls';
 import { CategoryModal } from '@/components/Dashboard/CategoryModal';
 import { Modal } from '@/components/Modal';
-import { Product, ProductCategoryItem, CreationSize, CreationOptions } from '@/types';
+import { Product, ProductCategoryItem, CreationSize, CreationOptionNames } from '@/types';
 
 interface ProductsTabProps {
   allProductsForTab: Product[];
   creationSizes: CreationSize[];
-  creationOptions: CreationOptions;
+  creationOptions: CreationOptionNames;
   loadDashboardData: () => Promise<void>;
   displaySuccessToast: (message: string) => void;
   setAddProductModal: (open: boolean) => void;

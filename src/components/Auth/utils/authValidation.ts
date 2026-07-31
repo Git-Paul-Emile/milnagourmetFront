@@ -23,6 +23,14 @@ export const validateForm = (mode: AuthMode, formData: FormData): FieldErrors =>
     const phoneError = validatePhone(formData.telephone);
     if (phoneError) errors.telephone = phoneError;
 
+    // Email facultatif : on ne valide le format que s'il est renseigné.
+    // Une expression volontairement simple — la vérification réelle est
+    // faite côté serveur et, surtout, par la réception du message.
+    const email = formData.email.trim();
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      errors.email = "Format d'adresse email invalide";
+    }
+
     if (!formData.zoneLivraison) {
       errors.zoneLivraison = 'La zone de livraison est obligatoire';
     }
