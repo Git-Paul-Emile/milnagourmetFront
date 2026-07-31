@@ -176,7 +176,7 @@ export function CatalogSection() {
 
   return (
     <section id="catalog" className={cn("py-20", "bg-muted/30")}>
-      <div className="container mx-auto px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           {/* Titre de section entièrement en #212121 (plus de dégradé). */}
@@ -215,7 +215,7 @@ export function CatalogSection() {
                       align: "start",
                       loop: true,
                     }}
-                    className="w-full mx-4"
+                    className="w-full"
                   >
                     <CarouselContent className="-ml-2 md:-ml-4">
                       {allProducts.map((product, index) => (
@@ -228,8 +228,8 @@ export function CatalogSection() {
                     </CarouselContent>
                     {allProducts.length > 4 && (
                       <>
-                        <CarouselPrevious className="-left-4" />
-                        <CarouselNext className="-right-4" />
+                        <CarouselPrevious className="left-1 sm:-left-4" />
+                        <CarouselNext className="right-1 sm:-right-4" />
                       </>
                     )}
                   </Carousel>
@@ -264,7 +264,7 @@ export function CatalogSection() {
                           align: "start",
                           loop: true,
                         }}
-                        className="w-full mx-4"
+                        className="w-full"
                       >
                         <CarouselContent className="-ml-2 md:-ml-4">
                           {categoryProducts.map((product, index) => (
@@ -277,8 +277,8 @@ export function CatalogSection() {
                         </CarouselContent>
                         {categoryProducts.length > 4 && (
                           <>
-                            <CarouselPrevious className="-left-4" />
-                            <CarouselNext className="-right-4" />
+                            <CarouselPrevious className="left-1 sm:-left-4" />
+                            <CarouselNext className="right-1 sm:-right-4" />
                           </>
                         )}
                       </Carousel>

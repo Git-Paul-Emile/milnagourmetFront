@@ -18,7 +18,24 @@ interface CategoryFiltersProps {
 
 export function CategoryFilters({ displayCategories, activeCategory, setActiveCategory, user, onAddCategoryClick }: CategoryFiltersProps) {
   return (
-    <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-3 mb-12 overflow-x-auto">
+    /*
+     * Deux niveaux volontaires :
+     *
+     * 1. Le conteneur extérieur porte le défilement horizontal. Les
+     *    marges négatives `-mx-4` annulent le padding de la section pour
+     *    que la zone défilante aille d'un bord à l'autre de l'écran —
+     *    sinon le dernier filtre semble coupé au milieu du vide.
+     *
+     * 2. La rangée intérieure combine `w-max` et `min-w-full` :
+     *    - quand les filtres tiennent, `min-w-full` l'étire et
+     *      `justify-center` les centre ;
+     *    - quand ils débordent, `w-max` la laisse s'étendre et le
+     *      centrage n'a plus d'effet, ce qui évite le défaut classique
+     *      du `justify-center` en zone défilante — le premier élément
+     *      devient alors inatteignable, coupé à gauche.
+     */
+    <div className="-mx-4 mb-12 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+      <div className="flex w-max min-w-full flex-nowrap justify-center gap-3 md:flex-wrap">
       {displayCategories.map((category) => (
         <button
           key={category.id}
@@ -45,6 +62,7 @@ export function CategoryFilters({ displayCategories, activeCategory, setActiveCa
           <span className="hidden sm:inline">Ajouter</span>
         </button>
       )}
+      </div>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { AuthModal } from '@/components/Auth/AuthModal';
 import { UserProfile } from '@/components/User/UserProfile';
 import { OrderManagement } from '@/components/Admin/OrderManagement';
 import { useAuth } from '@/hooks/useAuth';
+import { useIsStandalone } from '@/hooks/useIsStandalone';
 import { contactMilnaWhatsApp, callMilna } from '@/services/whatsapp';
 import { cn } from '@/lib/utils';
 import { StoreStatusBar } from './Header/StoreStatusBar';
@@ -22,6 +23,12 @@ import { useHeaderModals } from './Header/useHeaderModals';
 export function Header() {
   const { state, dispatch } = useApp();
   const { logout } = useAuth();
+  /* En mode installé, le panier est porté par le bouton central de la
+     barre de navigation basse : le dupliquer dans l'en-tête ferait deux
+     accès au même tiroir à quelques centimètres l'un de l'autre.
+     Dans un navigateur en revanche, la barre n'existe pas — l'icône de
+     l'en-tête reste alors le seul accès au panier et doit être conservée. */
+  const estInstallee = useIsStandalone();
   const navigate = useNavigate();
   const { navigation } = useNavigation();
   const {
@@ -63,7 +70,9 @@ export function Header() {
             <Logo />
             <NavigationLinks navigation={navigation} />
             <div className="flex items-center space-x-4">
-              <CartButton itemCount={state.cart.itemCount} onClick={() => setIsCartOpen(true)} />
+              {!estInstallee && (
+                <CartButton itemCount={state.cart.itemCount} onClick={() => setIsCartOpen(true)} />
+              )}
               <AuthSection
                 user={state.user}
                 onLoginClick={() => {

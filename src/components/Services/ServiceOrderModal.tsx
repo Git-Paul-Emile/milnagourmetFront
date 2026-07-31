@@ -10,6 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useApp } from '@/contexts/useApp';
+import { useAvatarToast } from '@/hooks/useAvatarToast';
 import { SpecialService, Product } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -65,6 +66,10 @@ function ComponentThumb({
  */
 export function ServiceOrderModal({ service, onClose }: ServiceOrderModalProps) {
   const { dispatch } = useApp();
+  /* Même vignette que les toasts du catalogue : sans le champ `avatar`,
+     `ToastWithAvatar` rend une notification nue, visuellement différente
+     de celle affichée à l'ajout d'un produit. */
+  const avatarToast = useAvatarToast();
 
   const type = service?.serviceType ?? 'PANIER_FIXE';
   const minElements = service?.minElements ?? 1;
@@ -177,10 +182,13 @@ export function ServiceOrderModal({ service, onClose }: ServiceOrderModalProps) 
       payload: {
         id: Date.now().toString(),
         type: 'success',
+        // Même formulation que le catalogue (« X ajouté au panier ! »),
+        // suivie de la précision propre aux services sur devis.
         message:
           basePrice > 0
-            ? `${service.name} ajouté au panier — prix ajusté par le vendeur`
-            : `${service.name} ajouté au panier — le vendeur vous communiquera le prix`,
+            ? `${service.name} ajouté au panier ! Prix ajusté par le vendeur.`
+            : `${service.name} ajouté au panier ! Le vendeur vous communiquera le prix.`,
+        avatar: avatarToast,
       },
     });
 

@@ -15,7 +15,6 @@ import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
 import { InstallPrompt } from "@/components/shared/InstallPrompt";
 import { UpdatePrompt } from "@/components/shared/UpdatePrompt";
 import { BottomNav } from "@/components/Layout/BottomNav";
-import { AppSplash } from "@/components/Layout/AppSplash";
 import Index from "./pages/Index";
 
 // Chargées à la demande : réduit fortement le bundle initial (dashboard admin
@@ -50,9 +49,6 @@ const App = () => {
                 {/* Éléments PWA : invite d'installation, bandeau de mise à
                     jour et indicateur hors connexion. Placés hors du
                     routeur, ils restent visibles sur toutes les pages. */}
-                {/* Écran de lancement : au-dessus de tout, retiré du DOM
-                    une fois le fondu terminé. */}
-                <AppSplash />
                 <UpdatePrompt />
                 <InstallPrompt />
                 <BrowserRouter

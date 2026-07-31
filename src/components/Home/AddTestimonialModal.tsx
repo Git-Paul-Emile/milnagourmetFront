@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, User, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,11 +29,21 @@ export function AddTestimonialModal({ isOpen, onClose, onSuccess }: AddTestimoni
     toggleEmojiPicker
   } = useEmojiPicker(formData.comment, (comment) => handleInputChange('comment', comment));
 
-  // Fermer le modal si l'utilisateur n'est pas connecté
-  if (!isOpen || !state.user) {
+  /* Filet de sécurité : si la session tombe alors que le formulaire est
+     ouvert (expiration, déconnexion depuis un autre onglet), on referme.
+
+     La fermeture passe par un effet et non par le corps du composant :
+     appeler `onClose()` pendant le rendu déclenche le célèbre
+     « Cannot update a component while rendering a different component »
+     et, selon l'ordre de rendu, peut boucler. Un effet s'exécute après
+     la validation du rendu, au bon moment. */
+  useEffect(() => {
     if (isOpen && !state.user) {
       onClose();
     }
+  }, [isOpen, state.user, onClose]);
+
+  if (!isOpen || !state.user) {
     return null;
   }
 
