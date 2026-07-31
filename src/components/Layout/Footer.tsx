@@ -21,7 +21,7 @@ export function Footer() {
     >
       <div className="container relative mx-auto w-full px-4 pt-12 pb-[98px]">
         <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[auto_minmax(0,1fr)]">
-          <div className="flex items-center justify-start">
+          <div className="flex items-center justify-center md:justify-start">
             <img src="/images/logo.png" alt="Milna Gourmet" className="h-32 w-32" />
           </div>
           <div className="flex justify-center md:justify-center">

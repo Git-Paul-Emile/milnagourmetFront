@@ -29,6 +29,10 @@ export function ScrollToTop() {
     <button
       onClick={scrollToTop}
       className={cn(
+        // La classe `scroll-to-top` sert de point d'accroche à la règle
+        // CSS qui remonte le bouton au-dessus de la barre de navigation
+        // basse en mode PWA (voir index.css).
+        'scroll-to-top',
         'fixed bottom-8 right-8 z-50 p-3 bg-button border-0 text-white rounded-full shadow-lg transition-all duration-300 hover:bg-button hover:text-white hover:border-0 hover:scale-110',
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
       )}

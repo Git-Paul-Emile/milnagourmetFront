@@ -244,23 +244,17 @@
     }
   }
 
-  /* Custom Scrollbar — 8px minimum pour une zone de saisie accessible */
+  /* Barres de défilement masquées partout : le scroll reste fonctionnel,
+     seule la barre visuelle disparaît. */
+  * {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Edge/IE legacy */
+  }
+
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: hsl(var(--muted));
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--primary));
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary-dark));
+    width: 0;
+    height: 0;
+    display: none; /* Chrome/Safari/Edge Chromium */
   }
 }
 
@@ -272,6 +266,10 @@
   
   .animate-pulse-soft {
     animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  .animate-heartbeat {
+    animation: heartbeat 1.4s ease-in-out infinite;
   }
   
   .animate-slide-up {
@@ -390,6 +388,15 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.8; }
   }
+
+  /* Battement de coeur : deux pulsations rapprochées puis un temps de repos */
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+    60% { transform: scale(1); }
+  }
   
   @keyframes slide-up {
     from { 
@@ -472,3 +479,24 @@
   }
 }
 
+
+/* ---------------------------------------------------------------------
+   Barre de navigation basse (mode PWA installé)
+   ---------------------------------------------------------------------
+   La classe est posée sur <body> par le composant BottomNav. Elle réserve
+   la hauteur de la barre pour que le dernier élément de chaque page
+   (bouton de commande, pied de page) ne reste pas masqué derrière elle.
+
+   4rem = hauteur de la barre, 3,5rem = le cercle du panier qui la
+   surmonte entièrement, +0,5rem de respiration, + la zone sûre du bas
+   des iPhone récents (barre gestuelle).
+--------------------------------------------------------------------- */
+body.has-bottom-nav {
+  padding-bottom: calc(8rem + env(safe-area-inset-bottom));
+}
+
+/* Le bouton « retour en haut » doit remonter au-dessus de la barre,
+   sinon il chevauche le bouton central du panier. */
+body.has-bottom-nav .scroll-to-top {
+  bottom: calc(9rem + env(safe-area-inset-bottom));
+}

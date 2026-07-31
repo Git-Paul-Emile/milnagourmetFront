@@ -128,11 +128,12 @@ export function CatalogSection() {
       // Inclure toutes les catégories, même si elles n'ont pas de produits
       acc[category.id] = {
         category,
+        categoryCode,
         products: categoryProducts
       };
-      
+
       return acc;
-    }, {} as Record<string | number, { category: { id: string | number; name: string }; products: Product[] }>);
+    }, {} as Record<string | number, { category: { id: string | number; name: string }; categoryCode: string; products: Product[] }>);
   }, [activeCategories, products, categoryIdToName]);
 
   // Construire la liste des catégories avec "Tout" pour les filtres.
@@ -199,8 +200,14 @@ export function CatalogSection() {
           {/* Afficher tous les produits en carrousel si "Tout" est sélectionné */}
           {activeCategory === 'all' ? (
               (() => {
-                const allProducts = Object.values(productsByCategory).flatMap(({ products: categoryProducts }) => categoryProducts);
-                
+                // Dans l'onglet "Tout", les yaourts liquides s'affichent en premier.
+                const orderedCategoryEntries = Object.values(productsByCategory).sort((a, b) => {
+                  const aIsLiquide = a.categoryCode === 'liquide' ? 0 : 1;
+                  const bIsLiquide = b.categoryCode === 'liquide' ? 0 : 1;
+                  return aIsLiquide - bIsLiquide;
+                });
+                const allProducts = orderedCategoryEntries.flatMap(({ products: categoryProducts }) => categoryProducts);
+
                 return allProducts.length > 0 ? (
                   <Carousel
                     plugins={[autoplayPlugin]}

@@ -18,13 +18,13 @@ interface CategoryFiltersProps {
 
 export function CategoryFilters({ displayCategories, activeCategory, setActiveCategory, user, onAddCategoryClick }: CategoryFiltersProps) {
   return (
-    <div className="flex flex-wrap justify-center gap-3 mb-12">
+    <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-3 mb-12 overflow-x-auto">
       {displayCategories.map((category) => (
         <button
           key={category.id}
           onClick={() => setActiveCategory(category.id)}
           className={cn(
-            'flex items-center space-x-2 px-6 py-3 rounded-full font-medium transition-all duration-300 border',
+            'flex items-center space-x-2 px-6 py-3 rounded-full font-medium transition-all duration-300 border shrink-0',
             activeCategory === category.id
               ? 'bg-button text-white border-transparent'
               : 'bg-white text-foreground border-border hover:bg-white hover:text-foreground hover:border-button-hover-border'

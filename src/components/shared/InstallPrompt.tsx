@@ -44,10 +44,10 @@ export function InstallPrompt() {
         <div className="space-y-2">
           <div>
             <p id="titre-installation" className="text-sm font-semibold text-foreground">
-              Installer Milna Gourmet
+              Installez l'application Milna Gourmet
             </p>
             <p className="text-xs leading-relaxed text-muted-foreground">
-              Accédez au catalogue en un geste, même avec une connexion faible.
+              Retrouvez notre catalogue rapidement, même avec une connexion limitée.
             </p>
           </div>
 

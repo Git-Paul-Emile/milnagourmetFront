@@ -54,7 +54,7 @@ export function MobileMenu({ isOpen, navigation, user, onClose, onLoginClick, on
             </button>
             <button
               onClick={onRegisterClick}
-              className="w-full py-3 px-4 bg-button border border-button-border hover:bg-[#43A2F2] hover:text-white hover:border-[#43A2F2] text-button-foreground rounded-lg hover:shadow-lg hover:scale-105 transition-all font-medium"
+              className="w-full py-3 px-4 bg-button hover:bg-[#43A2F2] text-white rounded-lg hover:shadow-lg hover:scale-105 transition-all font-medium"
             >
               S'inscrire
             </button>

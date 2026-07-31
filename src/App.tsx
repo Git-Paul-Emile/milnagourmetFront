@@ -7,12 +7,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppProvider } from "@/contexts/AppContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { BrandingProvider } from "@/contexts/BrandingContext";
+import { ShellUiProvider } from "@/contexts/ShellUiContext";
 import { ToastContainer } from "@/components/Layout/ToastContainer";
 import { ProtectedRoute } from "@/components/Auth/ProtectedRoute";
 import { PageLoader } from "@/components/PageLoader";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
 import { InstallPrompt } from "@/components/shared/InstallPrompt";
 import { UpdatePrompt } from "@/components/shared/UpdatePrompt";
+import { BottomNav } from "@/components/Layout/BottomNav";
 import Index from "./pages/Index";
 
 // Chargées à la demande : réduit fortement le bundle initial (dashboard admin
@@ -40,6 +42,7 @@ const App = () => {
         <AppProvider>
           <AuthProvider>
             <BrandingProvider>
+              <ShellUiProvider>
                 <Toaster />
                 <Sonner />
                 <ToastContainer />
@@ -76,7 +79,11 @@ const App = () => {
                       <Route path="*" element={<NotFound />} />
                     </Routes>
                   </Suspense>
+                  {/* Dans le routeur : la barre utilise useNavigate et
+                      useLocation. Elle ne s'affiche qu'en mode installé. */}
+                  <BottomNav />
                 </BrowserRouter>
+              </ShellUiProvider>
             </BrandingProvider>
           </AuthProvider>
         </AppProvider>

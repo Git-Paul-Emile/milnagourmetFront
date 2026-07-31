@@ -12,10 +12,11 @@ export function Logo() {
         <img
           src={branding.logo}
           alt="Milna Gourmet"
-          className="h-12 w-12 animate-pulse-soft"
+          className="h-12 w-12 animate-heartbeat"
         />
       )}
-      <div className='md:hidden lg:block'>
+      {/* Texte de marque : masqué sur mobile/PWA (logo seul), conservé en desktop large */}
+      <div className="hidden lg:block">
         <h1 className={cn(
           "text-xl font-bold",
           "text-primary"
