@@ -37,9 +37,10 @@ export function Cart({ isOpen, onClose }: CartProps) {
         onClick={onClose}
       />
 
-      {/* Cart Panel avec effets 3D */}
+      {/* Cart Panel */}
       <div className={cn(
         'fixed right-0 top-0 h-full w-full max-w-md bg-background border-l border-border z-50',
+        'flex flex-col overflow-hidden',
         'transform-gpu transition-all duration-500 ease-out',
         'shadow-2xl shadow-black/20',
         isOpen ? 'translate-x-0 scale-100' : 'translate-x-full scale-95',
@@ -47,13 +48,13 @@ export function Cart({ isOpen, onClose }: CartProps) {
       )}>
         <CartHeader onClose={onClose} />
 
-        {/* Content */}
-        <div className="flex flex-col h-full">
+        {/* Content — min-h-0 is required so flex-1 can shrink below its content size */}
+        <div className="flex flex-col flex-1 min-h-0">
           {state.cart.items.length === 0 ? (
             <EmptyCart onClose={onClose} />
           ) : (
             <>
-              {/* Cart Items */}
+              {/* Cart Items — scrollable zone */}
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {state.cart.items.map((item) => (
                   <CartItem
@@ -85,6 +86,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
           )}
         </div>
       </div>
+
 
       {/* Customer Info Modal */}
       <CustomerInfoModal

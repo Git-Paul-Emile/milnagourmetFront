@@ -5,20 +5,17 @@ import { useRegisterSW } from 'virtual:pwa-register/react';
 /**
  * Bandeau « Nouvelle version disponible » et indicateur hors connexion.
  *
- * LE PIÈGE QUE CE COMPOSANT ÉVITE
- * -------------------------------
- * Un service worker installé sert l'application depuis son cache. Quand
- * vous déployez, le nouveau service worker est téléchargé mais reste en
- * attente : tant que l'utilisateur ne ferme pas tous les onglets, il
- * continue de voir l'ANCIENNE version. Sur une app installée, qui n'est
- * jamais vraiment fermée, cela peut durer des semaines — le client
- * signale des bugs déjà corrigés depuis longtemps.
- *
- * `useRegisterSW` détecte cet état et expose `updateServiceWorker()`,
- * qui active le nouveau worker et recharge la page. On demande l'accord
- * plutôt que de recharger d'office : un rechargement surprise en plein
- * tunnel de commande ferait perdre le panier.
+ * Affiché UNIQUEMENT quand l'app est lancée en mode standalone (PWA installée).
+ * Sur le navigateur classique, les mises à jour se font automatiquement.
  */
+
+function estModePwa(): boolean {
+  return (
+    window.matchMedia('(display-mode: standalone)').matches ||
+    ('standalone' in navigator && (navigator as { standalone?: boolean }).standalone === true)
+  );
+}
+
 export function UpdatePrompt() {
   const {
     needRefresh: [besoinMiseAJour, setBesoinMiseAJour],
@@ -37,11 +34,13 @@ export function UpdatePrompt() {
   const [horsLigne, setHorsLigne] = useState(
     typeof navigator !== 'undefined' ? !navigator.onLine : false
   );
+  const [isPwa, setIsPwa] = useState(false);
 
   useEffect(() => {
+    setIsPwa(estModePwa());
+
     const enLigne = () => setHorsLigne(false);
     const deconnecte = () => setHorsLigne(true);
-
     window.addEventListener('online', enLigne);
     window.addEventListener('offline', deconnecte);
     return () => {
@@ -49,6 +48,13 @@ export function UpdatePrompt() {
       window.removeEventListener('offline', deconnecte);
     };
   }, []);
+
+  const handleUpdate = async () => {
+    /* `true` force le skipWaiting : le nouveau service worker prend
+       immédiatement le contrôle puis recharge la page, ce qui équivaut
+       à un re-téléchargement et une réinstallation de l'app. */
+    await updateServiceWorker(true);
+  };
 
   return (
     <>
@@ -65,8 +71,8 @@ export function UpdatePrompt() {
         </div>
       )}
 
-      {/* Invite de mise à jour */}
-      {besoinMiseAJour && (
+      {/* Invite de mise à jour — visible uniquement sur PWA installée */}
+      {besoinMiseAJour && isPwa && (
         <div
           role="dialog"
           aria-labelledby="titre-maj"
@@ -83,13 +89,13 @@ export function UpdatePrompt() {
                   Nouvelle version disponible
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Mettez à jour pour bénéficier des dernières améliorations.
+                  Une mise à jour est prête. L'app va se réinstaller automatiquement.
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => void updateServiceWorker(true)}
+                  onClick={handleUpdate}
                   className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                 >
                   Mettre à jour
