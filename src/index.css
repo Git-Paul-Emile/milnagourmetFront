@@ -346,7 +346,7 @@
     background-position: 100% 50%;
   }
 
-  /* Effets parallax optimisés */
+  /* Effets parallax et 3D optimisés */
   .parallax {
     transform-style: preserve-3d;
     will-change: transform;
@@ -360,6 +360,23 @@
     bottom: 0;
     transform: translateZ(0);
     backface-visibility: hidden;
+  }
+
+  /* Classes 3D pour la carte de personnage */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  
+  .rotate-y-180 {
+    transform: rotateY(180deg);
   }
 
   /* Toast custom avec avatar */

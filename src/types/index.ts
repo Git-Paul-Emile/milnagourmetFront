@@ -11,3 +11,4 @@ export * from './site';
 export * from './dashboard';
 export * from './common';
 export * from './specialService';
+export * from './character';
