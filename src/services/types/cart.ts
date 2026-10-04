@@ -1,14 +1,9 @@
+import type { CartItem } from '@/types';
+
 export interface CartResponse {
   id: string;
   userId: string;
-  items: Array<{
-    id: string;
-    name: string;
-    description?: string;
-    price: number;
-    quantity: number;
-    image?: string;
-  }>;
+  items: CartItem[];
   createdAt: string;
   updatedAt: string;
 }

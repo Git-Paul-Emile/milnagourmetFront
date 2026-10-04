@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import type { Product } from '@/types';
 
 const CART_STORAGE_KEY = 'milna-guest-cart';
 const CART_EXPIRY_KEY = 'milna-guest-cart-expiry';
@@ -11,6 +12,8 @@ export interface LocalCartItem {
   quantity: number;
   image?: string;
   description?: string;
+  product?: Product;
+  isServiceQuote?: boolean;
   customCreation?: {
     size: { id: number; nom: string; prix: number };
     selectedFruits: string[];

@@ -37,6 +37,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
               description: item.description,
               product: item.product,
               customCreation: item.customCreation,
+              isServiceQuote: item.isServiceQuote,
             }));
 
             // Définir les items du panier sans déclencher de persistance
@@ -60,7 +61,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
               quantity: item.quantity,
               image: item.image,
               description: item.description,
-              product: undefined,
+              product: item.product,
+              isServiceQuote: item.isServiceQuote,
               customCreation: item.customCreation ? {
                 ...item.customCreation,
                 size: {

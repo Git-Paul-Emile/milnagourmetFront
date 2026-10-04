@@ -1,6 +1,7 @@
 import { DeliveryZone, CartItem } from '@/types';
 import { orderService } from '@/services';
 import { CustomerInfo } from '../hooks/useCustomerInfo';
+import { toOrderItemPayload } from '@/utils/orderPayload';
 
 interface OrderSubmissionParams {
   cartItems: CartItem[];
@@ -37,17 +38,10 @@ export async function submitOrder({
       phone: customerInfo.phone,
       ...(emailClient ? { email: emailClient } : {}),
     },
-    items: cartItems.map(item => ({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity,
-      product: item.product,
-      customCreation: item.customCreation
-    })),
+    items: cartItems.map(toOrderItemPayload),
     total: totalWithDelivery,
     deliveryFee: deliveryFee,
-    deliveryZoneId: selectedZone.id,
+    deliveryZoneId: String(selectedZone.id),
     pointsUsed: pointsUsed,
     pointsDiscount: pointsDiscount,
     // Les compositions des services "sur devis" sont conservées dans les notes de la

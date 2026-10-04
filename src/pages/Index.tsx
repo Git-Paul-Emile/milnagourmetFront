@@ -13,7 +13,9 @@ import { useSEO } from '@/hooks/useSEO';
 const Index = () => {
   useSEO({
     title: 'Milna Gourmet - Le Salon du Yaourt | Yaourts Gourmets Faits Maison',
-    description: 'Découvrez Milna Gourmet, votre salon du yaourt premium. Yaourts crémeux, liquides et créations personnalisées. Commandez via WhatsApp - Livraison rapide.'
+    description:
+      'Découvrez Milna Gourmet, votre salon du yaourt premium à Libreville. Yaourts crémeux, liquides et créations personnalisées. Commande en ligne et paiement à la livraison.',
+    canonicalPath: '/',
   });
 
   return (

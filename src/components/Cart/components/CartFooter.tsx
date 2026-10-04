@@ -15,6 +15,10 @@ interface CartFooterProps {
 
 export function CartFooter({ deliveryZone, isOrdering, onOrder, onClearCart }: CartFooterProps) {
   const { state } = useApp();
+  const subtotal = state.cart.total;
+  const deliveryFee = state.user ? state.cart.deliveryFee : 0;
+  const pointsDiscount = state.user ? state.cart.pointsDiscount : 0;
+  const finalTotal = state.user ? state.cart.totalWithDiscount : state.cart.total;
 
   return (
     <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-border p-4 sm:p-6 space-y-4 shadow-lg">
@@ -39,20 +43,33 @@ export function CartFooter({ deliveryZone, isOrdering, onOrder, onClearCart }: C
               )}
             </div>
           </div>
-          {state.cart.deliveryFee > 0 && (
-            <div className="flex items-center justify-between text-sm">
-              <span>Frais de livraison:</span>
-              <span>{state.cart.deliveryFee} FCFA</span>
-            </div>
-          )}
         </div>
       )}
 
+      <div className="space-y-2 text-sm">
+        <div className="flex items-center justify-between">
+          <span>Sous-total:</span>
+          <span>{subtotal} FCFA</span>
+        </div>
+        {deliveryFee > 0 && (
+          <div className="flex items-center justify-between">
+            <span>Frais de livraison:</span>
+            <span>{deliveryFee} FCFA</span>
+          </div>
+        )}
+        {pointsDiscount > 0 && (
+          <div className="flex items-center justify-between text-green-600 dark:text-green-400">
+            <span>Réduction (points):</span>
+            <span>-{pointsDiscount} FCFA</span>
+          </div>
+        )}
+      </div>
+
       {/* Total */}
-      <div className="flex items-center justify-between text-lg font-bold">
+      <div className="flex items-center justify-between border-t border-border pt-3 text-lg font-bold">
         <span>Total:</span>
         <span className="text-primary">
-          {state.user ? state.cart.totalWithDiscount : state.cart.total} FCFA
+          {finalTotal} FCFA
         </span>
       </div>
 

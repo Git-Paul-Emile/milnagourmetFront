@@ -152,7 +152,7 @@ export function ServicesSection() {
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Des attentions gourmandes préparées sur mesure. Paniers à partir de
-            25 000 FCFA — le prix final est confirmé par le vendeur.
+            25 000 FCFA. Le prix final est confirmé par le vendeur.
           </p>
         </div>
 

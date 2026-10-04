@@ -144,7 +144,13 @@ export function OrderDetailsModal({ selectedOrder, onClose, onUpdateStatus, onAs
             <h4 className="font-semibold mb-2">Informations client</h4>
             <div className="space-y-1 text-sm">
               <p><strong>Nom:</strong> {!selectedOrder.customer?.id ? 'Client anonyme' : (selectedOrder.customer?.name || selectedOrder.customerInfo?.name || 'Non spécifié')}</p>
-              <p><strong>Téléphone:</strong> {!selectedOrder.customer?.id ? 'Anonyme' : (selectedOrder.customer?.phone || selectedOrder.customerInfo?.phone || 'Non spécifié')}</p>
+              <p><strong>Téléphone:</strong> {!selectedOrder.customer?.id ? 'Anonyme' : (() => {
+                const phone = selectedOrder.customer?.phone || selectedOrder.customerInfo?.phone;
+                if (!phone) return 'Non spécifié';
+                const digits = phone.trim().replace(/\D/g, '').replace(/^00/, '');
+                const waNumber = !phone.trim().startsWith('+') && digits.startsWith('0') ? `241${digits}` : digits;
+                return <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline font-medium">{phone}</a>;
+              })()}</p>
               <p><strong>Zone de livraison:</strong> {
                 !selectedOrder.customer?.id ? 'Anonyme' : (
                   deliveryZone?.name ||
@@ -166,7 +172,7 @@ export function OrderDetailsModal({ selectedOrder, onClose, onUpdateStatus, onAs
               <h4 className="font-semibold mb-2">Notes — services sur devis</h4>
               <p className="text-sm whitespace-pre-wrap">{selectedOrder.notes}</p>
               <p className="text-xs text-muted-foreground mt-2">
-                Pensez à communiquer le prix au client via WhatsApp.
+                Pensez à communiquer le prix au client avec ses coordonnées de commande.
               </p>
             </div>
           )}

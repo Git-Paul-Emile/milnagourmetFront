@@ -82,7 +82,7 @@ export default defineConfig(({ mode }) => ({
         name: "Milna Gourmet",
         // Affiché sous l'icône : 12 caractères maximum sur Android,
         // au-delà le nom est tronqué avec des points de suspension.
-        short_name: "Milna",
+        short_name: "Milna Gourmet",
         description:
           "Yaourts gourmets, créations personnalisées et livraison à Libreville. Paiement à la livraison.",
         lang: "fr",

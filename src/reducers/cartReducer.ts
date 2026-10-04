@@ -54,6 +54,8 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
           quantity: item.quantity,
           image: item.image,
           description: item.description || '',
+          product: item.product,
+          isServiceQuote: item.isServiceQuote,
           customCreation: item.customCreation
         }));
 
@@ -91,6 +93,8 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
           quantity: item.quantity,
           image: item.image,
           description: item.description || '',
+          product: item.product,
+          isServiceQuote: item.isServiceQuote,
           customCreation: item.customCreation
         }));
 
@@ -139,6 +143,8 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
           quantity: item.quantity,
           image: item.image,
           description: item.description || '',
+          product: item.product,
+          isServiceQuote: item.isServiceQuote,
           customCreation: item.customCreation
         }));
 

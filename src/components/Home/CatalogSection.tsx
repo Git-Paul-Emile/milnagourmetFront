@@ -233,7 +233,7 @@ export function CatalogSection() {
                       </>
                     )}
                   </Carousel>
-                ) : (
+                ) : loading ? null : (
                   <div className="text-center py-8 text-muted-foreground">
                     <p>Aucun produit disponible</p>
                   </div>
@@ -282,7 +282,7 @@ export function CatalogSection() {
                           </>
                         )}
                       </Carousel>
-                    ) : (
+                    ) : loading ? null : (
                       <div className="text-center py-8 text-muted-foreground">
                         <p>Aucun produit disponible dans cette catégorie</p>
                       </div>

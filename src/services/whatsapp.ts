@@ -4,6 +4,7 @@ import { getContactInfo } from './contactInfoService';
 import { buildOrderMessage, buildCartOrderMessage, buildContactMessage } from './messageBuilder';
 import { addOrderToUserHistory } from './orderHistoryManager';
 import { callMilna } from './phoneService';
+import { toOrderItemPayload } from '@/utils/orderPayload';
 
 export async function sendOrderToWhatsApp(items: CartItem[], total: number, customerInfo: CustomerInfo, deliveryZone?: DeliveryZone): Promise<void> {
   const contactInfo = await getContactInfo();
@@ -21,21 +22,12 @@ export async function sendCartOrderToWhatsApp(cart: Cart, user?: User | null, po
   const orderData = {
     id: Date.now().toString(),
     customer: user ? {
-      id: user.id,
+      id: String(user.id),
       name: user.name,
       phone: user.phone,
       email: user.email
     } : null,
-    items: cart.items.map(item => ({
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      price: item.price,
-      quantity: item.quantity,
-      image: item.image,
-      product: item.product,
-      customCreation: item.customCreation
-    })),
+    items: cart.items.map(toOrderItemPayload),
     total: user ? cart.totalWithDiscount || cart.total : cart.total,
     deliveryFee: user ? cart.deliveryFee || 0 : 0,
     pointsUsed,

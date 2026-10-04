@@ -52,7 +52,7 @@ export function useCartOperations(deliveryZone: DeliveryZone | null, onOrderSucc
       dispatch({ type: 'ADD_TOAST', payload: {
         id: Date.now().toString(),
         type: 'success',
-        message: 'Commande envoyée !',
+        message: 'Commande passée avec succès !',
         avatar: avatarToast
       }});
 

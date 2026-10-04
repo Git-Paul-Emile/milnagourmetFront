@@ -49,7 +49,7 @@ export function CustomerInfoModal({ isOpen, onClose, onOrderSuccess }: CustomerI
         payload: {
           id: Date.now().toString(),
           type: 'success',
-          message: 'Commande envoyée avec succès ! Nous vous contacterons bientôt.',
+          message: 'Commande passée avec succès !',
           avatar: DEFAULT_TESTIMONIAL_AVATAR
         }
       });

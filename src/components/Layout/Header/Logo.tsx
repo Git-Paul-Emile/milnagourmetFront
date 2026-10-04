@@ -20,10 +20,10 @@ export function Logo() {
       )}
       {/* Texte de marque : masqué sur mobile/PWA (logo seul), conservé en desktop large */}
       <div className="hidden lg:block">
-        <h1 className={cn(
+        <span className={cn(
           "text-xl font-bold",
           "text-primary"
-        )}>Milna Gourmet</h1>
+        )}>Milna Gourmet</span>
         <p className={cn(
           "text-xs",
           "text-muted-foreground"
