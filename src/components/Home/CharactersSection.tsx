@@ -108,7 +108,7 @@ function CharacterCard({ character, index, isActive, onMouseEnter, onMouseLeave,
 
           <div className="w-full text-center z-10 pb-4">
             <p className="text-base italic text-foreground/80 font-medium px-4">"{character.tagline}"</p>
-            <div className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center justify-center gap-2">
+            <div className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center justify-center gap-2 md:hidden">
               Découvrir la personnalité
             </div>
           </div>

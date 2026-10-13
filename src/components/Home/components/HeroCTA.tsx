@@ -3,26 +3,11 @@ import { cn } from '@/lib/utils';
 
 interface HeroCTAProps {
   onCatalogClick: () => void;
-  onCharactersClick?: () => void;
 }
 
-export function HeroCTA({ onCatalogClick, onCharactersClick }: HeroCTAProps) {
+export function HeroCTA({ onCatalogClick }: HeroCTAProps) {
   return (
     <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 animate-fade-in-up justify-center lg:justify-start max-w-full">
-      {onCharactersClick && (
-        <button
-          onClick={onCharactersClick}
-          className={cn(
-            'group relative inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-4 rounded-lg font-semibold text-base sm:text-lg w-full sm:w-auto',
-            'transform-gpu',
-            'hover:scale-105',
-            'transition-all duration-500 ease-out',
-            'bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white hover:shadow-xl hover:-translate-y-1'
-          )}
-        >
-          <span className="relative z-10">Découvrir les Personnages</span>
-        </button>
-      )}
       <button
         onClick={onCatalogClick}
         className={cn(

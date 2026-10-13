@@ -47,10 +47,6 @@ export function HeroSection() {
     document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToCharacters = () => {
-    document.getElementById('personnages')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   if (loading || !heroData) {
     return <HeroLoading />;
   }
@@ -97,7 +93,7 @@ export function HeroSection() {
         <div className="max-w-4xl mx-auto text-center lg:text-left">
           <HeroTitle title={heroData.title} />
           <HeroSubtitle subtitle={heroData.subtitle} />
-          <HeroCTA onCatalogClick={scrollToCatalog} onCharactersClick={scrollToCharacters} />
+          <HeroCTA onCatalogClick={scrollToCatalog} />
         </div>
       </div>
 
