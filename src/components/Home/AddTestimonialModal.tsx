@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { X, User, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,10 +7,8 @@ import { AddTestimonialModalProps } from './types';
 import { useTestimonialForm } from './useTestimonialForm';
 import { useEmojiPicker } from './useEmojiPicker';
 import { AvatarUpload, RatingStars, CommentField } from './components';
-import { useApp } from '@/contexts/useApp';
 
 export function AddTestimonialModal({ isOpen, onClose, onSuccess }: AddTestimonialModalProps) {
-  const { state } = useApp();
   const {
     formData,
     avatarPreview,
@@ -19,43 +17,18 @@ export function AddTestimonialModal({ isOpen, onClose, onSuccess }: AddTestimoni
     handleInputChange,
     handleFileSelect,
     removeAvatar,
-    handleSubmit
+    handleSubmit,
   } = useTestimonialForm(onSuccess, onClose);
 
-  const {
-    showEmojiPicker,
-    emojiPickerRef,
-    onEmojiClick,
-    toggleEmojiPicker
-  } = useEmojiPicker(formData.comment, (comment) => handleInputChange('comment', comment));
+  const { showEmojiPicker, emojiPickerRef, onEmojiClick, toggleEmojiPicker } =
+    useEmojiPicker(formData.comment, (comment) => handleInputChange('comment', comment));
 
-  /* Filet de sécurité : si la session tombe alors que le formulaire est
-     ouvert (expiration, déconnexion depuis un autre onglet), on referme.
-
-     La fermeture passe par un effet et non par le corps du composant :
-     appeler `onClose()` pendant le rendu déclenche le célèbre
-     « Cannot update a component while rendering a different component »
-     et, selon l'ordre de rendu, peut boucler. Un effet s'exécute après
-     la validation du rendu, au bon moment. */
-  useEffect(() => {
-    if (isOpen && !state.user) {
-      onClose();
-    }
-  }, [isOpen, state.user, onClose]);
-
-  if (!isOpen || !state.user) {
-    return null;
-  }
+  if (!isOpen) return null;
 
   return (
     <>
-      {/* Overlay */}
-      <div
-        className="fixed inset-0 bg-black/50 z-40 animate-fade-in"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 bg-black/50 z-40 animate-fade-in" onClick={onClose} />
 
-      {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="bg-background rounded-2xl max-w-md w-full border border-border shadow-2xl max-h-[90vh] flex flex-col">
           {/* Header */}
@@ -63,45 +36,38 @@ export function AddTestimonialModal({ isOpen, onClose, onSuccess }: AddTestimoni
             <div>
               <h2 className="text-xl font-bold">Soumettre un témoignage</h2>
               <p className="text-sm text-muted-foreground">
-                Partagez votre expérience avec Milna Gourmet. Votre témoignage sera visible après validation.
+                Partagez votre expérience. Votre témoignage sera visible après validation.
               </p>
             </div>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-muted rounded-full transition-colors"
-            >
+            <button onClick={onClose} className="p-2 hover:bg-muted rounded-full transition-colors">
               <X className="h-5 w-5" />
             </button>
           </div>
 
-          {/* Scrollable Form Content */}
+          {/* Form */}
           <div className="flex-1 overflow-y-auto p-6">
             <form id="testimonial-form" onSubmit={handleSubmit} className="space-y-6">
-              {/* Name */}
+              {/* Nom */}
               <div className="space-y-2">
                 <Label htmlFor="name" className="flex items-center space-x-2">
                   <User className="h-4 w-4" />
-                  <span>Nom complet *</span>
-                  {state.user && (
-                    <span className="text-xs text-muted-foreground">(Auto-rempli depuis votre compte)</span>
-                  )}
+                  <span>Votre nom *</span>
                 </Label>
                 <Input
                   id="name"
                   type="text"
-                  placeholder={state.user ? "Votre nom est automatiquement rempli" : "Votre nom et prénom"}
+                  placeholder="Votre prénom et nom"
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
-                  readOnly={!!state.user}
-                  className={`w-full ${state.user ? 'bg-muted cursor-not-allowed' : ''}`}
+                  className="w-full"
                 />
               </div>
 
-              {/* Location */}
+              {/* Ville */}
               <div className="space-y-2">
                 <Label htmlFor="location" className="flex items-center space-x-2">
                   <MapPin className="h-4 w-4" />
-                  <span>Lieu *</span>
+                  <span>Votre ville *</span>
                 </Label>
                 <Input
                   id="location"
@@ -113,13 +79,11 @@ export function AddTestimonialModal({ isOpen, onClose, onSuccess }: AddTestimoni
                 />
               </div>
 
-              {/* Rating */}
               <RatingStars
                 rating={formData.rating}
                 onRatingChange={(rating) => handleInputChange('rating', rating)}
               />
 
-              {/* Comment */}
               <CommentField
                 comment={formData.comment}
                 onCommentChange={(comment) => handleInputChange('comment', comment)}
@@ -129,7 +93,6 @@ export function AddTestimonialModal({ isOpen, onClose, onSuccess }: AddTestimoni
                 onEmojiClick={onEmojiClick}
               />
 
-              {/* Avatar */}
               <AvatarUpload
                 avatarPreview={avatarPreview}
                 fileInputRef={fileInputRef}
@@ -142,13 +105,7 @@ export function AddTestimonialModal({ isOpen, onClose, onSuccess }: AddTestimoni
           {/* Actions */}
           <div className="flex-shrink-0 p-6 border-t border-border">
             <div className="flex space-x-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onClose}
-                className="flex-1"
-                disabled={isSubmitting}
-              >
+              <Button type="button" variant="outline" onClick={onClose} className="flex-1" disabled={isSubmitting}>
                 Annuler
               </Button>
               <Button

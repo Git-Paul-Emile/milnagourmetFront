@@ -6,51 +6,30 @@ import { TESTIMONIAL_CONSTANTS } from './constants';
 import { validateImageFile } from './imageUtils';
 import { DEFAULT_AVATAR_TOAST_IMAGE } from '@/constants/media';
 
-const AVATAR_TOAST_FALLBACK = DEFAULT_AVATAR_TOAST_IMAGE;
+const INITIAL_FORM: TestimonialFormData = {
+  name: '',
+  location: '',
+  rating: TESTIMONIAL_CONSTANTS.DEFAULT_RATING,
+  comment: '',
+  avatar: '',
+};
 
 export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) => {
-  const { state, dispatch } = useApp();
+  const { dispatch } = useApp();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [formData, setFormData] = useState<TestimonialFormData>({
-    name: '',
-    location: '',
-    rating: TESTIMONIAL_CONSTANTS.DEFAULT_RATING,
-    comment: '',
-    avatar: ''
-  });
-
-  // Pré-remplir le nom si l'utilisateur est connecté
-  useEffect(() => {
-    if (state.user) {
-      setFormData(prev => ({ ...prev, name: state.user!.nomComplet }));
-    }
-  }, [state.user]);
-
-  // Récupérer l'avatar pour les toasts
-  useEffect(() => {
-    const fetchAvatarToast = async () => {
-      try {
-        const response = await siteService.getAvatarToast();
-        const imageUrl = (response.data as { image: string }).image;
-        setAvatarToast(imageUrl);
-      } catch (error) {
-        console.error('Erreur lors de la récupération de l\'avatar toast:', error);
-        // Garder le fallback
-      }
-    };
-    fetchAvatarToast();
-  }, []);
-
+  const [formData, setFormData] = useState<TestimonialFormData>(INITIAL_FORM);
   const [avatarPreview, setAvatarPreview] = useState<string>('');
-  const [avatarToast, setAvatarToast] = useState<string>(AVATAR_TOAST_FALLBACK);
+  const [avatarToast, setAvatarToast] = useState<string>(DEFAULT_AVATAR_TOAST_IMAGE);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    siteService.getAvatarToast()
+      .then((res) => setAvatarToast((res.data as { image: string }).image))
+      .catch(() => { /* garder le fallback */ });
+  }, []);
+
   const handleInputChange = (field: keyof TestimonialFormData, value: string | number) => {
-    // Empêcher la modification du nom si l'utilisateur est connecté
-    if (field === 'name' && state.user) {
-      return;
-    }
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -60,74 +39,37 @@ export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) =
 
     const validation = validateImageFile(file);
     if (!validation.isValid) {
-      const avatarUrl = avatarToast;
-      dispatch({
-        type: 'ADD_TOAST',
-        payload: {
-          id: Date.now().toString(),
-          type: 'error',
-          message: validation.error!,
-          avatar: avatarUrl
-        }
-      });
+      dispatch({ type: 'ADD_TOAST', payload: { id: Date.now().toString(), type: 'error', message: validation.error!, avatar: avatarToast } });
       return;
     }
 
     try {
-      // Upload de l'image vers le serveur
       const uploadResponse = await siteService.uploadTestimonialImage(file);
       const imagePath = (uploadResponse.data as { path: string }).path;
-
       setFormData(prev => ({ ...prev, avatar: imagePath }));
       setAvatarPreview(imagePath);
-    } catch (error) {
-      dispatch({
-        type: 'ADD_TOAST',
-        payload: {
-          id: Date.now().toString(),
-          type: 'error',
-          message: 'Erreur lors de l\'upload de l\'image.',
-          avatar: avatarToast
-        }
-      });
+    } catch {
+      dispatch({ type: 'ADD_TOAST', payload: { id: Date.now().toString(), type: 'error', message: "Erreur lors de l'upload de l'image.", avatar: avatarToast } });
     }
   };
 
   const removeAvatar = () => {
     setFormData(prev => ({ ...prev, avatar: '' }));
     setAvatarPreview('');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const resetForm = () => {
-    setFormData({
-      name: state.user ? state.user.nomComplet : '',
-      location: '',
-      rating: TESTIMONIAL_CONSTANTS.DEFAULT_RATING,
-      comment: '',
-      avatar: ''
-    });
+    setFormData(INITIAL_FORM);
     setAvatarPreview('');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.location || !formData.comment) {
-      dispatch({
-        type: 'ADD_TOAST',
-        payload: {
-          id: Date.now().toString(),
-          type: 'error',
-          message: 'Veuillez remplir tous les champs obligatoires.',
-          avatar: avatarToast
-        }
-      });
+    if (!formData.name.trim() || !formData.location.trim() || !formData.comment.trim()) {
+      dispatch({ type: 'ADD_TOAST', payload: { id: Date.now().toString(), type: 'error', message: 'Veuillez remplir tous les champs obligatoires.', avatar: avatarToast } });
       return;
     }
 
@@ -138,7 +80,7 @@ export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) =
         location: formData.location,
         rating: formData.rating,
         comment: formData.comment,
-        avatar: formData.avatar || undefined
+        avatar: formData.avatar || undefined,
       });
 
       dispatch({
@@ -146,38 +88,20 @@ export const useTestimonialForm = (onSuccess: () => void, onClose: () => void) =
         payload: {
           id: Date.now().toString(),
           type: 'success',
-          message: 'Votre témoignage a été soumis avec succès !.',
-          avatar: avatarToast
-        }
+          message: 'Votre témoignage a bien été envoyé ! Il sera publié après vérification par un administrateur.',
+          avatar: avatarToast,
+        },
       });
 
       resetForm();
       onSuccess();
       onClose();
-    } catch (error) {
-      dispatch({
-        type: 'ADD_TOAST',
-        payload: {
-          id: Date.now().toString(),
-          type: 'error',
-          message: 'Erreur lors de l\'ajout du témoignage. Veuillez réessayer.',
-          avatar: avatarToast
-        }
-      });
+    } catch {
+      dispatch({ type: 'ADD_TOAST', payload: { id: Date.now().toString(), type: 'error', message: "Erreur lors de l'ajout du témoignage. Veuillez réessayer.", avatar: avatarToast } });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  return {
-    formData,
-    avatarPreview,
-    isSubmitting,
-    fileInputRef,
-    handleInputChange,
-    handleFileSelect,
-    removeAvatar,
-    handleSubmit,
-    resetForm
-  };
+  return { formData, avatarPreview, isSubmitting, fileInputRef, handleInputChange, handleFileSelect, removeAvatar, handleSubmit, resetForm };
 };
