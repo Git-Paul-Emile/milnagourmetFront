@@ -3,31 +3,28 @@ import { useCallback, useEffect, useState } from 'react';
 /**
  * Logique d'installation de la PWA.
  *
- * DEUX MONDES TRÈS DIFFÉRENTS
- * ---------------------------
- * • Android / Chrome / Edge : le navigateur émet un événement
- *   `beforeinstallprompt` quand il juge le site installable. On
- *   l'intercepte, on empêche l'invite native, et on déclenche la nôtre
- *   au moment choisi. L'événement n'est utilisable QU'UNE FOIS.
+ * TROIS CAS
+ * ---------
+ * • Android / Chrome / Edge : événement `beforeinstallprompt` capté,
+ *   on déclenche l'invite native au moment choisi.
  *
- * • iOS / Safari : aucun événement, aucune API. L'installation passe
- *   obligatoirement par « Partager → Sur l'écran d'accueil ». La seule
- *   chose possible est d'expliquer le geste — d'où la détection d'iOS.
+ * • iOS / Safari : aucun événement, aucune API. On affiche une popup
+ *   identique à Android avec les instructions pour ajouter à l'écran
+ *   d'accueil via le menu Partager.
  *
- * Le refus est mémorisé pour ne pas harceler : une invite qui revient à
- * chaque visite fait fuir plus de clients qu'elle n'en convertit.
+ * • Desktop (PC) : aucune invite, jamais.
+ *
+ * Le refus est mémorisé 30 jours. Après "Plus tard", un bouton flottant
+ * reste visible pour permettre l'installation à tout moment.
  */
 
-/**
- * Type de l'événement `beforeinstallprompt`, absent des définitions
- * TypeScript standard car il n'est pas encore normalisé.
- */
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
 const CLE_REFUS = 'milna:pwa-invite-refusee';
+const CLE_REPORTE = 'milna:pwa-invite-reportee';
 
 /** Durée avant de reproposer l'installation après un refus : 30 jours. */
 const DELAI_APRES_REFUS_MS = 30 * 24 * 60 * 60 * 1000;
@@ -38,20 +35,30 @@ const DELAI_AVANT_AFFICHAGE_MS = 20_000;
 function estIOS(): boolean {
   if (typeof navigator === 'undefined') return false;
   const ua = navigator.userAgent;
-  // `MSStream` exclut les anciens Windows Phone qui usurpaient l'UA iOS.
   const iOSClassique = /iPad|iPhone|iPod/.test(ua) && !('MSStream' in window);
-  // Depuis iPadOS 13, l'iPad se présente comme un Mac : on le distingue
-  // par la présence d'un écran tactile.
   const iPadModerne = ua.includes('Macintosh') && navigator.maxTouchPoints > 1;
   return iOSClassique || iPadModerne;
 }
 
-/** L'application tourne-t-elle déjà en mode installé ? */
+/** Détecte un appareil mobile ou tablette (exclut les desktops). */
+function estMobileOuTablette(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  // Vérification via User-Agent
+  const uaMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(
+    navigator.userAgent
+  );
+  // Vérification via touch (tablette sans UA mobile possible)
+  const touchDisponible = navigator.maxTouchPoints > 0;
+  // Vérification via taille d'écran (≤ 1024px considéré mobile/tablette)
+  const petitEcran = typeof window !== 'undefined' && window.innerWidth <= 1024;
+
+  return uaMobile || (touchDisponible && petitEcran);
+}
+
 function estDejaInstallee(): boolean {
   if (typeof window === 'undefined') return false;
   return (
     window.matchMedia('(display-mode: standalone)').matches ||
-    // Propriété non standard, propre à Safari iOS.
     (window.navigator as Navigator & { standalone?: boolean }).standalone === true
   );
 }
@@ -62,8 +69,14 @@ function refusEncoreValide(): boolean {
     if (!brut) return false;
     return Date.now() - Number(brut) < DELAI_APRES_REFUS_MS;
   } catch {
-    // Navigation privée ou stockage bloqué : on considère qu'il n'y a
-    // pas eu de refus plutôt que de planter.
+    return false;
+  }
+}
+
+function estReporte(): boolean {
+  try {
+    return localStorage.getItem(CLE_REPORTE) === '1';
+  } catch {
     return false;
   }
 }
@@ -73,34 +86,49 @@ export function usePwaInstall() {
     useState<BeforeInstallPromptEvent | null>(null);
   const [visible, setVisible] = useState(false);
   const [plateformeIOS] = useState(estIOS);
+  const [mobileOuTablette] = useState(estMobileOuTablette);
+  /** Bouton flottant affiché après "Plus tard" pour rappeler l'installation. */
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   useEffect(() => {
+    // Sur desktop, aucune invite
+    if (!mobileOuTablette) return;
     if (estDejaInstallee() || refusEncoreValide()) return;
 
     let minuteur: ReturnType<typeof setTimeout>;
 
     const surBeforeInstallPrompt = (event: Event) => {
-      // Empêche l'invite native du navigateur : c'est la nôtre qui
-      // s'affichera, au moment que nous choisissons.
       event.preventDefault();
       setEvenementInstall(event as BeforeInstallPromptEvent);
-      minuteur = setTimeout(() => setVisible(true), DELAI_AVANT_AFFICHAGE_MS);
+      if (!estReporte()) {
+        minuteur = setTimeout(() => {
+          setVisible(true);
+          setShowScrollButton(false);
+        }, DELAI_AVANT_AFFICHAGE_MS);
+      }
     };
 
     const surInstallation = () => {
-      // L'utilisateur a installé (éventuellement via le menu du
-      // navigateur) : l'invite n'a plus lieu d'être.
       setVisible(false);
+      setShowScrollButton(false);
       setEvenementInstall(null);
+      try { localStorage.removeItem(CLE_REPORTE); } catch { /* */ }
     };
 
     window.addEventListener('beforeinstallprompt', surBeforeInstallPrompt);
     window.addEventListener('appinstalled', surInstallation);
 
-    // Sur iOS aucun événement n'existe : on affiche les instructions
-    // après le même délai, sans attendre quoi que ce soit.
-    if (plateformeIOS) {
-      minuteur = setTimeout(() => setVisible(true), DELAI_AVANT_AFFICHAGE_MS);
+    // Sur iOS, pas d'événement : on affiche le popup après le délai
+    if (plateformeIOS && !estReporte()) {
+      minuteur = setTimeout(() => {
+        setVisible(true);
+        setShowScrollButton(false);
+      }, DELAI_AVANT_AFFICHAGE_MS);
+    }
+
+    // Si déjà reporté, afficher le bouton flottant immédiatement
+    if (estReporte()) {
+      setShowScrollButton(true);
     }
 
     return () => {
@@ -108,9 +136,9 @@ export function usePwaInstall() {
       window.removeEventListener('appinstalled', surInstallation);
       clearTimeout(minuteur);
     };
-  }, [plateformeIOS]);
+  }, [plateformeIOS, mobileOuTablette]);
 
-  /** Déclenche l'invite native (Android uniquement). */
+  /** Déclenche l'invite native (Android) ou affiche les instructions (iOS). */
   const installer = useCallback(async () => {
     if (!evenementInstall) return;
 
@@ -120,35 +148,49 @@ export function usePwaInstall() {
     if (outcome === 'dismissed') {
       try {
         localStorage.setItem(CLE_REFUS, String(Date.now()));
-      } catch {
-        /* stockage indisponible : sans conséquence */
-      }
+      } catch { /* */ }
     }
 
-    // L'événement `beforeinstallprompt` n'est utilisable qu'une fois :
-    // le conserver mènerait à une erreur au second appel.
     setEvenementInstall(null);
     setVisible(false);
+    setShowScrollButton(false);
+    try { localStorage.removeItem(CLE_REPORTE); } catch { /* */ }
   }, [evenementInstall]);
 
-  /** Masque l'invite et mémorise le refus. */
+  /** "Plus tard" : masque le popup et affiche le bouton flottant. */
+  const reporter = useCallback(() => {
+    try {
+      localStorage.setItem(CLE_REPORTE, '1');
+    } catch { /* */ }
+    setVisible(false);
+    setShowScrollButton(true);
+  }, []);
+
+  /** Refus définitif (30 jours). */
   const refuser = useCallback(() => {
     try {
       localStorage.setItem(CLE_REFUS, String(Date.now()));
-    } catch {
-      /* stockage indisponible : sans conséquence */
-    }
+      localStorage.removeItem(CLE_REPORTE);
+    } catch { /* */ }
     setVisible(false);
+    setShowScrollButton(false);
+  }, []);
+
+  /** Rouvre le popup depuis le bouton flottant. */
+  const rouvrirPopup = useCallback(() => {
+    setShowScrollButton(false);
+    setVisible(true);
   }, []);
 
   return {
-    /** L'invite doit-elle être affichée ? */
     visible,
-    /** Sur iOS on affiche des instructions, pas un bouton. */
     plateformeIOS,
-    /** Un bouton « Installer » est-il réellement actionnable ? */
+    mobileOuTablette,
     installationDirecteDisponible: evenementInstall !== null,
+    showScrollButton,
     installer,
+    reporter,
     refuser,
+    rouvrirPopup,
   };
 }

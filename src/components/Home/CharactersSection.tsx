@@ -24,7 +24,7 @@ export function CharactersSection() {
           Conteneur scrollable horizontalement sur mobile, 
           grille ou flex enveloppé sur desktop selon l'espace 
         */}
-        <div className="flex overflow-x-auto pb-12 snap-x snap-mandatory hide-scrollbar gap-6 py-4">
+        <div className="flex overflow-x-auto pb-12 snap-x snap-mandatory hide-scrollbar gap-6 py-4 justify-start md:justify-center">
           {/* Spacer pour un padding initial correct sur le scroll */}
           <div className="w-[1px] shrink-0 md:hidden"></div>
           {CHARACTERS.map((char, index) => (

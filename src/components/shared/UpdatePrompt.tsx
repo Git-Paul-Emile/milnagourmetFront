@@ -5,15 +5,19 @@ import { useRegisterSW } from 'virtual:pwa-register/react';
 /**
  * Bandeau « Nouvelle version disponible » et indicateur hors connexion.
  *
- * Affiché UNIQUEMENT quand l'app est lancée en mode standalone (PWA installée).
- * Sur le navigateur classique, les mises à jour se font automatiquement.
+ * Le popup de mise à jour s'affiche dès qu'une nouvelle version est prête,
+ * que ce soit en mode standalone (PWA installée) ou dans le navigateur
+ * sur mobile. Sur PC en navigateur classique, il reste masqué car les mises
+ * à jour se font silencieusement.
  */
 
-function estModePwa(): boolean {
-  return (
+function estMobileOuPwa(): boolean {
+  if (typeof window === 'undefined') return false;
+  const standalone =
     window.matchMedia('(display-mode: standalone)').matches ||
-    ('standalone' in navigator && (navigator as { standalone?: boolean }).standalone === true)
-  );
+    ('standalone' in navigator && (navigator as { standalone?: boolean }).standalone === true);
+  const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  return standalone || mobile;
 }
 
 export function UpdatePrompt() {
@@ -21,11 +25,8 @@ export function UpdatePrompt() {
     needRefresh: [besoinMiseAJour, setBesoinMiseAJour],
     updateServiceWorker,
   } = useRegisterSW({
-    onRegisteredSW(url, registration) {
-      /* Le navigateur ne vérifie les mises à jour qu'à intervalles
-         irréguliers. Sur une app installée qui reste ouverte des jours,
-         cela peut ne jamais arriver : on force donc une vérification
-         toutes les heures. */
+    onRegisteredSW(_url, registration) {
+      /* Vérification forcée toutes les heures pour les PWA longtemps ouvertes. */
       if (!registration) return;
       setInterval(() => void registration.update(), 60 * 60 * 1000);
     },
@@ -34,10 +35,11 @@ export function UpdatePrompt() {
   const [horsLigne, setHorsLigne] = useState(
     typeof navigator !== 'undefined' ? !navigator.onLine : false
   );
-  const [isPwa, setIsPwa] = useState(false);
+  const [afficherMaj, setAfficherMaj] = useState(false);
 
   useEffect(() => {
-    setIsPwa(estModePwa());
+    // Déterminé côté client uniquement pour éviter un mismatch SSR
+    setAfficherMaj(estMobileOuPwa());
 
     const enLigne = () => setHorsLigne(false);
     const deconnecte = () => setHorsLigne(true);
@@ -50,29 +52,24 @@ export function UpdatePrompt() {
   }, []);
 
   const handleUpdate = async () => {
-    /* `true` force le skipWaiting : le nouveau service worker prend
-       immédiatement le contrôle puis recharge la page, ce qui équivaut
-       à un re-téléchargement et une réinstallation de l'app. */
     await updateServiceWorker(true);
   };
 
   return (
     <>
-      {/* Indicateur hors connexion — bandeau haut, non masquable.
-          Il explique pourquoi la commande est indisponible, plutôt que
-          de laisser le client face à un bouton qui échoue sans raison. */}
+      {/* Indicateur hors connexion — bandeau haut, non masquable. */}
       {horsLigne && (
         <div
           role="status"
           className="fixed inset-x-0 top-0 z-[60] bg-amber-500 px-4 py-1.5 text-center text-xs font-medium text-amber-950"
         >
-          Hors connexion vous consultez la version enregistrée. La commande
+          Hors connexion — vous consultez la version enregistrée. La commande
           nécessite une connexion.
         </div>
       )}
 
-      {/* Invite de mise à jour — visible uniquement sur PWA installée */}
-      {besoinMiseAJour && isPwa && (
+      {/* Invite de mise à jour — visible sur mobile et PWA installée */}
+      {besoinMiseAJour && afficherMaj && (
         <div
           role="dialog"
           aria-labelledby="titre-maj"
