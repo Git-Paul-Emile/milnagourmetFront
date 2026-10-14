@@ -30,7 +30,12 @@ export async function addCustomCreationToCart(
     }
 
     // Créer l'élément pour le state local
-    const name = `Gourmet Création ${creation.size.charAt(0).toUpperCase() + creation.size.slice(1)}`;
+    const sizeName = creation.size.trim();
+    const name = sizeName.toLowerCase().startsWith('gourmet')
+      ? sizeName
+      : sizeName.toLowerCase().startsWith('lot') || sizeName.toLowerCase().includes('création')
+      ? sizeName
+      : `Gourmet Création ${sizeName.charAt(0).toUpperCase() + sizeName.slice(1)}`;
     const description = [
       `Fruits: ${creation.fruits.join(', ') || 'Aucun'}`,
       `Sauces: ${creation.sauces.join(', ') || 'Aucune'}`,

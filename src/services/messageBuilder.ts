@@ -31,7 +31,7 @@ export function buildOrderMessage(items: CartItem[], total: number, customerInfo
   message += `\nTotal : ${total} FCFA`;
   message += `\nRèglement : paiement à la livraison`;
   if (items.some((item) => item.isServiceQuote)) {
-    message += `\nNB : les articles « sur devis » (panier, pancakes…) ne sont pas inclus dans le total — merci de me communiquer leur prix.`;
+    message += `\nNB : les articles « sur devis » (panier, pancakes…) ne sont pas inclus dans le total merci de me communiquer leur prix.`;
   }
   message += `\n\n`;
   message += `Nom : ${customerInfo.name}`;
@@ -77,7 +77,7 @@ export async function buildCartOrderMessage(cart: Cart, user?: User | null): Pro
   message += `\nTotal : ${user ? cart.totalWithDelivery || cart.total : cart.total} FCFA`;
   message += `\nRèglement : paiement à la livraison`;
   if (cart.items.some((item) => item.isServiceQuote)) {
-    message += `\nNB : les articles « sur devis » (panier, pancakes…) ne sont pas inclus dans le total — merci de me communiquer leur prix.`;
+    message += `\nNB : les articles « sur devis » (panier, pancakes…) ne sont pas inclus dans le total merci de me communiquer leur prix.`;
   }
   message += `\n\n`;
   const customerName = user?.name || 'À confirmer';

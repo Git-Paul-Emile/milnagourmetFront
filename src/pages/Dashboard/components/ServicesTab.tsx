@@ -182,7 +182,7 @@ export function ServicesTab() {
         <div>
           <h2 className="text-xl font-bold">Services spéciaux</h2>
           <p className="text-sm text-muted-foreground">
-            Paniers et boîtes gourmandes — composition, quantités et prix de départ.
+            Paniers et boîtes gourmandes composition, quantités et prix de départ.
           </p>
         </div>
       </div>
@@ -251,7 +251,7 @@ export function ServicesTab() {
               {/* Prix de départ */}
               <div className="flex items-end gap-2">
                 <div className="space-y-1">
-                  <Label htmlFor={`price-${service.id}`}>Prix de départ (FCFA — 0 = sur devis)</Label>
+                  <Label htmlFor={`price-${service.id}`}>Prix de départ (FCFA 0 = sur devis)</Label>
                   <Input
                     id={`price-${service.id}`}
                     type="number"
@@ -400,7 +400,7 @@ export function ServicesTab() {
                 ))}
                 {service.components.length === 0 && (
                   <p className="text-sm text-muted-foreground">
-                    Aucun composant — ajoutez-en pour que les clients puissent faire leur choix.
+                    Aucun composant ajoutez-en pour que les clients puissent faire leur choix.
                   </p>
                 )}
               </div>

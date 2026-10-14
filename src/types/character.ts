@@ -18,4 +18,8 @@ export interface YaourtCharacter {
   productCategory: string;
   /** URL du modèle 3D — null tant que non fourni */
   model3dUrl: string | null;
+  /** Image/illustration du personnage */
+  imageUrl?: string | null;
+  /** Dégradé de fond personnalisé pour le verso de la carte */
+  bgGradient?: string;
 }

@@ -43,7 +43,14 @@ export function useCustomCreation(isOpen: boolean) {
           creationService.getCreationSizes(),
           creationService.getCreationOptions()
         ]);
-        setCreationSizes((sizesResp.data ?? sizesResp ?? []) as CreationSize[]);
+        const loadedSizes = (sizesResp.data ?? sizesResp ?? []) as CreationSize[];
+        setCreationSizes(loadedSizes);
+        if (loadedSizes.length > 0) {
+          setCreation(prev => ({
+            ...prev,
+            size: loadedSizes.some(s => s.nom === prev.size) ? prev.size : loadedSizes[0].nom
+          }));
+        }
         
         // Transformer les objets CreationOptionItem[] en string[] pour les composants
         // Filtrer uniquement les options disponibles (disponible !== false)
@@ -139,7 +146,7 @@ export function useCustomCreation(isOpen: boolean) {
 
   const resetCreation = () => {
     setCreation({
-      size: 'moyen',
+      size: creationSizes[0]?.nom || '',
       fruits: [],
       sauces: [],
       cereales: [],
