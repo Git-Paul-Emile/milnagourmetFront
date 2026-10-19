@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, LayoutGrid, ShoppingBag, Sparkles, User } from 'lucide-react';
+import { ChefHat, Home, LayoutGrid, ShoppingBag, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useApp } from '@/contexts/useApp';
 import { useAuth } from '@/hooks/useAuth';
@@ -56,7 +56,7 @@ const ENTREES_GAUCHE: EntreeNav[] = [
 ];
 
 const ENTREES_DROITE: EntreeNav[] = [
-  { cle: 'creation', libelle: 'Créer', Icone: Sparkles, ouvre: 'creation' },
+  { cle: 'creation', libelle: 'Créer', Icone: ChefHat, ouvre: 'creation' },
   { cle: 'profil', libelle: 'Profil', Icone: User, route: '/profile' },
 ];
 

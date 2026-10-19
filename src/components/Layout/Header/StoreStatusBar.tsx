@@ -1,26 +1,48 @@
-import React from 'react';
+import { Clock, ShoppingBag, Store } from 'lucide-react';
 import { useStoreHours } from '@/hooks/useStoreHours';
+import { CLOSED_ORDERS_NOTICE } from '@/constants/contact';
 import { cn } from '@/lib/utils';
 
+/**
+ * Bandeau défilant en haut de page : état de la boutique, horaires de la
+ * semaine et, si elle est fermée, rappel que les commandes restent possibles.
+ */
 export function StoreStatusBar() {
-  const storeStatus = useStoreHours();
+  const { isOpen, message, nextChange, hours } = useStoreHours();
+
+  const horaires = hours
+    .map((h) => `${h.day.slice(0, 3)} ${h.closed ? 'fermé' : `${h.open}–${h.close}`}`)
+    .join(' · ');
+
+  const segments = [
+    { key: 'etat', icon: Store, text: [message, nextChange].filter(Boolean).join(' — ') },
+    ...(isOpen ? [] : [{ key: 'commande', icon: ShoppingBag, text: CLOSED_ORDERS_NOTICE }]),
+    ...(horaires ? [{ key: 'horaires', icon: Clock, text: horaires }] : []),
+  ];
+
+  const contenu = (copie: number) => (
+    <div className="flex shrink-0 items-center" aria-hidden={copie > 0 || undefined}>
+      {segments.map(({ key, icon: Icon, text }) => (
+        <span key={key} className="flex items-center gap-2 whitespace-nowrap px-6">
+          <Icon className={cn('h-4 w-4', key === 'etat' && (isOpen ? 'text-green-300' : 'text-red-500'))} />
+          {text}
+        </span>
+      ))}
+    </div>
+  );
 
   return (
-    <div className={cn(
-      'fixed top-0 left-0 right-0 z-50 text-center py-2 text-sm font-medium transition-colors',
-      storeStatus.isOpen
-        ? 'bg-gradient-to-r from-primary via-primary/90 to-primary text-primary-foreground'
-        : 'bg-gradient-to-r from-muted via-muted/90 to-muted text-muted-foreground'
-    )}>
-      <span className="mr-2">
-        {storeStatus.isOpen ? <i className="fa-solid fa-shop text-green-500"></i> : <i className="fa-solid fa-shop text-red-500"></i>}
-      </span>
-      {storeStatus.message}
-      {storeStatus.nextChange && (
-        <span className="ml-2 text-xs opacity-80">
-          {storeStatus.nextChange}
-        </span>
+    <div
+      role="status"
+      className={cn(
+        'fixed top-0 left-0 right-0 z-50 overflow-hidden py-2 text-sm font-medium transition-colors',
+        isOpen ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
       )}
+    >
+      <div className="flex w-max animate-marquee motion-reduce:animate-none hover:[animation-play-state:paused]">
+        {contenu(0)}
+        {contenu(1)}
+      </div>
     </div>
   );
 }

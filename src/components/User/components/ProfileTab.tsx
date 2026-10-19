@@ -64,7 +64,7 @@ export function ProfileTab({
             </button>
             <button
               onClick={handleSaveProfile}
-              className="flex items-center space-x-2 px-4 py-2 bg-button border border-button-border text-button-foreground rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 bg-button text-button-foreground rounded-lg hover:bg-button-hover hover:text-button-hover-foreground transition-colors"
             >
               <Save className="h-4 w-4" />
               <span>Sauvegarder</span>

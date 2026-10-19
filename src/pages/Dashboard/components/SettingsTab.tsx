@@ -170,7 +170,7 @@ export function SettingsTab({ storeHours, loadDashboardData, displaySuccessToast
         <button
           onClick={handleSaveAllSettings}
           disabled={isSaving}
-          className="bg-button border border-button-border text-button-foreground px-8 py-3 rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 text-lg"
+          className="bg-button text-button-foreground px-8 py-3 rounded-lg hover:bg-button-hover hover:text-button-hover-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 text-lg"
         >
           {isSaving ? (
             <RefreshCw className="h-5 w-5 animate-spin" />

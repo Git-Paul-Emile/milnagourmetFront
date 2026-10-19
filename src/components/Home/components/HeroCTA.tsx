@@ -16,7 +16,7 @@ export function HeroCTA({ onCatalogClick }: HeroCTAProps) {
           'hover:scale-105',
           'transition-all duration-500 ease-out',
           'animate-pulse-soft',
-          'bg-[#43A2F2] border border-[#43A2F2] hover:bg-[#4bb069] hover:border-[#4bb069] text-white before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-r before:from-button/20 before:to-button/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300 hover:shadow-2xl hover:-translate-y-1')}
+          'bg-[#43A2F2] hover:bg-[#4bb069] text-white before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-r before:from-button/20 before:to-button/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300 hover:shadow-2xl hover:-translate-y-1')}
       >
         <span className="relative z-10">Voir le Catalogue</span>
         <ArrowRight className="h-5 w-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />

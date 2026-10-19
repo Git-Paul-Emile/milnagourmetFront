@@ -82,7 +82,7 @@ define(['./workbox-bb61c058'], (function (workbox) { 'use strict';
    */
   workbox.precacheAndRoute([{
     "url": "/index.html",
-    "revision": "0.0c9af6a58t"
+    "revision": "0.h0dopn49k44"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("/index.html"), {
@@ -102,6 +102,18 @@ define(['./workbox-bb61c058'], (function (workbox) { 'use strict';
     "cacheName": "milna-images",
     plugins: [new workbox.ExpirationPlugin({
       maxEntries: 200,
+      maxAgeSeconds: 2592000
+    }), new workbox.CacheableResponsePlugin({
+      statuses: [0, 200]
+    })]
+  }), 'GET');
+  workbox.registerRoute(({
+    sameOrigin,
+    url
+  }) => sameOrigin && url.pathname.startsWith("/images/"), new workbox.CacheFirst({
+    "cacheName": "milna-illustrations",
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 60,
       maxAgeSeconds: 2592000
     }), new workbox.CacheableResponsePlugin({
       statuses: [0, 200]

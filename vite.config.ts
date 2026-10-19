@@ -156,11 +156,13 @@ export default defineConfig(({ mode }) => ({
            permet à l'app de s'ouvrir instantanément et hors connexion. */
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
 
-        /* La vidéo du hero pèse ~7,5 Mo. La précacher imposerait ce
-           téléchargement à chaque visiteur dès la première seconde, sur
-           des connexions mobiles souvent limitées. Elle reste servie
-           normalement par le réseau. */
-        globIgnores: ["**/videos/**", "**/*.mp4"],
+        /* Médias, illustrations (~3 Mo) et export Excel admin exclus du
+           précache : un nouveau service worker n'est « prêt » qu'une fois
+           tout son précache téléchargé. Un précache léger permet de
+           proposer la mise à jour en une à deux secondes. Les images
+           restent mises en cache à la première consultation (voir
+           runtimeCaching). */
+        globIgnores: ["**/videos/**", "**/*.mp4", "**/images/**", "**/vendor-xlsx-*.js"],
 
         /* Plafond par fichier précaché. 3 Mo laisse passer les gros
            chunks JS sans absorber un média volumineux par accident. */
@@ -225,6 +227,16 @@ export default defineConfig(({ mode }) => ({
                 maxEntries: 200,
                 maxAgeSeconds: 60 * 60 * 24 * 30, // 30 jours
               },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            /* ILLUSTRATIONS LOCALES (/images/…) — hors précache. */
+            urlPattern: ({ sameOrigin, url }) => sameOrigin && url.pathname.startsWith("/images/"),
+            handler: "CacheFirst",
+            options: {
+              cacheName: "milna-illustrations",
+              expiration: { maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },

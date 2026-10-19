@@ -1,32 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHeroData } from './hooks/useHeroData';
 import { HeroLoading } from './components/HeroLoading';
 import { HeroTitle } from './components/HeroTitle';
 import { HeroSubtitle } from './components/HeroSubtitle';
 import { HeroCTA } from './components/HeroCTA';
 import { HeroDecorations } from './components/HeroDecorations';
-import { getFullImageUrl } from '@/utils/imageUtils';
-import { DEFAULT_BANNER_IMAGE } from '@/constants/media';
-
-/**
- * Vidéo de fond du hero.
- *
- * Deux façons de la fournir, sans toucher à ce fichier :
- *
- * 1. URL distante — renseigner `VITE_HERO_VIDEO_URL` dans le `.env`.
- *    Elle doit pointer vers un fichier vidéo (`.mp4`), pas vers une page web,
- *    et être stable : les liens d'aperçu des banques d'images portent une
- *    signature qui expire au bout de quelques minutes et cesseraient de
- *    fonctionner.
- *
- * 2. Fichier local — déposer le `.mp4` dans `front/public/videos/`
- *    sous le nom `hero-yaourt.mp4`. C'est la valeur par défaut.
- *
- * Dans les deux cas, si la vidéo est introuvable la lecture échoue en
- * silence et l'image `poster` — la bannière actuelle — reste affichée.
- */
-const HERO_VIDEO =
-  import.meta.env.VITE_HERO_VIDEO_URL || '/videos/hero-yaourt.mp4';
+import { DEFAULT_BANNER_IMAGE, HERO_VIDEO } from '@/constants/media';
 
 export function HeroSection() {
   const { heroData, loading } = useHeroData();
@@ -51,13 +30,6 @@ export function HeroSection() {
     return <HeroLoading />;
   }
 
-  /* Image poster : jamais depuis un CDN externe (Cloudinary) — bannière
-     locale par défaut, ou upload servi par notre propre backend. */
-  const posterImage =
-    heroData.banner && !heroData.banner.includes('cloudinary')
-      ? getFullImageUrl(heroData.banner)
-      : DEFAULT_BANNER_IMAGE;
-
   return (
     <section id="home" className="relative h-screen flex items-end overflow-hidden -mt-40">
       {/* Fond : vidéo en boucle, avec la bannière en image poster.
@@ -66,7 +38,7 @@ export function HeroSection() {
       <div className="absolute inset-0 overflow-hidden">
         <video
           className="absolute inset-0 h-full w-full object-cover"
-          poster={posterImage}
+          poster={DEFAULT_BANNER_IMAGE}
           autoPlay={motionAllowed}
           muted
           loop

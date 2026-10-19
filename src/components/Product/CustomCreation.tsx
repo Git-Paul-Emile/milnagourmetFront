@@ -178,7 +178,7 @@ export function CustomCreation({ isOpen, onClose }: CustomCreationProps) {
                   'group relative flex items-center justify-center space-x-2 w-full sm:w-auto px-8 py-4 sm:px-6 sm:py-3 rounded-lg font-medium transition-all duration-300 transform-gpu overflow-hidden cursor-pointer ' +
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ' +
                   (isValid
-                    ? 'bg-white border border-border text-foreground hover:bg-[#43A2F2] hover:text-white hover:border-[#43A2F2] hover:scale-105 hover:-translate-y-0.5 active:scale-95 ' +
+                    ? 'bg-white border border-border text-foreground hover:bg-[#43A2F2] hover:text-white hover:border-transparent hover:scale-105 hover:-translate-y-0.5 active:scale-95 ' +
                       'before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700'
                     : 'bg-muted text-muted-foreground cursor-not-allowed border border-border')
                 }

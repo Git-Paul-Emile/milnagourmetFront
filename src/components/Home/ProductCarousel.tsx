@@ -70,7 +70,7 @@ export function ProductCarousel({
               className={cn(
                 'w-3 h-3 rounded-full transition-all duration-300',
                 index === selectedIndex
-                  ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border scale-125 shadow-lg'
+                  ? 'bg-button hover:bg-button-hover hover:text-button-hover-foreground scale-125 shadow-lg'
                   : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
               )}
               aria-label={`Go to slide ${index + 1}`}

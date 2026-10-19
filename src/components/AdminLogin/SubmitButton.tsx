@@ -14,7 +14,7 @@ export function SubmitButton({ isLoading }: SubmitButtonProps) {
       disabled={isLoading}
       className={cn(
         'group relative w-full py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform-gpu overflow-hidden',
-        'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border',
+        'bg-button hover:bg-button-hover hover:text-button-hover-foreground',
         'text-button-foreground hover:shadow-xl hover:shadow-button/25 hover:scale-105 hover:-translate-y-0.5 active:scale-95',
         isLoading && 'opacity-50 cursor-not-allowed',
         'before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700'

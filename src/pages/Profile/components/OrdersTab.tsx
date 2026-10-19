@@ -176,7 +176,7 @@ interface OrderCardProps {
 
 const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   return (
-    <Card className="border-l-4 border-l-primary">
+    <Card>
       <CardContent className="p-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3">
           <div className="flex items-center space-x-3 mb-2 sm:mb-0">

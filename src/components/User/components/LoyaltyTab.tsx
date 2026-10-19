@@ -79,7 +79,7 @@ export function LoyaltyTab() {
         </p>
         <button
           onClick={loadLoyaltyData}
-          className="mt-4 px-4 py-2 bg-button border border-button-border text-button-foreground rounded-lg hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border"
+          className="mt-4 px-4 py-2 bg-button text-button-foreground rounded-lg hover:bg-button-hover hover:text-button-hover-foreground"
         >
           Réessayer
         </button>
@@ -111,7 +111,7 @@ export function LoyaltyTab() {
               className={cn(
                 'flex items-center space-x-2 py-3 px-6 transition-colors',
                 activeTab === tab.id
-                  ? 'border-b-2 border-button-border text-button-foreground bg-button hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border '
+                  ? 'border-b-2 border-primary text-primary font-semibold'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
               )}
             >

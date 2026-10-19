@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ChevronLeft, ChevronRight, ArrowLeftRight } from 'lucide-react';
 import { SocialLink } from '@/lib/contactUtils';
 import { cn } from '@/lib/utils';
 
@@ -249,14 +248,6 @@ export function SocialLinksSection({ socialLinks }: SocialLinksSectionProps) {
                 />
               )}
 
-              {/* Badge "Balayer" discret sur la carte de tête */}
-              {isFront && socialLinks.length > 1 && (
-                <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-sm text-white/90 text-[11px] font-medium pointer-events-none">
-                  <ArrowLeftRight className="w-3 h-3 text-white/80" />
-                  <span>Balayer</span>
-                </div>
-              )}
-
               {/* Contenu : pseudo + accès profil */}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-center justify-between gap-2 p-4">
                 <div className="flex min-w-0 items-center gap-2">
@@ -289,10 +280,8 @@ export function SocialLinksSection({ socialLinks }: SocialLinksSectionProps) {
         })}
       </div>
 
-      {/* Commandes et indicateurs de balayage */}
       {socialLinks.length > 1 && (
         <div className="flex flex-col items-center gap-3">
-          {/* Points indicateurs */}
           <div className="flex items-center justify-center gap-2">
             {socialLinks.map((social) => {
               const isFront = order[0] === social.name;
@@ -309,29 +298,6 @@ export function SocialLinksSection({ socialLinks }: SocialLinksSectionProps) {
                 />
               );
             })}
-          </div>
-
-          {/* Boutons de navigation gauche / droite pour accessibilité */}
-          <div className="flex items-center gap-3 text-xs text-muted-foreground">
-            <button
-              type="button"
-              onClick={cyclePrev}
-              disabled={isAnimating}
-              className="p-1.5 rounded-full border border-border/70 hover:bg-muted hover:text-foreground transition-colors disabled:opacity-50"
-              aria-label="Réseau précédent"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <span className="font-medium select-none">Balayer pour explorer</span>
-            <button
-              type="button"
-              onClick={cycleNext}
-              disabled={isAnimating}
-              className="p-1.5 rounded-full border border-border/70 hover:bg-muted hover:text-foreground transition-colors disabled:opacity-50"
-              aria-label="Réseau suivant"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       )}

@@ -7,6 +7,9 @@ export const DEFAULT_AVATAR_TOAST_IMAGE = avatarOwnerLocal;
 export const DEFAULT_TESTIMONIAL_AVATAR = avatarOwnerLocal;
 export const DEFAULT_BANNER_IMAGE = heroBannerLocal;
 
+// Vidéo du hero : fichier du projet (front/public/videos), jamais lue depuis la base
+export const HERO_VIDEO = '/videos/hero-yaourt.mp4';
+
 // Base des médias encore hébergés sur Cloudinary (cloud name public, sans risque à exposer côté client)
 const CLOUDINARY_CLOUD_NAME = 'iujorfq3';
 const CLOUDINARY_BASE_URL = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/milnagourmet`;

@@ -26,9 +26,15 @@ export function UpdatePrompt() {
     updateServiceWorker,
   } = useRegisterSW({
     onRegisteredSW(_url, registration) {
-      /* Vérification forcée toutes les heures pour les PWA longtemps ouvertes. */
+      /* Vérification immédiate à l'ouverture, au retour sur l'app, puis
+         toutes les 5 minutes pour les PWA longtemps ouvertes. */
       if (!registration) return;
-      setInterval(() => void registration.update(), 60 * 60 * 1000);
+      const verifier = () => void registration.update().catch(() => undefined);
+      verifier();
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') verifier();
+      });
+      setInterval(verifier, 5 * 60 * 1000);
     },
   });
 

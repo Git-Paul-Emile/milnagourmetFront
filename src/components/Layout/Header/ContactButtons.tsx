@@ -12,7 +12,7 @@ export function ContactButtons() {
         onClick={async () => await contactMilnaWhatsApp()}
         className={cn(
           "p-2 rounded-full transition-colors",
-          "text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground"
+          "text-foreground hover:text-primary"
         )}
         title="WhatsApp"
       >
@@ -22,7 +22,7 @@ export function ContactButtons() {
         onClick={async () => await callMilna()}
         className={cn(
           "p-2 rounded-full transition-colors",
-          "text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground"
+          "text-foreground hover:text-primary"
         )}
         title="Appeler"
       >

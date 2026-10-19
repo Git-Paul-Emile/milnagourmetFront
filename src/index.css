@@ -72,10 +72,10 @@
        le minimum de 3:1 de la WCAG 1.4.11) : une bordure plus soutenue rend
        le contour du bouton toujours perceptible. */
     --button: 207.4 87.1% 60.6%; /* #43A2F2 */
-    --button-foreground: 183.9 45% 12%;
+    --button-foreground: 0 0% 100%;
     --button-border: 207.4 87.1% 33%;
     --button-hover: 137.8 40.2% 49.2%; /* #4bb069 */
-    --button-hover-foreground: 137.8 60% 10%;
+    --button-hover-foreground: 0 0% 100%;
     --button-hover-border: 137.8 45% 24%;
 
     /* --- Succès (adossé au vert de marque) --- */
@@ -181,10 +181,10 @@
        pour ressortir sur un fond sombre), bordures éclaircies pour rester
        visibles contre le fond nuit. */
     --button: 207.4 87.1% 60.6%;
-    --button-foreground: 183.9 45% 12%;
+    --button-foreground: 0 0% 100%;
     --button-border: 207.4 87.1% 78%;
     --button-hover: 137.8 40.2% 49.2%; /* #4bb069 */
-    --button-hover-foreground: 137.8 60% 10%;
+    --button-hover-foreground: 0 0% 100%;
     --button-hover-border: 137.8 50% 78%;
 
     --success: 137.8 45% 50%;

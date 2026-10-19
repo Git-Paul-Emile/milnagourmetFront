@@ -33,7 +33,7 @@ export function AuthSection({ user, onLoginClick, onRegisterClick, onLogout, onP
             onClick={onDashboardClick}
             className={cn(
               "flex items-center space-x-2 px-3 py-2 rounded-lg transition-all hover:scale-105 hover:shadow-md",
-              "text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground"
+              "text-foreground hover:text-primary"
             )}
             title="Tableau de bord"
           >
@@ -45,7 +45,7 @@ export function AuthSection({ user, onLoginClick, onRegisterClick, onLogout, onP
           onClick={onProfileClick}
           className={cn(
             "flex items-center space-x-2 px-3 py-2 rounded-lg transition-all hover:scale-105 hover:shadow-md",
-            "text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground"
+            "text-foreground hover:text-primary"
           )}
           title="Mon profil"
         >
@@ -74,7 +74,7 @@ export function AuthSection({ user, onLoginClick, onRegisterClick, onLogout, onP
         onClick={onLoginClick}
         className={cn(
           "px-4 py-2 rounded-lg transition-all hover:scale-105 hover:shadow-md text-sm font-medium",
-          "text-button-foreground hover:bg-[#43A2F2] hover:text-white"
+          "text-foreground hover:bg-[#43A2F2] hover:text-white"
         )}
       >
         Connexion

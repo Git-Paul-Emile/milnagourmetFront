@@ -34,7 +34,7 @@ export function MobileMenu({ isOpen, navigation, user, onClose, onLoginClick, on
             <a
               key={item.name}
               href={item.href}
-              className="block py-3 px-4 text-[#212121] hover:bg-button-hover rounded-lg transition-all hover:translate-x-2 font-medium"
+              className="block py-3 px-4 text-[#212121] hover:text-primary rounded-lg transition-all hover:translate-x-2 font-medium"
               onClick={onClose}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -48,7 +48,7 @@ export function MobileMenu({ isOpen, navigation, user, onClose, onLoginClick, on
           <div className="flex flex-col space-y-3 pt-4 border-t border-border">
             <button
               onClick={onLoginClick}
-              className="w-full py-3 px-4 text-button-foreground hover:bg-[#43A2F2] hover:text-white rounded-lg transition-all hover:scale-105 font-medium"
+              className="w-full py-3 px-4 text-foreground hover:bg-[#43A2F2] hover:text-white rounded-lg transition-all hover:scale-105 font-medium"
             >
               Connexion
             </button>
@@ -63,7 +63,7 @@ export function MobileMenu({ isOpen, navigation, user, onClose, onLoginClick, on
           <div className="flex flex-col space-y-3 pt-4 border-t border-border">
             <button
               onClick={onProfileClick}
-              className="w-full py-3 px-4 text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground rounded-lg transition-all hover:scale-105 font-medium"
+              className="w-full py-3 px-4 text-foreground hover:text-primary rounded-lg transition-all hover:scale-105 font-medium"
             >
               <User className="h-5 w-5 inline mr-2" />
               Mon Profil
@@ -71,7 +71,7 @@ export function MobileMenu({ isOpen, navigation, user, onClose, onLoginClick, on
             {user.role === 'ADMIN' && (
               <button
                 onClick={onDashboardClick}
-                className="w-full py-3 px-4 text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground rounded-lg transition-all hover:scale-105 font-medium"
+                className="w-full py-3 px-4 text-foreground hover:text-primary rounded-lg transition-all hover:scale-105 font-medium"
               >
                 <LayoutDashboard className="h-5 w-5 inline mr-2" />
                 Tableau de bord
@@ -91,14 +91,14 @@ export function MobileMenu({ isOpen, navigation, user, onClose, onLoginClick, on
         <div className="flex space-x-4 pt-4 border-t border-border">
           <button
             onClick={onWhatsAppClick}
-            className="flex items-center space-x-2 text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground px-4 py-2 rounded-lg transition-all hover:scale-105 font-medium"
+            className="flex items-center space-x-2 text-foreground hover:text-primary px-4 py-2 rounded-lg transition-all hover:scale-105 font-medium"
           >
             <FontAwesomeIcon icon={faWhatsapp} className="h-5 w-5" />
             <span>WhatsApp</span>
           </button>
           <button
             onClick={onCallClick}
-            className="flex items-center space-x-2 text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground px-4 py-2 rounded-lg transition-all hover:scale-105 font-medium"
+            className="flex items-center space-x-2 text-foreground hover:text-primary px-4 py-2 rounded-lg transition-all hover:scale-105 font-medium"
           >
             <Phone className="h-5 w-5" />
             <span>Appeler</span>

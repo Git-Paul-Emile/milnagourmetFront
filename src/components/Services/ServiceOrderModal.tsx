@@ -422,7 +422,7 @@ export function ServiceOrderModal({ service, onClose }: ServiceOrderModalProps) 
             className={cn(
               'group relative flex items-center justify-center space-x-2 py-3 px-4 rounded-lg font-medium transition-all duration-300 transform-gpu overflow-hidden',
               isValid
-                ? 'bg-white border border-border text-foreground hover:bg-[#43A2F2] hover:text-white hover:border-[#43A2F2] hover:scale-105 hover:-translate-y-0.5 active:scale-95'
+                ? 'bg-white border border-border text-foreground hover:bg-[#43A2F2] hover:text-white hover:border-transparent hover:scale-105 hover:-translate-y-0.5 active:scale-95'
                 : 'bg-muted text-muted-foreground cursor-not-allowed border border-border',
               'before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700'
             )}

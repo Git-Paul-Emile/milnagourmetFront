@@ -13,7 +13,7 @@ export function CartButton({ itemCount, onClick }: CartButtonProps) {
       onClick={onClick}
       className={cn(
         "relative p-2 transition-colors",
-        "text-foreground hover:text-button-hover-foreground"
+        "text-foreground hover:text-primary"
       )}
     >
       <ShoppingCart className="h-6 w-6" />

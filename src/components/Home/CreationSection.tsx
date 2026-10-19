@@ -54,7 +54,7 @@ export function CreationSection({ catalogData, onCreationOpen }: CreationSection
 
         <button
           onClick={onCreationOpen}
-          className="group relative inline-flex items-center justify-center space-x-2 mt-10 border border-[#43A2F2] bg-[#43A2F2] text-white px-8 py-3 rounded-lg font-semibold transform-gpu hover:scale-105 transition-all duration-500 ease-out animate-pulse-soft hover:border-[#4bb069] hover:bg-[#4bb069] hover:shadow-2xl hover:-translate-y-1"
+          className="group relative inline-flex items-center justify-center space-x-2 mt-10 bg-[#43A2F2] text-white px-8 py-3 rounded-lg font-semibold transform-gpu hover:scale-105 transition-all duration-500 ease-out animate-pulse-soft hover:bg-[#4bb069] hover:shadow-2xl hover:-translate-y-1"
         >
           <span className="relative z-10">{catalogData?.creationButtonText || 'Créer mon Gourmet'}</span>
           <ArrowRight className="h-5 w-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" />

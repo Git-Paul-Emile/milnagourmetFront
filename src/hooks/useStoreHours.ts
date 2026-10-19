@@ -150,5 +150,5 @@ export function useStoreHours() {
     return () => clearInterval(interval);
   }, [storeHours]);
 
-  return status;
+  return { ...status, hours: storeHours };
 }

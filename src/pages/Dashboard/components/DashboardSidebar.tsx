@@ -29,7 +29,7 @@ export function DashboardSidebar({ activeTab, setActiveTab, stats }: DashboardSi
             className={cn(
               'w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors',
               activeTab === 'overview'
-                ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                ? 'bg-button hover:bg-button-hover hover:text-button-hover-foreground text-button-foreground'
                 : 'hover:bg-muted'
             )}
           >
@@ -42,7 +42,7 @@ export function DashboardSidebar({ activeTab, setActiveTab, stats }: DashboardSi
             className={cn(
               'w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors',
               activeTab === 'orders'
-                ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                ? 'bg-button hover:bg-button-hover hover:text-button-hover-foreground text-button-foreground'
                 : 'hover:bg-muted'
             )}
           >
@@ -60,7 +60,7 @@ export function DashboardSidebar({ activeTab, setActiveTab, stats }: DashboardSi
             className={cn(
               'w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors',
               activeTab === 'products'
-                ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                ? 'bg-button hover:bg-button-hover hover:text-button-hover-foreground text-button-foreground'
                 : 'hover:bg-muted'
             )}
           >
@@ -73,7 +73,7 @@ export function DashboardSidebar({ activeTab, setActiveTab, stats }: DashboardSi
             className={cn(
               'w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors',
               activeTab === 'users'
-                ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                ? 'bg-button hover:bg-button-hover hover:text-button-hover-foreground text-button-foreground'
                 : 'hover:bg-muted'
             )}
           >
@@ -86,7 +86,7 @@ export function DashboardSidebar({ activeTab, setActiveTab, stats }: DashboardSi
             className={cn(
               'w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors',
               activeTab === 'customers'
-                ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                ? 'bg-button hover:bg-button-hover hover:text-button-hover-foreground text-button-foreground'
                 : 'hover:bg-muted'
             )}
           >
@@ -99,7 +99,7 @@ export function DashboardSidebar({ activeTab, setActiveTab, stats }: DashboardSi
             className={cn(
               'w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors',
               activeTab === 'analytics'
-                ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                ? 'bg-button hover:bg-button-hover hover:text-button-hover-foreground text-button-foreground'
                 : 'hover:bg-muted'
             )}
           >
@@ -112,7 +112,7 @@ export function DashboardSidebar({ activeTab, setActiveTab, stats }: DashboardSi
             className={cn(
               'w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors',
               activeTab === 'delivery'
-                ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                ? 'bg-button hover:bg-button-hover hover:text-button-hover-foreground text-button-foreground'
                 : 'hover:bg-muted'
             )}
           >
@@ -125,7 +125,7 @@ export function DashboardSidebar({ activeTab, setActiveTab, stats }: DashboardSi
             className={cn(
               'w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors',
               activeTab === 'promotions'
-                ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                ? 'bg-button hover:bg-button-hover hover:text-button-hover-foreground text-button-foreground'
                 : 'hover:bg-muted'
             )}
           >
@@ -138,7 +138,7 @@ export function DashboardSidebar({ activeTab, setActiveTab, stats }: DashboardSi
             className={cn(
               'w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors',
               activeTab === 'settings'
-                ? 'bg-button border border-button-border hover:bg-button-hover hover:text-button-hover-foreground hover:border-button-hover-border text-button-foreground'
+                ? 'bg-button hover:bg-button-hover hover:text-button-hover-foreground text-button-foreground'
                 : 'hover:bg-muted'
             )}
           >

@@ -10,16 +10,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        /* Bouton d'action : bleu #43A2F2 au repos, vert #4bb069 au survol.
-           Libellé en encre foncée (obligatoire : du blanc échouerait sur ces
-           deux teintes claires) et bordure soutenue pour que le contour du
-           bouton reste perceptible sur un fond clair. */
+        /* Bouton d'action : bleu #43A2F2 au repos, vert #4bb069 au survol,
+           libellé blanc et sans bordure. */
         default:
-          "border border-button-border bg-button text-button-foreground hover:border-button-hover-border hover:bg-button-hover hover:text-button-hover-foreground",
+          "bg-button text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground",
         secondary:
-          "border border-button-border bg-button text-button-foreground hover:border-button-hover-border hover:bg-button-hover hover:text-button-hover-foreground",
+          "bg-button text-button-foreground hover:bg-button-hover hover:text-button-hover-foreground",
         outline:
-          "border border-input bg-background hover:border-button-hover-border hover:bg-button-hover hover:text-button-hover-foreground",
+          "border border-input bg-background hover:border-transparent hover:bg-button-hover hover:text-button-hover-foreground",
         ghost: "hover:bg-button-hover hover:text-button-hover-foreground",
         /* Le rouge reste réservé aux actions destructrices : le remplacer
            ferait perdre le signal de danger. */

@@ -29,8 +29,8 @@ const CLE_REPORTE = 'milna:pwa-invite-reportee';
 /** Durée avant de reproposer l'installation après un refus : 30 jours. */
 const DELAI_APRES_REFUS_MS = 30 * 24 * 60 * 60 * 1000;
 
-/** Délai avant affichage : laisse le visiteur découvrir le site d'abord. */
-const DELAI_AVANT_AFFICHAGE_MS = 20_000;
+/** Court délai avant affichage : laisse la page se peindre d'abord. */
+const DELAI_AVANT_AFFICHAGE_MS = 2_000;
 
 function estIOS(): boolean {
   if (typeof navigator === 'undefined') return false;
