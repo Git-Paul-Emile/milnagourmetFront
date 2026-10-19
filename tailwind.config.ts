@@ -168,7 +168,7 @@ export default {
         "slide-up": "slide-up 0.6s ease-out",
         "fade-in-up": "fade-in-up 0.8s ease-out",
         shimmer: "shimmer 2s infinite",
-        marquee: "marquee 40s linear infinite",
+        marquee: "marquee 28s linear infinite",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],

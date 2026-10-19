@@ -3,4 +3,4 @@ export { FooterSkeleton } from './FooterSkeleton';
 export { HoursSection } from './HoursSection';
 export { SocialSection } from './SocialSection';
 export { LegalSection } from './LegalSection';
-export { CopyrightSection } from './CopyrightSection';
+export { CopyrightSection } from './CopyrightSection';export { InstallQrSection } from './InstallQrSection';

@@ -1,4 +1,4 @@
-import { ShoppingBag, Store } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { useStoreHours } from '@/hooks/useStoreHours';
 import { CLOSED_ORDERS_NOTICE } from '@/constants/contact';
 import { cn } from '@/lib/utils';
@@ -13,7 +13,7 @@ export function StoreStatusBar() {
   const etat = [...message.split(' - '), nextChange].filter(Boolean).join(', ');
 
   const segments = [
-    { key: 'etat', icon: Store, text: etat },
+    { key: 'etat', icon: null, text: etat },
     ...(isOpen ? [] : [{ key: 'commande', icon: ShoppingBag, text: CLOSED_ORDERS_NOTICE }]),
   ];
 
@@ -21,7 +21,7 @@ export function StoreStatusBar() {
     <div className="flex shrink-0 items-center" aria-hidden={copie > 0 || undefined}>
       {segments.map(({ key, icon: Icon, text }) => (
         <span key={key} className="flex items-center gap-2 whitespace-nowrap px-6">
-          <Icon className={cn('h-4 w-4', key === 'etat' && (isOpen ? 'text-green-300' : 'text-red-500'))} />
+          {Icon && <Icon className="h-4 w-4" />}
           {text}
         </span>
       ))}

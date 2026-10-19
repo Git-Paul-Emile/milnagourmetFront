@@ -20,6 +20,7 @@ import { ChartsSection } from './ChartsSection';
 import { TopIngredients } from './TopIngredients';
 import { BestSellingProducts } from './BestSellingProducts';
 import { RecentOrders } from './RecentOrders';
+import { PwaInstallStats } from './PwaInstallStats';
 import { OverviewTabProps } from './types';
 import { getTimeBasedGreeting } from '@/utils/greeting';
 
@@ -51,6 +52,7 @@ export function OverviewTab({ stats, setActiveTab, setIsOrderManagementOpen }: O
         <h3 className="text-lg font-semibold mb-4">Statistiques générales</h3>
         <StatsGrid stats={stats} />
       </div>
+      <PwaInstallStats />
       <QuickActions setActiveTab={setActiveTab} setIsOrderManagementOpen={setIsOrderManagementOpen} />
       <PeriodStats stats={stats} />
       <ChartsSection stats={stats} />

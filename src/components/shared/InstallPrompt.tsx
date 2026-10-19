@@ -1,4 +1,4 @@
-import { Download, X, Smartphone } from 'lucide-react';
+import { Download, Loader2, X, Smartphone } from 'lucide-react';
 import { usePwaInstall } from '@/hooks/usePwaInstall';
 
 /**
@@ -18,6 +18,7 @@ export function InstallPrompt() {
     mobileOuTablette,
     installationDirecteDisponible,
     showScrollButton,
+    installationEnCours,
     installer,
     reporter,
     refuser,
@@ -82,10 +83,16 @@ export function InstallPrompt() {
                 <div className="flex items-center gap-2 pt-1">
                   <button
                     onClick={() => void installer()}
-                    className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                    disabled={installationEnCours}
+                    aria-busy={installationEnCours}
+                    className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-all hover:bg-primary/90 active:scale-95 disabled:cursor-wait disabled:opacity-80"
                   >
-                    <Download className="h-3.5 w-3.5" />
-                    Installer
+                    {installationEnCours ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Download className="h-3.5 w-3.5" />
+                    )}
+                    {installationEnCours ? 'Installation…' : 'Installer'}
                   </button>
                   <button
                     onClick={reporter}

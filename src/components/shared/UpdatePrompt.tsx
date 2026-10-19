@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RefreshCw, X } from 'lucide-react';
+import { Loader2, RefreshCw, X } from 'lucide-react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
 /**
@@ -42,6 +42,7 @@ export function UpdatePrompt() {
     typeof navigator !== 'undefined' ? !navigator.onLine : false
   );
   const [afficherMaj, setAfficherMaj] = useState(false);
+  const [majEnCours, setMajEnCours] = useState(false);
 
   useEffect(() => {
     // Déterminé côté client uniquement pour éviter un mismatch SSR
@@ -57,8 +58,15 @@ export function UpdatePrompt() {
     };
   }, []);
 
+  /* La page se recharge une fois le nouveau service worker actif : l'état
+     « en cours » n'est réinitialisé qu'en cas d'échec. */
   const handleUpdate = async () => {
-    await updateServiceWorker(true);
+    setMajEnCours(true);
+    try {
+      await updateServiceWorker(true);
+    } catch {
+      setMajEnCours(false);
+    }
   };
 
   return (
@@ -99,9 +107,12 @@ export function UpdatePrompt() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleUpdate}
-                  className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                  disabled={majEnCours}
+                  aria-busy={majEnCours}
+                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-all hover:bg-primary/90 active:scale-95 disabled:cursor-wait disabled:opacity-80"
                 >
-                  Mettre à jour
+                  {majEnCours && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+                  {majEnCours ? 'Mise à jour…' : 'Mettre à jour'}
                 </button>
                 <button
                   onClick={() => setBesoinMiseAJour(false)}

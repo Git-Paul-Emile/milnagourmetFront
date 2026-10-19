@@ -3,6 +3,7 @@ import { useFooterData } from './Footer/useFooterData';
 import { FooterSkeleton } from './Footer/FooterSkeleton';
 import { LegalSection } from './Footer/LegalSection';
 import { CopyrightSection } from './Footer/CopyrightSection';
+import { InstallQrSection } from './Footer/InstallQrSection';
 
 export function Footer() {
   const { loading } = useFooterData();
@@ -20,13 +21,14 @@ export function Footer() {
       }}
     >
       <div className="container relative mx-auto w-full px-4 pt-12 pb-[98px]">
-        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[auto_minmax(0,1fr)]">
+        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[auto_minmax(0,1fr)] lg:grid-cols-[auto_minmax(0,1fr)_auto]">
           <div className="flex items-center justify-center md:justify-start">
             <img src="/images/logo.png" alt="Milna Gourmet" className="h-32 w-32" />
           </div>
           <div className="flex justify-center md:justify-center">
             <LegalSection />
           </div>
+          <InstallQrSection />
         </div>
         <CopyrightSection />
       </div>

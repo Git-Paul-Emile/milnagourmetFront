@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { arriveeParQrCode, estDejaInstallee, estIOS, suivreInstallation } from '@/lib/pwaTracking';
 
 /**
  * Logique d'installation de la PWA.
@@ -16,6 +17,9 @@ import { useCallback, useEffect, useState } from 'react';
  *
  * Le refus est mémorisé 30 jours. Après "Plus tard", un bouton flottant
  * reste visible pour permettre l'installation à tout moment.
+ *
+ * Arrivée via le QR code (`/?installer=1`) : l'invite s'affiche aussitôt,
+ * même après un refus ou un report antérieur.
  */
 
 interface BeforeInstallPromptEvent extends Event {
@@ -32,14 +36,6 @@ const DELAI_APRES_REFUS_MS = 30 * 24 * 60 * 60 * 1000;
 /** Court délai avant affichage : laisse la page se peindre d'abord. */
 const DELAI_AVANT_AFFICHAGE_MS = 2_000;
 
-function estIOS(): boolean {
-  if (typeof navigator === 'undefined') return false;
-  const ua = navigator.userAgent;
-  const iOSClassique = /iPad|iPhone|iPod/.test(ua) && !('MSStream' in window);
-  const iPadModerne = ua.includes('Macintosh') && navigator.maxTouchPoints > 1;
-  return iOSClassique || iPadModerne;
-}
-
 /** Détecte un appareil mobile ou tablette (exclut les desktops). */
 function estMobileOuTablette(): boolean {
   if (typeof navigator === 'undefined') return false;
@@ -53,14 +49,6 @@ function estMobileOuTablette(): boolean {
   const petitEcran = typeof window !== 'undefined' && window.innerWidth <= 1024;
 
   return uaMobile || (touchDisponible && petitEcran);
-}
-
-function estDejaInstallee(): boolean {
-  if (typeof window === 'undefined') return false;
-  return (
-    window.matchMedia('(display-mode: standalone)').matches ||
-    (window.navigator as Navigator & { standalone?: boolean }).standalone === true
-  );
 }
 
 function refusEncoreValide(): boolean {
@@ -89,26 +77,40 @@ export function usePwaInstall() {
   const [mobileOuTablette] = useState(estMobileOuTablette);
   /** Bouton flottant affiché après "Plus tard" pour rappeler l'installation. */
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [installationEnCours, setInstallationEnCours] = useState(false);
+  const [viaQrCode] = useState(arriveeParQrCode);
 
   useEffect(() => {
+    // Premier lancement de l'app installée : c'est là qu'on la compte
+    // (seul signal disponible sur iOS).
+    if (estDejaInstallee()) {
+      suivreInstallation();
+      return;
+    }
     // Sur desktop, aucune invite
     if (!mobileOuTablette) return;
-    if (estDejaInstallee() || refusEncoreValide()) return;
+    if (!viaQrCode && refusEncoreValide()) return;
 
+    const afficherInvite = viaQrCode || !estReporte();
+    const delai = viaQrCode ? 0 : DELAI_AVANT_AFFICHAGE_MS;
     let minuteur: ReturnType<typeof setTimeout>;
+
+    const programmerAffichage = () => {
+      minuteur = setTimeout(() => {
+        setVisible(true);
+        setShowScrollButton(false);
+      }, delai);
+    };
 
     const surBeforeInstallPrompt = (event: Event) => {
       event.preventDefault();
       setEvenementInstall(event as BeforeInstallPromptEvent);
-      if (!estReporte()) {
-        minuteur = setTimeout(() => {
-          setVisible(true);
-          setShowScrollButton(false);
-        }, DELAI_AVANT_AFFICHAGE_MS);
-      }
+      if (afficherInvite) programmerAffichage();
     };
 
     const surInstallation = () => {
+      suivreInstallation();
+      setInstallationEnCours(false);
       setVisible(false);
       setShowScrollButton(false);
       setEvenementInstall(null);
@@ -119,43 +121,41 @@ export function usePwaInstall() {
     window.addEventListener('appinstalled', surInstallation);
 
     // Sur iOS, pas d'événement : on affiche le popup après le délai
-    if (plateformeIOS && !estReporte()) {
-      minuteur = setTimeout(() => {
-        setVisible(true);
-        setShowScrollButton(false);
-      }, DELAI_AVANT_AFFICHAGE_MS);
-    }
+    if (plateformeIOS && afficherInvite) programmerAffichage();
 
     // Si déjà reporté, afficher le bouton flottant immédiatement
-    if (estReporte()) {
-      setShowScrollButton(true);
-    }
+    if (!afficherInvite) setShowScrollButton(true);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', surBeforeInstallPrompt);
       window.removeEventListener('appinstalled', surInstallation);
       clearTimeout(minuteur);
     };
-  }, [plateformeIOS, mobileOuTablette]);
+  }, [plateformeIOS, mobileOuTablette, viaQrCode]);
 
   /** Déclenche l'invite native (Android) ou affiche les instructions (iOS). */
   const installer = useCallback(async () => {
-    if (!evenementInstall) return;
+    if (!evenementInstall || installationEnCours) return;
 
-    await evenementInstall.prompt();
-    const { outcome } = await evenementInstall.userChoice;
+    setInstallationEnCours(true);
+    try {
+      await evenementInstall.prompt();
+      const { outcome } = await evenementInstall.userChoice;
+      setEvenementInstall(null);
 
-    if (outcome === 'dismissed') {
-      try {
-        localStorage.setItem(CLE_REFUS, String(Date.now()));
-      } catch { /* */ }
+      /* Acceptée : le bouton reste « en cours » jusqu'à l'événement
+         `appinstalled`, qui ferme l'invite une fois l'app réellement installée. */
+      if (outcome === 'accepted') return;
+
+      try { localStorage.setItem(CLE_REFUS, String(Date.now())); } catch { /* */ }
+    } catch {
+      /* Invite native indisponible : on rend la main à l'utilisateur. */
     }
-
-    setEvenementInstall(null);
+    setInstallationEnCours(false);
     setVisible(false);
     setShowScrollButton(false);
     try { localStorage.removeItem(CLE_REPORTE); } catch { /* */ }
-  }, [evenementInstall]);
+  }, [evenementInstall, installationEnCours]);
 
   /** "Plus tard" : masque le popup et affiche le bouton flottant. */
   const reporter = useCallback(() => {
@@ -188,6 +188,7 @@ export function usePwaInstall() {
     mobileOuTablette,
     installationDirecteDisponible: evenementInstall !== null,
     showScrollButton,
+    installationEnCours,
     installer,
     reporter,
     refuser,
