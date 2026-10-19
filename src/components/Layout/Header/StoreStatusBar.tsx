@@ -4,8 +4,9 @@ import { CLOSED_ORDERS_NOTICE } from '@/constants/contact';
 import { cn } from '@/lib/utils';
 
 /**
- * Bandeau défilant en haut de page : état de la boutique et, si elle est
- * fermée, rappel que les commandes restent possibles.
+ * Bandeau en haut de page : état de la boutique, fixe quand elle est
+ * ouverte. Fermée, il défile pour rappeler que les commandes restent
+ * possibles et seront traitées à l'ouverture.
  */
 export function StoreStatusBar() {
   const { isOpen, message, nextChange } = useStoreHours();
@@ -36,10 +37,14 @@ export function StoreStatusBar() {
         isOpen ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
       )}
     >
-      <div className="flex w-max animate-marquee motion-reduce:animate-none hover:[animation-play-state:paused]">
-        {contenu(0)}
-        {contenu(1)}
-      </div>
+      {isOpen ? (
+        <div className="flex justify-center">{contenu(0)}</div>
+      ) : (
+        <div className="flex w-max animate-marquee motion-reduce:animate-none hover:[animation-play-state:paused]">
+          {contenu(0)}
+          {contenu(1)}
+        </div>
+      )}
     </div>
   );
 }

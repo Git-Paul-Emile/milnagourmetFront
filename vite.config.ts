@@ -153,16 +153,24 @@ export default defineConfig(({ mode }) => ({
       // ------------------------------------------------------------
       workbox: {
         /* Précache : fichiers téléchargés dès l'installation, ce qui
-           permet à l'app de s'ouvrir instantanément et hors connexion. */
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
+           permet à l'app de s'ouvrir instantanément et hors connexion.
+           L'image du hero (seul JPG retenu) garantit un accueil complet
+           hors connexion, la vidéo n'étant jamais mise en cache. */
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}", "assets/hero-banner-*.jpg"],
 
-        /* Médias, illustrations (~3 Mo) et export Excel admin exclus du
-           précache : un nouveau service worker n'est « prêt » qu'une fois
+        /* Médias, personnages et fond du footer (~2,5 Mo) et export Excel
+           admin exclus du précache : un nouveau service worker n'est « prêt » qu'une fois
            tout son précache téléchargé. Un précache léger permet de
            proposer la mise à jour en une à deux secondes. Les images
            restent mises en cache à la première consultation (voir
            runtimeCaching). */
-        globIgnores: ["**/videos/**", "**/*.mp4", "**/images/**", "**/vendor-xlsx-*.js"],
+        globIgnores: [
+          "**/videos/**",
+          "**/*.mp4",
+          "**/images/characters/**",
+          "**/images/footer-bg.png",
+          "**/vendor-xlsx-*.js",
+        ],
 
         /* Plafond par fichier précaché. 3 Mo laisse passer les gros
            chunks JS sans absorber un média volumineux par accident. */
