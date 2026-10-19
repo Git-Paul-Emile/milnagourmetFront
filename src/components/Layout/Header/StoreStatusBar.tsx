@@ -1,23 +1,20 @@
-import { Clock, ShoppingBag, Store } from 'lucide-react';
+import { ShoppingBag, Store } from 'lucide-react';
 import { useStoreHours } from '@/hooks/useStoreHours';
 import { CLOSED_ORDERS_NOTICE } from '@/constants/contact';
 import { cn } from '@/lib/utils';
 
 /**
- * Bandeau défilant en haut de page : état de la boutique, horaires de la
- * semaine et, si elle est fermée, rappel que les commandes restent possibles.
+ * Bandeau défilant en haut de page : état de la boutique et, si elle est
+ * fermée, rappel que les commandes restent possibles.
  */
 export function StoreStatusBar() {
-  const { isOpen, message, nextChange, hours } = useStoreHours();
+  const { isOpen, message, nextChange } = useStoreHours();
 
-  const horaires = hours
-    .map((h) => `${h.day.slice(0, 3)} ${h.closed ? 'fermé' : `${h.open}–${h.close}`}`)
-    .join(' · ');
+  const etat = [...message.split(' - '), nextChange].filter(Boolean).join(', ');
 
   const segments = [
-    { key: 'etat', icon: Store, text: [message, nextChange].filter(Boolean).join(' — ') },
+    { key: 'etat', icon: Store, text: etat },
     ...(isOpen ? [] : [{ key: 'commande', icon: ShoppingBag, text: CLOSED_ORDERS_NOTICE }]),
-    ...(horaires ? [{ key: 'horaires', icon: Clock, text: horaires }] : []),
   ];
 
   const contenu = (copie: number) => (
