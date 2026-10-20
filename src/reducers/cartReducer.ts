@@ -3,6 +3,7 @@ import { AppAction } from '@/types/appState';
 import { calculateCartTotals } from '@/utils/cartCalculations';
 import { persistCartActionToBackend } from '@/utils/cartPersistence';
 import { persistCart, clearLocalCart } from '@/hooks/useLocalCart';
+import { LOYALTY_POINT_VALUE_CFA } from '@/constants/loyalty';
 
 type CartState = {
   items: CartItem[];
@@ -200,8 +201,7 @@ export function cartReducer(state: CartState, action: AppAction, user?: AuthUser
     }
 
     case 'SET_POINTS_USED': {
-      // Calculate discount based on points (1 point = 15 CFA)
-      const pointsDiscount = action.payload * 15;
+      const pointsDiscount = action.payload * LOYALTY_POINT_VALUE_CFA;
       const totals = calculateCartTotals(state.items, state.deliveryFee, pointsDiscount);
       return { ...state, pointsUsed: action.payload, pointsDiscount, ...totals };
     }

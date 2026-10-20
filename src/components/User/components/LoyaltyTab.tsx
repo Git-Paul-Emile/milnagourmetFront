@@ -3,6 +3,7 @@ import { Star, Lock, CheckCircle, TrendingUp, History, Gift } from 'lucide-react
 import { cn } from '@/lib/utils';
 import { useApp } from '@/contexts/useApp';
 import { httpClient } from '@/services/httpClient';
+import { LOYALTY_CFA_SPENT_PER_POINT, LOYALTY_MIN_POINTS, LOYALTY_POINT_VALUE_CFA } from '@/constants/loyalty';
 
 interface LoyaltyData {
   points: number;
@@ -185,7 +186,7 @@ export function LoyaltyTab() {
                   <div>
                     <h4 className="font-semibold">Remise Verrouillée</h4>
                     <p className="text-muted-foreground">
-                      Accumulez encore {loyaltyData.pointsToNextThreshold.toFixed(2)} points pour débloquer 1500 F de remise et plus !
+                      Accumulez encore {loyaltyData.pointsToNextThreshold.toFixed(2)} points pour débloquer {loyaltyData.nextThresholdValue.toLocaleString()} F de remise et plus !
                     </p>
                   </div>
                 </>
@@ -202,7 +203,7 @@ export function LoyaltyTab() {
             <div className="space-y-3 text-sm">
               <div className="flex items-start space-x-3">
                 <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-xs font-bold text-primary-foreground">1</div>
-                <p>À partir de 100 points (1500 F), utilisez vos points sur vos commandes</p>
+                <p>1 point gagné pour {LOYALTY_CFA_SPENT_PER_POINT} F dépensés. À partir de {LOYALTY_MIN_POINTS} points ({LOYALTY_MIN_POINTS * LOYALTY_POINT_VALUE_CFA} F), utilisez vos points sur vos commandes : 1 point = {LOYALTY_POINT_VALUE_CFA} F de remise.</p>
               </div>
             </div>
           </div>

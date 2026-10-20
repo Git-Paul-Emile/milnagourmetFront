@@ -71,7 +71,6 @@ export function Cart({ isOpen, onClose }: CartProps) {
                     availablePoints={state.user.pointsFidelite || 0}
                     currentTotal={state.cart.totalWithDelivery}
                     onPointsChange={handlePointsChange}
-                    conversionRate={15} // 1 point = 15 CFA
                   />
                 )}
               </div>

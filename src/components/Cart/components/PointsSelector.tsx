@@ -1,28 +1,32 @@
 import React, { useState } from 'react';
 import { Gift } from 'lucide-react';
+import { LOYALTY_MIN_POINTS, LOYALTY_POINT_VALUE_CFA } from '@/constants/loyalty';
 
 interface PointsSelectorProps {
   availablePoints: number;
   currentTotal: number;
   onPointsChange: (pointsUsed: number) => void;
-  conversionRate?: number; // Points to FCFA conversion rate (default: 1 point = 1 FCFA)
 }
 
-const MIN_POINTS_REQUIRED = 100;
+const MIN_POINTS_REQUIRED = LOYALTY_MIN_POINTS;
 
 /**
- * Component for selecting loyalty points to use in the cart
- * User can use any amount of points (min. 100), not limited by cart total
+ * Sélection des points de fidélité dans le panier (min. 100 points).
+ * Le maximum est plafonné au montant de la commande : au-delà, les points
+ * ne serviraient à rien (le serveur applique le même plafond).
  */
 export function PointsSelector({
   availablePoints,
+  currentTotal,
   onPointsChange,
-  conversionRate = 1
 }: PointsSelectorProps) {
   const [pointsToUse, setPointsToUse] = useState(0);
 
-  const maxUsablePoints = Math.floor(availablePoints);
-  const discountAmount = pointsToUse * conversionRate;
+  const maxUsablePoints = Math.min(
+    Math.floor(availablePoints),
+    Math.ceil(currentTotal / LOYALTY_POINT_VALUE_CFA)
+  );
+  const discountAmount = pointsToUse * LOYALTY_POINT_VALUE_CFA;
 
   const handleActivate = () => {
     setPointsToUse(MIN_POINTS_REQUIRED);
@@ -40,7 +44,7 @@ export function PointsSelector({
     onPointsChange(0);
   };
 
-  if (availablePoints < MIN_POINTS_REQUIRED) {
+  if (maxUsablePoints < MIN_POINTS_REQUIRED) {
     return null;
   }
 
