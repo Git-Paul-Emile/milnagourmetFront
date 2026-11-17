@@ -1,28 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { siteService } from '@/services';
 import { HeroData } from '@/types';
+import { queryKeys } from '@/lib/queryClient';
 
 export function useHeroData() {
-  const [heroData, setHeroData] = useState<HeroData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, isPending } = useQuery({
+    queryKey: queryKeys.hero,
+    queryFn: async () => (await siteService.getHeroData()).data as HeroData,
+  });
 
-  useEffect(() => {
-    const loadHeroData = async () => {
-      try {
-        setLoading(true);
-
-        const data = await siteService.getHeroData();
-        setHeroData(data.data as HeroData);
-      } catch (error) {
-        console.error('Erreur lors du chargement des données Hero:', error);
-        setHeroData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadHeroData();
-  }, []);
-
-  return { heroData, loading };
+  return { heroData: data ?? null, loading: isPending };
 }

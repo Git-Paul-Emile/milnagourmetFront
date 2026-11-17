@@ -1,29 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { siteService } from '@/services';
 import { ContactSectionData } from '@/types';
+import { queryKeys } from '@/lib/queryClient';
 
 export function useContactData() {
-  const [contactData, setContactData] = useState<ContactSectionData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isPending, isError } = useQuery({
+    queryKey: queryKeys.contactSection,
+    queryFn: async () => (await siteService.getContactSectionData()).data as ContactSectionData,
+  });
 
-  useEffect(() => {
-    const fetchContactData = async () => {
-      try {
-        const data = await siteService.getContactSectionData();
-        setContactData(data.data as ContactSectionData);
-        setError(null);
-      } catch (err) {
-        console.error('Erreur lors du chargement des données de contact:', err);
-        setContactData(null);
-        setError('Erreur lors du chargement des données');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchContactData();
-  }, []);
-
-  return { contactData, loading, error };
+  return {
+    contactData: data ?? null,
+    loading: isPending,
+    error: isError ? 'Erreur lors du chargement des données' : null,
+  };
 }

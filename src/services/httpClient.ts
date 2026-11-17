@@ -30,6 +30,24 @@ export function buildQueryString(params: Record<string, string | number | undefi
   return query ? `?${query}` : '';
 }
 
+const INDICATEUR_SESSION = 'milna-session';
+const ANCIENNE_CLE_JETON = 'accessToken';
+
+// `localStorage` peut lever une exception (navigation privée, quota) :
+// l'authentification ne doit pas en dépendre.
+const lire = (cle: string) => {
+  try { return localStorage.getItem(cle); } catch { return null; }
+};
+const ecrire = (cle: string, valeur: string) => {
+  try { localStorage.setItem(cle, valeur); } catch { /* stockage indisponible */ }
+};
+const retirer = (cle: string) => {
+  try { localStorage.removeItem(cle); } catch { /* stockage indisponible */ }
+};
+
+// Un 401 sur ces routes est une réponse métier, pas un jeton expiré.
+const ROUTES_SANS_RENOUVELLEMENT = ['/api/auth/login', '/api/auth/register', '/api/auth/refresh'];
+
 // Classe pour gérer les requêtes HTTP avec gestion des tokens
 export class HttpClient {
   private baseURL: string;
@@ -40,21 +58,33 @@ export class HttpClient {
     // Utiliser la variable d'environnement VITE_API_URL
     // Si elle est vide (en mode développement via .env.development), l'URL relative sera utilisée pour le proxy
     this.baseURL = import.meta.env.VITE_API_URL || '';
-    // Charger le token depuis localStorage au démarrage
-    const storedToken = localStorage.getItem('accessToken');
-    if (storedToken) {
-      this.accessToken = storedToken;
-    }
+    // Nettoyage : les versions précédentes stockaient le jeton ici.
+    retirer(ANCIENNE_CLE_JETON);
   }
 
-  // Définir le token d'accès
+  /**
+   * Le jeton d'accès vit UNIQUEMENT en mémoire.
+   *
+   * `localStorage` est lisible par tout script exécuté sur la page : une
+   * seule faille XSS suffirait à voler le jeton. En mémoire, il disparaît
+   * au rechargement — la session est alors rétablie par le refresh token,
+   * qui est dans un cookie `httpOnly` inaccessible au JavaScript.
+   *
+   * On ne persiste qu'un simple indicateur (aucun secret) pour savoir, au
+   * démarrage, s'il vaut la peine de tenter ce renouvellement.
+   */
   setAccessToken(token: string | null) {
     this.accessToken = token;
     if (token) {
-      localStorage.setItem('accessToken', token);
+      ecrire(INDICATEUR_SESSION, '1');
     } else {
-      localStorage.removeItem('accessToken');
+      retirer(INDICATEUR_SESSION);
     }
+  }
+
+  // Une session a-t-elle été ouverte sur ce navigateur ?
+  hasSessionHint(): boolean {
+    return lire(INDICATEUR_SESSION) === '1';
   }
 
   // Vérifier si un token est disponible
@@ -106,11 +136,10 @@ export class HttpClient {
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
 
-    // Ajouter le token d'accès si disponible (toujours récupérer depuis localStorage pour être sûr)
+    // Ajouter le token d'accès (tenu en mémoire) s'il existe
     const headers = new Headers(options.headers);
-    const currentToken = localStorage.getItem('accessToken');
-    if (currentToken && !headers.has('Authorization')) {
-      headers.set('Authorization', `Bearer ${currentToken}`);
+    if (this.accessToken && !headers.has('Authorization')) {
+      headers.set('Authorization', `Bearer ${this.accessToken}`);
     }
     // Ne pas définir Content-Type si le body est FormData (fetch le gère automatiquement)
     if (!(options.body instanceof FormData)) {
@@ -126,7 +155,8 @@ export class HttpClient {
     let response = await fetch(url, config);
 
     // Si 401, essayer de rafraîchir le token
-    if (response.status === 401 && this.accessToken) {
+    const renouvelable = !ROUTES_SANS_RENOUVELLEMENT.some((route) => endpoint.startsWith(route));
+    if (response.status === 401 && this.accessToken && renouvelable) {
       try {
         await this.refreshAccessToken();
 

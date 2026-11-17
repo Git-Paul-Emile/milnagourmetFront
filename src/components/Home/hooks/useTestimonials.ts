@@ -1,32 +1,24 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { siteService } from '@/services';
 import { Testimonial } from '@/types';
+import { queryKeys } from '@/lib/queryClient';
+
+const AUCUN_TEMOIGNAGE: Testimonial[] = [];
 
 export function useTestimonials() {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data, isPending, refetch } = useQuery({
+    queryKey: queryKeys.testimonials,
+    queryFn: async () => (await siteService.getTestimonials()).data as Testimonial[] ?? [],
+  });
 
-  const loadTestimonials = useCallback(async () => {
-    try {
-      setLoading(true);
-
-      const data = await siteService.getTestimonials();
-      setTestimonials(data.data as Testimonial[]);
-    } catch (error) {
-      console.error('Erreur lors du chargement des témoignages:', error);
-      setTestimonials([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadTestimonials();
-  }, [loadTestimonials]);
+  const reloadTestimonials = useCallback(async () => {
+    await refetch();
+  }, [refetch]);
 
   return {
-    testimonials,
-    loading,
-    reloadTestimonials: loadTestimonials,
+    testimonials: data ?? AUCUN_TEMOIGNAGE,
+    loading: isPending,
+    reloadTestimonials,
   };
 }

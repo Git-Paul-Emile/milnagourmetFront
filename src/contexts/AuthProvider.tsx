@@ -47,8 +47,9 @@ function useAuthInitialization(state: typeof initialState, dispatch: React.Dispa
   // Initialisation - essayer de rafraîchir le token au démarrage seulement si un token est stocké
   useEffect(() => {
     const initializeAuth = async () => {
-      const storedToken = localStorage.getItem('accessToken');
-      if (storedToken) {
+      // Le jeton d'accès n'est plus persisté : seul un indicateur dit si
+      // une session a existé, et le cookie httpOnly permet de la rétablir.
+      if (httpClient.hasSessionHint()) {
         // Essayer de rafraîchir le token (refresh token devrait être dans le cookie httpOnly)
         try {
           await refreshToken();

@@ -1,6 +1,6 @@
 import { AuthMode, FormData, FieldErrors } from '../types/authTypes';
 import { validatePhoneSimple } from '@/utils/phoneValidation';
-import { validatePassword, validateConfirmPassword } from '@/utils/passwordValidation';
+import { validatePassword, validateLoginPassword, validateConfirmPassword } from '@/utils/passwordValidation';
 
 export const validatePhone = (phone: string): string => {
   return validatePhoneSimple(phone);
@@ -13,7 +13,7 @@ export const validateForm = (mode: AuthMode, formData: FormData): FieldErrors =>
     const phoneError = validatePhone(formData.telephone);
     if (phoneError) errors.telephone = phoneError;
 
-    const passwordError = validatePassword(formData.password);
+    const passwordError = validateLoginPassword(formData.password);
     if (passwordError) errors.password = passwordError;
   } else { // register
     if (!formData.nomComplet.trim()) {
